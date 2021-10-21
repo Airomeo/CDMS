@@ -11,10 +11,14 @@ import app.i.cdms.R
 import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.CaptchaData
 import app.i.cdms.data.model.Token
+import app.i.cdms.repository.UserPrefRepository
 import kotlinx.coroutines.launch
 import kotlin.math.log
 
-class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
+class LoginViewModel(
+    private val loginRepository: LoginRepository,
+    private val userPrefRepository: UserPrefRepository
+) : ViewModel() {
 
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm
@@ -85,5 +89,11 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     // A placeholder password validation check
     private fun isPasswordValid(password: String): Boolean {
         return password.length > 5
+    }
+
+    fun updateToken(token: Token) {
+        viewModelScope.launch {
+            userPrefRepository.updateToken(token)
+        }
     }
 }

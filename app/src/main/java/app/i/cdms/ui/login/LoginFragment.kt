@@ -25,7 +25,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginFragment : Fragment() {
 
-    //    private lateinit var loginViewModel: LoginViewModel
     private var _binding: FragmentLoginBinding? = null
 
     // This property is only valid between onCreateView and
@@ -39,18 +38,13 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
+    ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-//        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
-//            .get(LoginViewModel::class.java)
 
         val usernameEditText = binding.username
         val passwordEditText = binding.password
@@ -100,9 +94,12 @@ class LoginFragment : Fragment() {
                     200 -> {
                         loginResult.data?.let {
                             updateUiWithUser(loginResult.data)
+                            loginViewModel.updateToken(loginResult.data)
                         }
 //                        showLoginFailed(loginResult.msg)
-                        findNavController().navigate(R.id.navigation_home)
+
+//                        findNavController().navigate(R.id.navigation_home)
+                        findNavController().popBackStack()
                     }
                     500 -> {
                         showLoginFailed(loginResult.msg)

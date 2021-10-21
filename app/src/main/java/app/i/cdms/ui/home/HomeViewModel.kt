@@ -1,13 +1,22 @@
 package app.i.cdms.ui.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import app.i.cdms.repository.UserPrefRepository
+import kotlinx.coroutines.launch
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(userPrefRepository: UserPrefRepository) : ViewModel() {
 
+    private val token = userPrefRepository.tokenFlow.asLiveData()
     private val _text = MutableLiveData<String>().apply {
         value = "This is home Fragment"
     }
-    val text: LiveData<String> = _text
+    val text: LiveData<String> = token.map {
+        it?.token ?: "Null"
+    }
+
+    fun verifyToken() {
+        viewModelScope.launch {
+            token.value?.token
+        }
+    }
 }

@@ -6,17 +6,19 @@ import android.util.Log
 import androidx.datastore.preferences.SharedPreferencesMigration
 import androidx.datastore.preferences.preferencesDataStore
 import app.i.cdms.di.*
+import app.i.cdms.repository.UserPrefRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import org.koin.dsl.module
 
 /**
  * @author ZZY
  * 2021/10/18.
  */
-class App: Application() {
+class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -27,9 +29,19 @@ class App: Application() {
             //inject Android context
             androidContext(this@App)
             // use modules
-            modules(listOf(apiModule, dbModule, dataSourceModule,repositoryModule, preferenceModule, viewModelModule))
+            modules(
+                listOf(
+                    apiModule,
+                    dbModule,
+                    dataSourceModule,
+                    repositoryModule,
+                    preferenceModule,
+                    viewModelModule
+                )
+            )
 
         }
+
     }
 
     private val Context.dataStore by preferencesDataStore(
