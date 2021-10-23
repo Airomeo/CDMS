@@ -2,9 +2,8 @@ package app.i.cdms.ui.login
 
 import android.util.Log
 import android.util.Patterns
-import androidx.datastore.preferences.protobuf.Api
 import androidx.lifecycle.*
-import app.i.cdms.data.LoginRepository
+import app.i.cdms.repository.login.LoginRepository
 import app.i.cdms.data.Result
 
 import app.i.cdms.R
@@ -12,8 +11,9 @@ import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.CaptchaData
 import app.i.cdms.data.model.Token
 import app.i.cdms.repository.UserPrefRepository
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlin.math.log
+import kotlinx.coroutines.runBlocking
 
 class LoginViewModel(
     private val loginRepository: LoginRepository,
@@ -92,7 +92,9 @@ class LoginViewModel(
     }
 
     fun updateToken(token: Token) {
-        viewModelScope.launch {
+        // TODO: 2021/10/24
+        // 如果用viewModelScope.launch{}，主页mainViewModel.token.observe仍是旧的token。原因不清楚。
+        runBlocking {
             userPrefRepository.updateToken(token)
         }
     }

@@ -1,7 +1,7 @@
 package app.i.cdms.data.model
 
 
-import app.i.cdms.repository.Params
+import app.i.cdms.data.model.Params
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -22,13 +22,13 @@ data class MyInfo(
     @Json(name = "parentUserId")
     val parentUserId: Int,
     @Json(name = "payQrCode")
-    val payQrCode: Any,
+    val payQrCode: Any?,
     @Json(name = "sendAddress")
-    val sendAddress: Any,
+    val sendAddress: Any?,
     @Json(name = "updateBy")
     val updateBy: String,
     @Json(name = "updateTime")
-    val updateTime: String,
+    val updateTime: String?,
     @Json(name = "userId")
     val userId: Int,
     @Json(name = "userName")

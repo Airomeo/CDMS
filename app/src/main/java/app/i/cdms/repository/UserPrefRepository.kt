@@ -72,5 +72,4 @@ class UserPrefRepository(private val dataStore: DataStore<Preferences>) {
                 MyInfoJsonAdapter(Moshi.Builder().build()).toJson(myInfo)
         }
     }
-
 }

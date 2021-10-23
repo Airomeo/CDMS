@@ -16,4 +16,6 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="invalid_captcha">Not null</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="my_info_balance">余额：%s</string>
+    <string name="my_info_earns">佣金：%s</string>
 </resources>

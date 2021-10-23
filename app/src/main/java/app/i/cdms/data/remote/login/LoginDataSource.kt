@@ -1,13 +1,8 @@
-package app.i.cdms.data
+package app.i.cdms.data.remote.login
 
-import android.util.Log
-import app.i.cdms.Constant
 import app.i.cdms.api.ApiService
-import app.i.cdms.data.model.ApiResult
-import app.i.cdms.data.model.CaptchaData
-import app.i.cdms.data.model.LoggedInUser
-import app.i.cdms.data.model.Token
-import okhttp3.MediaType.Companion.toMediaType
+import app.i.cdms.data.Result
+import app.i.cdms.data.model.*
 import java.io.IOException
 import java.lang.Exception
 
@@ -55,9 +50,5 @@ class LoginDataSource(private val service: ApiService) {
         } catch (e: Throwable) {
             Result.Error(IOException("Error login", e))
         }
-    }
-
-    fun logout() {
-        // TODO: revoke authentication
     }
 }

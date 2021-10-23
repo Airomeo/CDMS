@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Base64
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -93,12 +94,8 @@ class LoginFragment : Fragment() {
                 when (loginResult.code) {
                     200 -> {
                         loginResult.data?.let {
-                            updateUiWithUser(loginResult.data)
                             loginViewModel.updateToken(loginResult.data)
                         }
-//                        showLoginFailed(loginResult.msg)
-
-//                        findNavController().navigate(R.id.navigation_home)
                         findNavController().popBackStack()
                     }
                     500 -> {
@@ -106,7 +103,7 @@ class LoginFragment : Fragment() {
                         loginViewModel.getCaptcha()
                     }
                     else -> {
-                        showLoginFailed("loginResult.code else")
+                        showLoginFailed("TAG" + "loginResult.code else")
                         loginViewModel.getCaptcha()
                     }
                 }
@@ -153,13 +150,6 @@ class LoginFragment : Fragment() {
                 captchaData.uuid
             )
         }
-    }
-
-    private fun updateUiWithUser(token: Token) {
-        val welcome = getString(R.string.welcome) + token.token
-        // TODO : initiate successful logged in experience
-        val appContext = context?.applicationContext ?: return
-        Toast.makeText(appContext, welcome, Toast.LENGTH_LONG).show()
     }
 
     private fun showLoginFailed(error: String) {

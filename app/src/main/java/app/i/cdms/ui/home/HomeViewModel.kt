@@ -13,10 +13,4 @@ class HomeViewModel(userPrefRepository: UserPrefRepository) : ViewModel() {
     val text: LiveData<String> = token.map {
         it?.token ?: "Null"
     }
-
-    fun verifyToken() {
-        viewModelScope.launch {
-            token.value?.token
-        }
-    }
 }

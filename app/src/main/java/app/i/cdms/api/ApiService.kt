@@ -3,6 +3,7 @@ package app.i.cdms.api
 import app.i.cdms.Constant
 import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.CaptchaData
+import app.i.cdms.data.model.MyInfo
 import app.i.cdms.data.model.Token
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -43,4 +44,10 @@ interface ApiService {
         @Url url: String = Constant.API_LOGIN,
         @Body payload: Map<String, String>
     ): Response<ApiResult<Token>>
+
+    @GET
+    suspend fun myInfo(
+        @Url url: String = Constant.API_MY_INFO,
+        @Header("authorization") authorization: String
+    ): Response<ApiResult<MyInfo>>
 }

@@ -1,4 +1,4 @@
-package app.i.cdms.repository
+package app.i.cdms.data.model
 
 
 import com.squareup.moshi.Json
