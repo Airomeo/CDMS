@@ -8,6 +8,7 @@ import app.i.cdms.data.model.MyInfo
 import app.i.cdms.repository.UserPrefRepository
 import app.i.cdms.repository.main.MainRepository
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class MainViewModel(
@@ -32,7 +33,7 @@ class MainViewModel(
                 } else {
                     // TODO: 2021/10/20
                     _myInfo.value =
-                        ApiResult(code = 123123, data = null, msg = "R.string.getMyInfoFailed")
+                        ApiResult(code = 999, data = null, msg = "R.string.getMyInfoFailed")
                 }
             }
         }

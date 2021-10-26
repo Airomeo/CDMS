@@ -53,7 +53,6 @@ class LoginFragment : Fragment() {
         val loginButton = binding.login
         val loadingProgressBar = binding.loading
         val captchaImageView = binding.imageView
-        val result = binding.textView
 
         loginViewModel.getCaptcha()
         captchaImageView.setOnClickListener {
@@ -62,7 +61,6 @@ class LoginFragment : Fragment() {
         loginViewModel.captchaResult.observe(viewLifecycleOwner, {
             it.data ?: return@observe
             captchaData = it.data
-            result.text = it.msg
             val imageByteArray = Base64.decode(it.data.imgBytes, Base64.DEFAULT)
             val bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.size)
             captchaImageView.load(bitmap) {
@@ -154,7 +152,7 @@ class LoginFragment : Fragment() {
 
     private fun showLoginFailed(error: String) {
         val appContext = context?.applicationContext ?: return
-        Toast.makeText(appContext, error, Toast.LENGTH_LONG).show()
+        Toast.makeText(appContext, error, Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

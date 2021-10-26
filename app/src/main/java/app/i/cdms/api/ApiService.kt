@@ -50,4 +50,12 @@ interface ApiService {
         @Url url: String = Constant.API_MY_INFO,
         @Header("authorization") authorization: String
     ): Response<ApiResult<MyInfo>>
+
+    @POST
+    @Headers("Content-Type: application/json")
+    suspend fun addChild(
+        @Url url: String = Constant.API_ADD_CHILD,
+        @Header("authorization") authorization: String,
+        @Body payload: Map<String, String>
+    ): Response<ApiResult<Any>>
 }

@@ -17,12 +17,13 @@ import app.i.cdms.data.model.MyInfo
 import app.i.cdms.data.model.Token
 import app.i.cdms.databinding.FragmentHomeBinding
 import app.i.cdms.ui.main.MainViewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
 
     private val homeViewModel: HomeViewModel by viewModel()
-    private val mainViewModel: MainViewModel by viewModel()
+    private val mainViewModel: MainViewModel by sharedViewModel()
     private var _binding: FragmentHomeBinding? = null
 
     // This property is only valid between onCreateView and
@@ -64,11 +65,11 @@ class HomeFragment : Fragment() {
                 401 -> {
 //                    {"code":401,"msg":"请求访问：/wl/home/myInfo，认证失败，无法访问系统资源","data":null}
                     findNavController().navigate(R.id.navigation_login)
-                    Toast.makeText(requireContext(), it.msg, Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), it.msg, Toast.LENGTH_SHORT).show()
                 }
                 else -> {
                     findNavController().navigate(R.id.navigation_login)
-                    Toast.makeText(requireContext(), it.msg, Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), it.msg, Toast.LENGTH_SHORT).show()
                 }
             }
         })
@@ -77,6 +78,9 @@ class HomeFragment : Fragment() {
                 mainViewModel.getMyInfo()
             }
         })
+        binding.button.setOnClickListener {
+            findNavController().navigate(R.id.navigation_register)
+        }
     }
 
     override fun onDestroyView() {

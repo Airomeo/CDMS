@@ -60,7 +60,7 @@ class LoginViewModel(
             } else {
                 // TODO: 2021/10/20  
                 _loginResult.value =
-                    ApiResult(code = 123123, data = null, msg = "R.string.login_failed")
+                    ApiResult(code = 999, data = null, msg = "R.string.login_failed")
             }
         }
     }
