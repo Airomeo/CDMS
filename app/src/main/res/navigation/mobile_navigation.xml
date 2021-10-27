@@ -32,6 +32,6 @@
     <fragment
         android:id="@+id/navigation_register"
         android:name="app.i.cdms.ui.register.RegisterFragment"
-        android:label="@string/title_login"
+        android:label="@string/title_register"
         tools:layout="@layout/fragment_register" />
 </navigation>
