@@ -6,15 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.i.cdms.R
-import app.i.cdms.data.Result
 import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.RegisterFormState
+import app.i.cdms.data.model.Result
 import app.i.cdms.data.model.Token
-import app.i.cdms.repository.UserPrefRepository
-import app.i.cdms.repository.login.LoginRepository
 import app.i.cdms.repository.register.RegisterRepository
-import app.i.cdms.ui.login.LoginFormState
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(

@@ -1,9 +1,9 @@
-package app.i.cdms.data.db.fav
+package app.i.cdms.data.source.local.fav
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import app.i.cdms.data.db.fav.Favorite.Favorite.tableName
+import app.i.cdms.data.source.local.fav.Favorite.Favorite.tableName
 
 @Entity(tableName = tableName)
 data class Favorite(

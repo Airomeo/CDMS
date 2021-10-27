@@ -1,4 +1,4 @@
-package app.i.cdms.data
+package app.i.cdms.data.model
 
 /**
  * A generic class that holds a value with its loading status.

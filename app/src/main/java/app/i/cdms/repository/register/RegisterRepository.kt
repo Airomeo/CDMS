@@ -1,9 +1,9 @@
 package app.i.cdms.repository.register
 
-import app.i.cdms.data.Result
 import app.i.cdms.data.model.ApiResult
+import app.i.cdms.data.model.Result
 import app.i.cdms.data.model.Token
-import app.i.cdms.data.remote.register.RegisterDataSource
+import app.i.cdms.data.source.remote.register.RegisterDataSource
 
 /**
  * @author ZZY

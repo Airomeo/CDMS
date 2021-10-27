@@ -1,4 +1,4 @@
-package app.i.cdms.data.db.fav
+package app.i.cdms.data.source.local.fav
 
 import androidx.room.Dao
 import androidx.room.Insert

@@ -1,17 +1,17 @@
 package app.i.cdms.ui.login
 
-import android.util.Log
 import android.util.Patterns
-import androidx.lifecycle.*
-import app.i.cdms.repository.login.LoginRepository
-import app.i.cdms.data.Result
-
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import app.i.cdms.R
 import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.CaptchaData
+import app.i.cdms.data.model.Result
 import app.i.cdms.data.model.Token
 import app.i.cdms.repository.UserPrefRepository
-import kotlinx.coroutines.async
+import app.i.cdms.repository.login.LoginRepository
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 

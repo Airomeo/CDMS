@@ -1,14 +1,11 @@
 package app.i.cdms.ui.main
 
-import android.util.Log
 import androidx.lifecycle.*
-import app.i.cdms.data.Result
 import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.MyInfo
+import app.i.cdms.data.model.Result
 import app.i.cdms.repository.UserPrefRepository
 import app.i.cdms.repository.main.MainRepository
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class MainViewModel(

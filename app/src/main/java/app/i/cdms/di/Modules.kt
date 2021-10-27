@@ -1,20 +1,15 @@
 package app.i.cdms.di
 
-import android.content.Context
-import androidx.datastore.preferences.SharedPreferencesMigration
-import androidx.datastore.preferences.preferencesDataStore
-import app.i.cdms.Constant
 import app.i.cdms.api.ApiClient
-import app.i.cdms.data.remote.login.LoginDataSource
-import app.i.cdms.repository.login.LoginRepository
-import app.i.cdms.data.db.AppDatabase
-import app.i.cdms.data.remote.main.MainDataSource
-import app.i.cdms.data.remote.register.RegisterDataSource
-import app.i.cdms.repository.Repository
+import app.i.cdms.data.source.local.AppDataStore
+import app.i.cdms.data.source.local.AppDatabase
+import app.i.cdms.data.source.remote.login.LoginDataSource
+import app.i.cdms.data.source.remote.main.MainDataSource
+import app.i.cdms.data.source.remote.register.RegisterDataSource
 import app.i.cdms.repository.UserPrefRepository
+import app.i.cdms.repository.login.LoginRepository
 import app.i.cdms.repository.main.MainRepository
 import app.i.cdms.repository.register.RegisterRepository
-import app.i.cdms.ui.dashboard.DashboardViewModel
 import app.i.cdms.ui.home.HomeViewModel
 import app.i.cdms.ui.login.LoginViewModel
 import app.i.cdms.ui.main.MainViewModel
@@ -33,29 +28,21 @@ import org.koin.dsl.single
 
 val applicationScope = CoroutineScope(SupervisorJob())
 
-private val Context.dataStore by preferencesDataStore(
-    name = Constant.USER_PREFERENCES_NAME,
-    produceMigrations = { context ->
-        // Since we're migrating from SharedPreferences, add a migration based on the
-        // SharedPreferences name
-        listOf(SharedPreferencesMigration(context, Constant.USER_PREFERENCES_NAME))
-    }
-)
-
-val apiModule = module { single { ApiClient.create(get()) } }
+val apiModule = module {
+    single { ApiClient.create(androidContext()) }
+}
 
 val dbModule = module {
     single { AppDatabase.getDatabase(get(), applicationScope).dao() }
 }
 
 val dataSourceModule = module {
-    single <MainDataSource>()
-    single <LoginDataSource>()
-    single <RegisterDataSource>()
+    single<MainDataSource>()
+    single<LoginDataSource>()
+    single<RegisterDataSource>()
 }
 
 val repositoryModule = module {
-    single { Repository(get(), get()) }
     single<MainRepository>()
     single<LoginRepository>()
     single<RegisterRepository>()
@@ -63,19 +50,10 @@ val repositoryModule = module {
 }
 
 val preferenceModule = module {
-//    single { androidApplication().getSharedPreferences(MAIN_STORAGE, Context.MODE_PRIVATE) }
-    single { androidContext().dataStore }
+    single { AppDataStore(androidContext()).dataStore }
 }
 
 val viewModelModule = module {
-//    viewModel { GalleryViewModel(get()) }
-//    viewModel { CategoriesViewModel(androidApplication(), get()) }
-//    viewModel { DetailViewModel(get()) }
-//    viewModel { FavoritesViewModel(get()) }
-//    viewModel { VideosViewModel(get()) }
-
-//    viewModel { LoginViewModel(get()) }
-//    single<LoginDataSource>()
     viewModel<LoginViewModel>()
     viewModel<HomeViewModel>()
     viewModel<MainViewModel>()

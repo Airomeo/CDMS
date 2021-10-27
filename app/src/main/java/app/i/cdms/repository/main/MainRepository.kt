@@ -1,11 +1,10 @@
 package app.i.cdms.repository.main
 
-import android.util.Log
-import app.i.cdms.data.Result
 import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.MyInfo
+import app.i.cdms.data.model.Result
 import app.i.cdms.data.model.Token
-import app.i.cdms.data.remote.main.MainDataSource
+import app.i.cdms.data.source.remote.main.MainDataSource
 
 /**
  * @author ZZY

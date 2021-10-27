@@ -2,7 +2,6 @@ package app.i.cdms.ui.home
 
 import androidx.lifecycle.*
 import app.i.cdms.repository.UserPrefRepository
-import kotlinx.coroutines.launch
 
 class HomeViewModel(userPrefRepository: UserPrefRepository) : ViewModel() {
 

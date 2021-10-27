@@ -1,8 +1,10 @@
 package app.i.cdms.repository.login
 
-import app.i.cdms.data.remote.login.LoginDataSource
-import app.i.cdms.data.Result
-import app.i.cdms.data.model.*
+import app.i.cdms.data.model.ApiResult
+import app.i.cdms.data.model.CaptchaData
+import app.i.cdms.data.model.Result
+import app.i.cdms.data.model.Token
+import app.i.cdms.data.source.remote.login.LoginDataSource
 
 /**
  * Class that requests authentication and user information from the remote data source and

@@ -1,12 +1,12 @@
-package app.i.cdms.data.db
+package app.i.cdms.data.source.local
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import app.i.cdms.Constant
-import app.i.cdms.data.db.fav.FavDao
-import app.i.cdms.data.db.fav.Favorite
+import app.i.cdms.data.source.local.fav.FavDao
+import app.i.cdms.data.source.local.fav.Favorite
 import kotlinx.coroutines.CoroutineScope
 
 
@@ -34,7 +34,7 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "todo_database"
+                    Constant.DB_NAME
                 )
 //                    .addCallback(ToDoDatabaseCallback(context, scope))
 //                    .addMigrations(MIGRATION_1_10)
@@ -49,9 +49,10 @@ abstract class AppDatabase : RoomDatabase() {
             private val context: Context,
             private val scope: CoroutineScope
         ) : RoomDatabase.Callback() {
-            *//**
-             * Override the onCreate method to populate the database.
-             *//*
+            */
+        /**
+         * Override the onCreate method to populate the database.
+         *//*
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
                 // If you want to keep the data through app restarts,
