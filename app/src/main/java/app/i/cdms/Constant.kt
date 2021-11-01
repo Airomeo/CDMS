@@ -44,6 +44,7 @@ object Constant {
     val API_LOGIN = "$API/prod-api/login"
     val API_MY_INFO = "$API/prod-api/wl/home/myInfo"
     val API_ADD_CHILD = "$API/prod-api/wl/home/addChild"
+    val API_MY_TEAM = "$API/prod-api/wl/home/myTeam"
     private val HOST: String
         get() = when {
 //            BuildConfig.PREPARE -> Service.PRE.HOST

@@ -34,4 +34,16 @@
         android:name="app.i.cdms.ui.register.RegisterFragment"
         android:label="@string/title_register"
         tools:layout="@layout/fragment_register" />
+
+    <fragment
+        android:id="@+id/navigation_team"
+        android:name="app.i.cdms.ui.team.TeamFragment"
+        android:label="@string/title_team"
+        tools:layout="@layout/fragment_team" />
+
+    <fragment
+        android:id="@+id/navigation_agent"
+        android:name="app.i.cdms.ui.agent.AgentFragment"
+        android:label="@string/title_agent"
+        tools:layout="@layout/fragment_agent" />
 </navigation>

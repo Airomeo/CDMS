@@ -1,11 +1,7 @@
 package app.i.cdms.api
 
 import app.i.cdms.Constant
-import app.i.cdms.data.model.ApiResult
-import app.i.cdms.data.model.CaptchaData
-import app.i.cdms.data.model.MyInfo
-import app.i.cdms.data.model.Token
-import okhttp3.RequestBody
+import app.i.cdms.data.model.*
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -58,4 +54,12 @@ interface ApiService {
         @Header("authorization") authorization: String,
         @Body payload: Map<String, String>
     ): Response<ApiResult<Any>>
+
+    @GET
+    suspend fun myTeam(
+        @Url url: String = Constant.API_MY_TEAM,
+        @Header("authorization") authorization: String,
+        @Query("pageNum") pageNum: Int,
+        @Query("pageSize") pageSize: Int
+    ): Response<ApiResult<MyTeam>>
 }

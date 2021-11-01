@@ -7,13 +7,19 @@
         <entry key="app/src/main/res/drawable/ic_avatar.xml" value="0.23645833333333333" />
         <entry key="app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.40520833333333334" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.40520833333333334" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_agent.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_agent_item_list.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.3890625" />
         <entry key="app/src/main/res/layout/fragment_order.xml" value="0.3890625" />
         <entry key="app/src/main/res/layout/fragment_order_list.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_register.xml" value="0.2667572463768116" />
+        <entry key="app/src/main/res/layout/fragment_team.xml" value="0.3890625" />
+        <entry key="app/src/main/res/layout/fragment_team_item.xml" value="0.38768115942028986" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.2203125" />
+        <entry key="app/src/main/res/menu/team.xml" value="0.2203125" />
       </map>
     </option>
   </component>

@@ -1,21 +1,15 @@
 package app.i.cdms.ui.register
 
-import android.app.Activity
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import app.i.cdms.R
-import app.i.cdms.databinding.FragmentLoginBinding
 import app.i.cdms.databinding.FragmentRegisterBinding
 import app.i.cdms.ui.main.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -23,15 +17,17 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
-    private lateinit var binding: FragmentRegisterBinding
+    private var _binding: FragmentRegisterBinding? = null
+    private val binding get() = _binding!!
     private val registerViewModel: RegisterViewModel by viewModel()
     private val mainViewModel: MainViewModel by sharedViewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentRegisterBinding.bind(view)
+        _binding = FragmentRegisterBinding.bind(view)
 
-        registerViewModel.registerFormState.observe(viewLifecycleOwner,
+        registerViewModel.registerFormState.observe(
+            viewLifecycleOwner,
             Observer { registerFormState ->
                 if (registerFormState == null) {
                     return@Observer
@@ -112,5 +108,10 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 binding.phone.text.toString()
             )
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
