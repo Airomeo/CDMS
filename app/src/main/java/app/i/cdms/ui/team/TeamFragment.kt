@@ -53,11 +53,12 @@ class TeamFragment : Fragment(R.layout.fragment_team) {
             }
         }
 
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             teamViewModel.agentsUiModel.collectLatest {
                 mAdapter.submitList(it)
             }
         }
+
         teamViewModel.records.observe(viewLifecycleOwner, {
             it ?: return@observe
             binding.loading.visibility = View.GONE
