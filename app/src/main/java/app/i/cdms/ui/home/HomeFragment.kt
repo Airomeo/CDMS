@@ -1,20 +1,15 @@
 package app.i.cdms.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import app.i.cdms.R
 import app.i.cdms.data.model.MyInfo
-import app.i.cdms.data.model.Token
 import app.i.cdms.databinding.FragmentHomeBinding
 import app.i.cdms.ui.main.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -90,13 +85,14 @@ class HomeFragment : Fragment() {
 
     private fun updateUiWithUser(myInfo: MyInfo) {
         binding.tvUsername.text = myInfo.userName
+        binding.tvId.text = getString(R.string.my_info_id, myInfo.userId.toString())
         binding.tvBalance.text =
             getString(R.string.my_info_balance, myInfo.accountBalance.toString())
         if (myInfo.earns > 0) {
             binding.tvEarns.visibility = View.VISIBLE
             binding.tvEarns.text =
                 getString(R.string.my_info_earns, myInfo.earns.toString())
-        }else{
+        } else {
             binding.tvEarns.visibility = View.GONE
         }
     }

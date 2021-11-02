@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import app.i.cdms.R
+import app.i.cdms.data.model.Agent
 import app.i.cdms.databinding.FragmentAgentBinding
 import app.i.cdms.ui.main.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -20,19 +21,33 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentAgentBinding.bind(view)
 
-        binding.tvFirstCommission.text =
-            getString(R.string.first_commission, binding.sldFirstCommission.value.toString())
-        binding.tvAdditionalCommission.text =
-            getString(
-                R.string.additional_commission,
-                binding.sldAdditionalCommission.value.toString()
-            )
-        binding.sldFirstCommission.addOnChangeListener { slider, value, fromUser ->
-            binding.tvFirstCommission.text = getString(R.string.first_commission, value.toString())
-        }
-        binding.sldAdditionalCommission.addOnChangeListener { slider, value, fromUser ->
-            binding.tvAdditionalCommission.text =
-                getString(R.string.additional_commission, value.toString())
+        val agent = (requireArguments().get("agent") as Agent)
+        with(binding) {
+            tvUsername.text = agent.userName
+            tvId.text = getString(R.string.my_info_id, agent.userId.toString())
+            tvBalance.text = getString(R.string.my_info_balance, agent.accountBalance.toString())
+            tvEarns.text = getString(R.string.my_info_earns, agent.earns.toString())
+            tvChannelCount.text =
+                getString(R.string.agent_channel_count, agent.channelCount.toString())
+            tvYto.text = getString(R.string.agent_yto_order_count, agent.ytoOrderCount.toString())
+            tvSto.text = getString(R.string.agent_sto_order_count, agent.stoOrderCount.toString())
+            tvJd.text = getString(R.string.agent_jd_order_count, agent.jdOrderCount.toString())
+
+            tvFirstCommission.text =
+                getString(R.string.first_commission, sldFirstCommission.value.toString())
+            tvAdditionalCommission.text =
+                getString(
+                    R.string.additional_commission,
+                    sldAdditionalCommission.value.toString()
+                )
+            sldFirstCommission.addOnChangeListener { slider, value, fromUser ->
+                tvFirstCommission.text =
+                    getString(R.string.first_commission, value.toString())
+            }
+            sldAdditionalCommission.addOnChangeListener { slider, value, fromUser ->
+                tvAdditionalCommission.text =
+                    getString(R.string.additional_commission, value.toString())
+            }
         }
     }
 

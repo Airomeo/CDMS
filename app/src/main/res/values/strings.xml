@@ -22,6 +22,7 @@
     <string name="invalid_captcha">Not null</string>
     <string name="invalid_phone">Not a valid phone</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="my_info_id">ID：%s</string>
     <string name="my_info_balance">余额：%s</string>
     <string name="my_info_earns">佣金：%s</string>
     <string name="my_team_all_users">全部用户：%s位</string>
@@ -31,6 +32,10 @@
     <string name="additional_commission">续重抽佣+%s</string>
     <string name="first_weight">首重</string>
     <string name="additional_weight">续重</string>
+    <string name="agent_channel_count">渠道数\n%s</string>
+    <string name="agent_jd_order_count">京东日单\n%s</string>
+    <string name="agent_sto_order_count">申通日单\n%s</string>
+    <string name="agent_yto_order_count">圆通日单\n%s</string>
 
     <string name="action_settings">设置</string>
     <string name="action_sort">排序</string>

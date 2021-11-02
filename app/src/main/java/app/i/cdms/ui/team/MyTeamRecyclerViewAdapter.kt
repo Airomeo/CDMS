@@ -2,6 +2,7 @@ package app.i.cdms.ui.team
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -29,15 +30,16 @@ class MyTeamRecyclerViewAdapter :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getItem(position)
+        val agent = getItem(position)
         with(holder.binding) {
             root.setOnClickListener {
-                it.findNavController().navigate(R.id.navigation_agent)
+                val bundle = bundleOf("agent" to agent)
+                it.findNavController().navigate(R.id.navigation_agent, bundle)
             }
-            tvId.text = item.userId.toString()
-            tvUsername.text = item.userName
+            tvId.text = agent.userId.toString()
+            tvUsername.text = agent.userName
             tvBalance.text = root.context.getString(
-                R.string.my_team_agent_balance, item.accountBalance.toString()
+                R.string.my_team_agent_balance, agent.accountBalance.toString()
             )
         }
     }
