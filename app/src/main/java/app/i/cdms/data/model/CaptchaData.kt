@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class CaptchaData(
-    @Json(name = "enabled")
+    @Json(name = "captchaOnOff")
     val enabled: Boolean,
     @Json(name = "img")
     val imgBytes: String,
