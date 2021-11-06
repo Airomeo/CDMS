@@ -36,6 +36,14 @@
     <string name="agent_jd_order_count">京东日单\n%s</string>
     <string name="agent_sto_order_count">申通日单\n%s</string>
     <string name="agent_yto_order_count">圆通日单\n%s</string>
+    <string name="agent_withdrawal_message">是否确认清零账户：%s？\n余额将退回您的账户！</string>
+    <string name="dialog_title_warning">警告</string>
+    <string name="dialog_positive_text">确认</string>
+    <string name="dialog_negative_text">取消</string>
+    <string name="agent_withdrawal">清账</string>
+    <string name="agent_transfer">转账</string>
+    <string name="agent_set_price">配置渠道价格</string>
+    <string name="agent_update_commission">设置佣金</string>
 
     <string name="action_settings">设置</string>
     <string name="action_sort">排序</string>

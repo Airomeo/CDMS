@@ -3,11 +3,13 @@ package app.i.cdms.di
 import app.i.cdms.api.ApiClient
 import app.i.cdms.data.source.local.AppDataStore
 import app.i.cdms.data.source.local.AppDatabase
+import app.i.cdms.data.source.remote.agent.AgentDataSource
 import app.i.cdms.data.source.remote.login.LoginDataSource
 import app.i.cdms.data.source.remote.main.MainDataSource
 import app.i.cdms.data.source.remote.register.RegisterDataSource
 import app.i.cdms.data.source.remote.team.TeamDataSource
 import app.i.cdms.repository.UserPrefRepository
+import app.i.cdms.repository.agent.AgentRepository
 import app.i.cdms.repository.login.LoginRepository
 import app.i.cdms.repository.main.MainRepository
 import app.i.cdms.repository.register.RegisterRepository
@@ -46,6 +48,7 @@ val dataSourceModule = module {
     single<LoginDataSource>()
     single<RegisterDataSource>()
     single<TeamDataSource>()
+    single<AgentDataSource>()
 }
 
 val repositoryModule = module {
@@ -53,6 +56,7 @@ val repositoryModule = module {
     single<LoginRepository>()
     single<RegisterRepository>()
     single<TeamRepository>()
+    single<AgentRepository>()
     single<UserPrefRepository>()
 }
 

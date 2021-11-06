@@ -2,6 +2,8 @@ package app.i.cdms.ui.agent
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import app.i.cdms.R
 import app.i.cdms.data.model.Agent
@@ -48,7 +50,25 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
                 tvAdditionalCommission.text =
                     getString(R.string.additional_commission, value.toString())
             }
+            btnWithdrawal.setOnClickListener {
+                AlertDialog.Builder(requireContext())
+                    .setTitle(R.string.dialog_title_warning)
+                    .setMessage(getString(R.string.agent_withdrawal_message, agent.userName))
+                    .setPositiveButton(
+                        R.string.dialog_positive_text
+                    ) { p0, p1 ->
+                        agentViewModel.withdrawal(
+                            mainViewModel.token.value,
+                            agent.userId
+                        )
+                    }
+                    .setNegativeButton(R.string.dialog_negative_text, null)
+                    .show()
+            }
         }
+        agentViewModel.apiResult.observe(viewLifecycleOwner, {
+            Toast.makeText(requireContext(), it.msg, Toast.LENGTH_SHORT).show()
+        })
     }
 
     override fun onDestroyView() {
