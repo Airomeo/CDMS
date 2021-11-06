@@ -62,4 +62,79 @@ interface ApiService {
         @Query("pageNum") pageNum: Int,
         @Query("pageSize") pageSize: Int
     ): Response<ApiResult<MyTeam>>
+
+    @GET
+    suspend fun recordList(
+        @Url url: String = Constant.API_RECORD_LIST,
+        @Header("authorization") authorization: String,
+        @Query("pageNum") pageNum: Int,
+        @Query("pageSize") pageSize: Int,
+        @Query("recordType") recordType: Int
+    ): Response<RecordListResult>
+
+    @DELETE
+    suspend fun removePrice(
+        @Url url: String = Constant.API_REMOVE_PRICE,
+        @Header("authorization") authorization: String,
+        @Query("channelId") channelId: Int
+    ): Response<ApiResult<Any>>
+
+    @PUT
+    suspend fun editPrice(
+        @Url url: String = Constant.API_EDIT_PRICE,
+        @Header("authorization") authorization: String,
+        @Query("userId") userId: Int
+    ): Response<ApiResult<Any>>
+
+//        val payload: Map<String, String> = mapOf(
+//            "addPrice" to addPrice,
+//            "channelId" to channelId,
+//            "firstPrice" to firstPrice,
+//            "firstWeight" to firstWeight,
+//            "id" to id,
+//            "limitAddPrice" to limitAddPrice,
+//            "limitFirstPrice" to limitFirstPrice,
+//            "userId" to userId
+//        )
+
+    @POST
+    suspend fun addPrice(
+        @Url url: String = Constant.API_ADD_PRICE,
+        @Header("authorization") authorization: String,
+        @Query("userId") userId: Int
+    ): Response<ApiResult<Any>>
+
+//        val payload: Map<String, String> = mapOf(
+//            "addPrice" to addPrice,
+//            "channelId" to channelId,
+//            "firstPrice" to firstPrice,
+//            "firstWeight" to firstWeight,
+//            "limitAddPrice" to limitAddPrice,
+//            "limitFirstPrice" to limitFirstPrice,
+//            "userId" to userId
+//        )
+
+    @GET
+    suspend fun clearAccount(
+        @Url url: String = Constant.API_CLEAR_ACCOUNT,
+        @Header("authorization") authorization: String,
+        @Query("userId") userId: Int
+    ): Response<ApiResult<Any>>
+
+    @GET
+    suspend fun transfer(
+        @Url url: String = Constant.API_TRANSFER,
+        @Header("authorization") authorization: String,
+        @Query("toUserId") toUserId: Int,
+        @Query("userName") userName: String,
+        @Query("remark") remark: String,
+        @Query("recordType") recordType: String,
+        @Query("changeAmount") changeAmount: Int
+    ): Response<ApiResult<Any>>
+
+    @GET
+    suspend fun myPrice(
+        @Url url: String = Constant.API_MY_PRICE,
+        @Header("authorization") authorization: String
+    ): Response<ApiResult<ArrayList<MyPriceItem>>>
 }
