@@ -15,6 +15,7 @@
         android:theme="@style/Theme.CDMS">
         <activity
             android:name=".ui.main.MainActivity"
+            android:screenOrientation="landscape"
             android:exported="true"
             android:label="@string/title_activity_main">
             <intent-filter>
