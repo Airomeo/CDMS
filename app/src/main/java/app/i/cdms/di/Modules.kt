@@ -25,6 +25,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.annotation.KoinReflectAPI
 import org.koin.dsl.module
 import org.koin.dsl.single
 
@@ -35,6 +36,7 @@ import org.koin.dsl.single
 
 val applicationScope = CoroutineScope(SupervisorJob())
 
+@KoinReflectAPI
 val apiModule = module {
     single { ApiClient.create(androidContext()) }
 }
@@ -43,6 +45,7 @@ val dbModule = module {
     single { AppDatabase.getDatabase(get(), applicationScope).dao() }
 }
 
+@KoinReflectAPI
 val dataSourceModule = module {
     single<MainDataSource>()
     single<LoginDataSource>()
@@ -51,6 +54,7 @@ val dataSourceModule = module {
     single<AgentDataSource>()
 }
 
+@KoinReflectAPI
 val repositoryModule = module {
     single<MainRepository>()
     single<LoginRepository>()
@@ -64,6 +68,7 @@ val preferenceModule = module {
     single { AppDataStore(androidContext()).dataStore }
 }
 
+@KoinReflectAPI
 val viewModelModule = module {
     viewModel<LoginViewModel>()
     viewModel<HomeViewModel>()
