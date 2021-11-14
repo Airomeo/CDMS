@@ -12,20 +12,48 @@ import java.io.IOException
  */
 class AgentDataSource(private val service: ApiService) {
 
-    suspend fun withdrawal(
-        token: Token,
+    suspend fun withdraw(
+        token: Token?,
         userId: Int
     ): Result<ApiResult<Any>> {
         return try {
-            val response = service.clearAccount(authorization = token.token, userId = userId)
+            val response = service.clearAccount(authorization = token?.token, userId = userId)
             if (response.isSuccessful && response.body() != null) {
                 Result.Success(response.body()!!)
             } else {
                 // TODO: 2021/10/19
-                Result.Error(Exception("Error withdrawal"))
+                Result.Error(Exception("Error withdraw"))
             }
         } catch (e: Throwable) {
-            Result.Error(IOException("Error withdrawal" + e.localizedMessage, e))
+            Result.Error(IOException("Error withdraw" + e.localizedMessage, e))
+        }
+    }
+
+    suspend fun transfer(
+        token: Token?,
+        toUserId: Int,
+        userName: String,
+        remark: String?,
+        recordType: String,
+        changeAmount: Float
+    ): Result<ApiResult<Any>> {
+        return try {
+            val response = service.transfer(
+                authorization = token?.token,
+                toUserId = toUserId,
+                userName = userName,
+                remark = remark,
+                recordType = recordType,
+                changeAmount = changeAmount
+            )
+            if (response.isSuccessful && response.body() != null) {
+                Result.Success(response.body()!!)
+            } else {
+                // TODO: 2021/10/19
+                Result.Error(Exception("Error transfer"))
+            }
+        } catch (e: Throwable) {
+            Result.Error(IOException("Error transfer" + e.localizedMessage, e))
         }
     }
 }

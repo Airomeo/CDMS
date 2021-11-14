@@ -7,16 +7,15 @@ import android.os.Build
 import app.i.cdms.BuildConfig.DEBUG
 import okhttp3.Cache
 import okhttp3.Interceptor
-import retrofit2.Retrofit
-
 import okhttp3.OkHttpClient
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.logging.HttpLoggingInterceptor.Level
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
-import okhttp3.logging.HttpLoggingInterceptor.Level
-import retrofit2.converter.moshi.MoshiConverterFactory
 
 
 /**
@@ -89,7 +88,6 @@ fun Context.isInternetAvailable(): Boolean {
                     ConnectivityManager.TYPE_ETHERNET -> true
                     else -> false
                 }
-
             }
         }
     }

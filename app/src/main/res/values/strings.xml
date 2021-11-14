@@ -36,14 +36,40 @@
     <string name="agent_jd_order_count">京东日单\n%s</string>
     <string name="agent_sto_order_count">申通日单\n%s</string>
     <string name="agent_yto_order_count">圆通日单\n%s</string>
-    <string name="agent_withdrawal_message">是否确认清零账户：%s？\n余额将退回您的账户！</string>
     <string name="dialog_title_warning">警告</string>
     <string name="dialog_positive_text">确认</string>
     <string name="dialog_negative_text">取消</string>
-    <string name="agent_withdrawal">清账</string>
+    <string name="agent_dialog_transfer">转账</string>
     <string name="agent_transfer">转账</string>
+    <string name="agent_transfer_success">转账成功</string>
+    <string name="agent_dialog_withdraw">清账</string>
+    <string name="agent_dialog_withdraw_message">是否确认清零账户：%s？\n余额将退回您的账户！</string>
+    <string name="agent_withdraw">清账</string>
+    <string name="agent_withdraw_success">清账成功</string>
     <string name="agent_set_price">配置渠道价格</string>
     <string name="agent_update_commission">设置佣金</string>
+    <string name="transfer_label_amount">金额</string>
+    <string name="transfer_label_amount_prefix">¥</string>
+    <string name="transfer_label_remark">备注</string>
+
+    <array name="cat_transfer_amount" translatable="false">
+        <item>50</item>
+        <item>100</item>
+        <item>200</item>
+        <item>300</item>
+    </array>
+
+    <array name="cat_transfer_record_type">
+        <item>充值</item>
+        <item>退款</item>
+        <item>扣款</item>
+    </array>
+    <string name="transfer_recharge">充值</string>
+    <string name="transfer_recharge_type">CZ</string>
+    <string name="transfer_refund">退款</string>
+    <string name="transfer_refund_type">TK</string>
+    <string name="transfer_deduction">扣款</string>
+    <string name="transfer_deduction_type">KK</string>
 
     <string name="action_settings">设置</string>
     <string name="action_sort">排序</string>

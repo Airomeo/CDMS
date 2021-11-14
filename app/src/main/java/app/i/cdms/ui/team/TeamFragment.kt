@@ -1,29 +1,30 @@
 package app.i.cdms.ui.team
 
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.i.cdms.R
 import app.i.cdms.databinding.FragmentTeamBinding
-import app.i.cdms.ui.main.MainViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * A fragment representing a list of Items.
  */
 class TeamFragment : Fragment(R.layout.fragment_team) {
 
-    private val teamViewModel: TeamViewModel by viewModel()
-    private val mainViewModel: MainViewModel by sharedViewModel()
+    private val teamViewModel: TeamViewModel by sharedViewModel()
     private var _binding: FragmentTeamBinding? = null
     private val binding get() = _binding!!
     private var columnCount = 2
@@ -54,44 +55,47 @@ class TeamFragment : Fragment(R.layout.fragment_team) {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            teamViewModel.agentsUiModel.collectLatest {
-                mAdapter.submitList(it)
-            }
-        }
-
-        teamViewModel.records.observe(viewLifecycleOwner, {
-            it ?: return@observe
-            binding.loading.visibility = View.GONE
-            when (it.code) {
-                200 -> {
-                    it.data?.let { myTeam ->
-                        binding.tvAllUsers.text =
-                            getString(R.string.my_team_all_users, myTeam.total.toString())
-                        val activeUsers = myTeam.records.filter { agent ->
-                            agent.accountBalance > 0
-                        }.size
-                        binding.tvPayingUsers.text =
-                            getString(R.string.my_team_paying_users, activeUsers.toString())
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                teamViewModel.uiState.collectLatest {
+                    when (it) {
+                        is UiState.Success -> {
+                            binding.loading.visibility = View.GONE
+                            binding.tvAllUsers.text =
+                                getString(R.string.my_team_all_users, it.myTeam.total.toString())
+                            val activeUsers = it.myTeam.records.filter { agent ->
+                                agent.accountBalance > 0
+                            }.size
+                            binding.tvPayingUsers.text =
+                                getString(R.string.my_team_paying_users, activeUsers.toString())
+                            mAdapter.submitList(it.myTeam.records)
+                        }
+                        is UiState.Error -> {
+                            binding.loading.visibility = View.GONE
+                            Toast.makeText(
+                                requireContext(),
+                                it.exception.message ?: "网络异常/异常信息为空",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        is UiState.Loading -> {
+                            binding.loading.visibility = View.VISIBLE
+                        }
+                        is UiState.None -> {
+                        }
                     }
                 }
-                else -> {
-                    Toast.makeText(requireContext(), it.msg, Toast.LENGTH_SHORT).show()
-                }
             }
-        })
-        teamViewModel.getMyTeam(mainViewModel.token.value, 1, 1000)
-        binding.loading.visibility = View.VISIBLE
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.team, menu)
-
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
-
-        val pendingQuery = teamViewModel._filter.value?.keyName
+        val pendingQuery = teamViewModel.filter.value.keyName
         if (!pendingQuery.isNullOrEmpty()) {
             searchItem.expandActionView()
+            searchView.onActionViewExpanded() // Expand the SearchView
             searchView.setQuery(pendingQuery, false)
         }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -100,8 +104,7 @@ class TeamFragment : Fragment(R.layout.fragment_team) {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                teamViewModel._filter.value =
-                    teamViewModel._filter.value?.copy(keyName = newText.orEmpty())
+                teamViewModel.search(AgentFilter(keyName = newText.orEmpty()))
                 return true
             }
         })

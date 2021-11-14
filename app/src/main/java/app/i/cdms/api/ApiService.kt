@@ -44,21 +44,21 @@ interface ApiService {
     @GET
     suspend fun myInfo(
         @Url url: String = Constant.API_MY_INFO,
-        @Header("authorization") authorization: String
+        @Header("authorization") authorization: String?
     ): Response<ApiResult<MyInfo>>
 
     @POST
     @Headers("Content-Type: application/json")
     suspend fun addChild(
         @Url url: String = Constant.API_ADD_CHILD,
-        @Header("authorization") authorization: String,
+        @Header("authorization") authorization: String?,
         @Body payload: Map<String, String>
     ): Response<ApiResult<Any>>
 
     @GET
     suspend fun myTeam(
         @Url url: String = Constant.API_MY_TEAM,
-        @Header("authorization") authorization: String,
+        @Header("authorization") authorization: String?,
         @Query("pageNum") pageNum: Int,
         @Query("pageSize") pageSize: Int
     ): Response<ApiResult<MyTeam>>
@@ -66,7 +66,7 @@ interface ApiService {
     @GET
     suspend fun recordList(
         @Url url: String = Constant.API_RECORD_LIST,
-        @Header("authorization") authorization: String,
+        @Header("authorization") authorization: String?,
         @Query("pageNum") pageNum: Int,
         @Query("pageSize") pageSize: Int,
         @Query("recordType") recordType: Int
@@ -75,14 +75,14 @@ interface ApiService {
     @DELETE
     suspend fun removePrice(
         @Url url: String = Constant.API_REMOVE_PRICE,
-        @Header("authorization") authorization: String,
+        @Header("authorization") authorization: String?,
         @Query("channelId") channelId: Int
     ): Response<ApiResult<Any>>
 
     @PUT
     suspend fun editPrice(
         @Url url: String = Constant.API_EDIT_PRICE,
-        @Header("authorization") authorization: String,
+        @Header("authorization") authorization: String?,
         @Query("userId") userId: Int
     ): Response<ApiResult<Any>>
 
@@ -100,7 +100,7 @@ interface ApiService {
     @POST
     suspend fun addPrice(
         @Url url: String = Constant.API_ADD_PRICE,
-        @Header("authorization") authorization: String,
+        @Header("authorization") authorization: String?,
         @Query("userId") userId: Int
     ): Response<ApiResult<Any>>
 
@@ -117,24 +117,24 @@ interface ApiService {
     @GET
     suspend fun clearAccount(
         @Url url: String = Constant.API_CLEAR_ACCOUNT,
-        @Header("authorization") authorization: String,
+        @Header("authorization") authorization: String?,
         @Query("userId") userId: Int
     ): Response<ApiResult<Any>>
 
     @GET
     suspend fun transfer(
         @Url url: String = Constant.API_TRANSFER,
-        @Header("authorization") authorization: String,
+        @Header("authorization") authorization: String?,
         @Query("toUserId") toUserId: Int,
         @Query("userName") userName: String,
-        @Query("remark") remark: String,
+        @Query("remark") remark: String?,
         @Query("recordType") recordType: String,
-        @Query("changeAmount") changeAmount: Int
+        @Query("changeAmount") changeAmount: Float
     ): Response<ApiResult<Any>>
 
     @GET
     suspend fun myPrice(
         @Url url: String = Constant.API_MY_PRICE,
-        @Header("authorization") authorization: String
+        @Header("authorization") authorization: String?
     ): Response<ApiResult<ArrayList<MyPriceItem>>>
 }
