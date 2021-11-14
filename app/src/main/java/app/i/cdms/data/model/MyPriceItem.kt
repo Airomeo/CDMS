@@ -33,7 +33,7 @@ data class MyPriceItem(
     @Json(name = "limitFirstPrice")
     val limitFirstPrice: String,
     @Json(name = "limitWeight")
-    val limitWeight: Double,
+    val limitWeight: Float,
     @Json(name = "params")
     val params: Params,
     @Json(name = "priority")

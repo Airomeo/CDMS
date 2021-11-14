@@ -1,20 +1,19 @@
 package app.i.cdms.data.model
 
 
-import app.i.cdms.data.model.Params
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class MyInfo(
     @Json(name = "accountBalance")
-    val accountBalance: Double,
+    val accountBalance: Float,
     @Json(name = "createBy")
     val createBy: String,
     @Json(name = "createTime")
     val createTime: String,
     @Json(name = "earns")
-    val earns: Double,
+    val earns: Float,
     @Json(name = "id")
     val id: Int,
     @Json(name = "params")

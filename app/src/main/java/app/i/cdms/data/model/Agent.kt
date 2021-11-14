@@ -10,13 +10,13 @@ import kotlinx.parcelize.Parcelize
 @JsonClass(generateAdapter = true)
 data class Agent(
     @Json(name = "accountBalance")
-    val accountBalance: Double,
+    val accountBalance: Float,
     @Json(name = "channelCount")
     val channelCount: Int,
     @Json(name = "dopOrderCount")
     val dopOrderCount: Int?,
     @Json(name = "earns")
-    val earns: Double,
+    val earns: Float,
     @Json(name = "jdOrderCount")
     val jdOrderCount: Int,
     @Json(name = "stoOrderCount")
