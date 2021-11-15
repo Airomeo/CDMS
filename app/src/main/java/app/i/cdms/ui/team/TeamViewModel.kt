@@ -27,7 +27,7 @@ class TeamViewModel(private val teamRepository: TeamRepository) : ViewModel() {
     val uiState = _uiState.asStateFlow()
 
     init {
-        getMyTeam(13, 9)
+        getMyTeam(1, 9999)
     }
 
     private fun getMyTeam(pageNum: Int, pageSize: Int) {
