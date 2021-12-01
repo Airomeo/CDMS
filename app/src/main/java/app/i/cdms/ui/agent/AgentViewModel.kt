@@ -4,30 +4,30 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.i.cdms.data.model.Result
 import app.i.cdms.repository.agent.AgentRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 class AgentViewModel(private val agentRepository: AgentRepository) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<AgentUiState>(AgentUiState.None)
-    val uiState = _uiState.asStateFlow()
+    private val _uiState = MutableSharedFlow<AgentUiState>()
+    val uiState = _uiState.asSharedFlow()
 
     fun withdraw(userId: Int) {
         viewModelScope.launch {
-            _uiState.value = AgentUiState.Loading
+            _uiState.emit(AgentUiState.Loading)
             val result = agentRepository.withdraw(userId)
             if (result is Result.Success) {
                 when (result.data.code) {
                     200 -> {
-                        _uiState.value = AgentUiState.WithdrawSuccess
+                        _uiState.emit(AgentUiState.WithdrawSuccess)
                     }
                     else -> {
-                        _uiState.value = AgentUiState.Error(Exception(result.data.msg))
+                        _uiState.emit(AgentUiState.Error(Exception(result.data.msg)))
                     }
                 }
             } else if (result is Result.Error) {
-                _uiState.value = AgentUiState.Error(result.exception)
+                _uiState.emit(AgentUiState.Error(result.exception))
             }
         }
     }
@@ -40,21 +40,22 @@ class AgentViewModel(private val agentRepository: AgentRepository) : ViewModel()
         changeAmount: Float
     ) {
         viewModelScope.launch {
-            _uiState.value = AgentUiState.Loading
+            _uiState.emit(AgentUiState.Loading)
             val result = agentRepository.transfer(
                 toUserId, userName, remark, recordType, changeAmount
             )
             if (result is Result.Success) {
                 when (result.data.code) {
                     200 -> {
-                        _uiState.value = AgentUiState.TransferSuccess(changeAmount)
+                        _uiState.emit(AgentUiState.TransferSuccess(changeAmount))
+
                     }
                     else -> {
-                        _uiState.value = AgentUiState.Error(Exception(result.data.msg))
+                        _uiState.emit(AgentUiState.Error(Exception(result.data.msg)))
                     }
                 }
             } else if (result is Result.Error) {
-                _uiState.value = AgentUiState.Error(result.exception)
+                _uiState.emit(AgentUiState.Error(result.exception))
             }
         }
     }
