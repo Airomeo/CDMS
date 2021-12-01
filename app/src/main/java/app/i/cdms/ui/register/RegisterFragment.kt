@@ -7,11 +7,16 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import app.i.cdms.R
 import app.i.cdms.databinding.FragmentRegisterBinding
 import app.i.cdms.ui.main.MainViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -44,29 +49,32 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 }
             })
 
-        registerViewModel.registerResult.observe(viewLifecycleOwner,
-            Observer { registerResult ->
-                registerResult ?: return@Observer
-                binding.loading.visibility = View.GONE
-                // {"code":500,"msg":"新增用户'小白'失败，登录账号已存在","data":null}
-                // {"code":500,"msg":"新增用户'徐良'失败，手机号码已存在","data":null}
-                // {"code":200,"msg":"操作成功","data":null}
-                when (registerResult.code) {
-                    200 -> {
-                        Toast.makeText(requireContext(), registerResult.msg, Toast.LENGTH_SHORT)
-                            .show()
-                        findNavController().popBackStack()
-                    }
-                    500 -> {
-                        Toast.makeText(requireContext(), registerResult.msg, Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                    else -> {
-                        Toast.makeText(requireContext(), registerResult.msg, Toast.LENGTH_SHORT)
-                            .show()
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                registerViewModel.uiState.collectLatest {
+                    when (it) {
+                        is RegisterUiState.RegisterSuccess -> {
+                            binding.loading.visibility = View.GONE
+                            findNavController().popBackStack()
+                        }
+                        is RegisterUiState.Error -> {
+                            binding.loading.visibility = View.GONE
+                            Toast.makeText(
+                                requireContext(),
+                                it.exception.message ?: "网络异常/异常信息为空",
+                                Toast.LENGTH_SHORT
+                            ).show()
+//                            findNavController().navigate(R.id.navigation_login)
+                        }
+                        is RegisterUiState.Loading -> {
+                            binding.loading.visibility = View.VISIBLE
+                        }
+                        is RegisterUiState.None -> {
+                        }
                     }
                 }
-            })
+            }
+        }
 
         val afterTextChangedListener = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
@@ -91,7 +99,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         binding.phone.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 registerViewModel.register(
-                    mainViewModel.token.value,
                     binding.username.text.toString(),
                     binding.password.text.toString(),
                     binding.phone.text.toString()
@@ -102,7 +109,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         binding.button.setOnClickListener {
             binding.loading.visibility = View.VISIBLE
             registerViewModel.register(
-                mainViewModel.token.value,
                 binding.username.text.toString(),
                 binding.password.text.toString(),
                 binding.phone.text.toString()

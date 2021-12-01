@@ -3,7 +3,6 @@ package app.i.cdms.data.source.remote.agent
 import app.i.cdms.api.ApiService
 import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.Result
-import app.i.cdms.data.model.Token
 import java.io.IOException
 
 /**
@@ -12,17 +11,14 @@ import java.io.IOException
  */
 class AgentDataSource(private val service: ApiService) {
 
-    suspend fun withdraw(
-        token: Token?,
-        userId: Int
-    ): Result<ApiResult<Any>> {
+    suspend fun withdraw(userId: Int): Result<ApiResult<Any>> {
         return try {
-            val response = service.clearAccount(authorization = token?.token, userId = userId)
+            val response = service.clearAccount(userId = userId)
             if (response.isSuccessful && response.body() != null) {
                 Result.Success(response.body()!!)
             } else {
                 // TODO: 2021/10/19
-                Result.Error(Exception("Error withdraw"))
+                Result.Error(Exception(response.toString()))
             }
         } catch (e: Throwable) {
             Result.Error(IOException("Error withdraw" + e.localizedMessage, e))
@@ -30,7 +26,6 @@ class AgentDataSource(private val service: ApiService) {
     }
 
     suspend fun transfer(
-        token: Token?,
         toUserId: Int,
         userName: String,
         remark: String?,
@@ -39,7 +34,6 @@ class AgentDataSource(private val service: ApiService) {
     ): Result<ApiResult<Any>> {
         return try {
             val response = service.transfer(
-                authorization = token?.token,
                 toUserId = toUserId,
                 userName = userName,
                 remark = remark,
@@ -50,7 +44,7 @@ class AgentDataSource(private val service: ApiService) {
                 Result.Success(response.body()!!)
             } else {
                 // TODO: 2021/10/19
-                Result.Error(Exception("Error transfer"))
+                Result.Error(Exception(response.toString()))
             }
         } catch (e: Throwable) {
             Result.Error(IOException("Error transfer" + e.localizedMessage, e))

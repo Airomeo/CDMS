@@ -11,13 +11,10 @@ import app.i.cdms.data.source.remote.login.LoginDataSource
  * maintains an in-memory cache of login status and user credentials information.
  */
 
-class LoginRepository(val dataSource: LoginDataSource) {
+class LoginRepository(private val dataSource: LoginDataSource) {
 
     suspend fun getCaptcha(): Result<ApiResult<CaptchaData>> {
-        // handle login
-        val result = dataSource.getCaptcha()
-
-        return result
+        return dataSource.getCaptcha()
     }
 
     suspend fun login(
@@ -27,8 +24,6 @@ class LoginRepository(val dataSource: LoginDataSource) {
         uuid: String
     ): Result<ApiResult<Token>> {
         // handle login
-        val result = dataSource.login(username, password, captcha, uuid)
-
-        return result
+        return dataSource.login(username, password, captcha, uuid)
     }
 }

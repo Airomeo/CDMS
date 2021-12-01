@@ -15,12 +15,11 @@ class LoginDataSource(private val service: ApiService) {
     suspend fun getCaptcha(): Result<ApiResult<CaptchaData>> {
         return try {
             val response = service.getCaptcha()
-
             if (response.isSuccessful && response.body() != null) {
                 Result.Success(response.body()!!)
             } else {
                 // TODO: 2021/10/19
-                Result.Error(Exception("Error get CAPTCHA"))
+                Result.Error(Exception(response.toString()))
             }
         } catch (e: Throwable) {
             Result.Error(IOException("Error get CAPTCHA", e))
@@ -46,7 +45,7 @@ class LoginDataSource(private val service: ApiService) {
                 Result.Success(response.body()!!)
             } else {
                 // TODO: 2021/10/19
-                Result.Error(Exception("Error login1"))
+                Result.Error(Exception(response.toString()))
             }
         } catch (e: Throwable) {
             Result.Error(IOException("Error login", e))

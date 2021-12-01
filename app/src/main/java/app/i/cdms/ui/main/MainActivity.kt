@@ -1,14 +1,21 @@
 package app.i.cdms.ui.main
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import app.i.cdms.R
 import app.i.cdms.databinding.ActivityMainBinding
+import app.i.cdms.utils.Event
+import app.i.cdms.utils.EventBus
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -34,6 +41,27 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        // 这里call mainViewModel 执行init方法
+        mainViewModel
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                EventBus.events.collectLatest {
+                    when (it) {
+                        is Event.NeedLogin -> {
+                            navController.navigate(R.id.navigation_login)
+                        }
+                        is Event.Refresh -> {
+//                            Re-enter current fragment
+                            val id = navController.currentDestination?.id
+                            navController.popBackStack(id!!, true)
+                            navController.navigate(id)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

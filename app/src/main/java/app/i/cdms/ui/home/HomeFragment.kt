@@ -1,80 +1,77 @@
 package app.i.cdms.ui.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import app.i.cdms.R
 import app.i.cdms.data.model.MyInfo
+import app.i.cdms.data.model.Token
 import app.i.cdms.databinding.FragmentHomeBinding
 import app.i.cdms.ui.main.MainViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private val homeViewModel: HomeViewModel by viewModel()
     private val mainViewModel: MainViewModel by sharedViewModel()
     private var _binding: FragmentHomeBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-        val textView: TextView = binding.textHome
-
-        homeViewModel.text.observe(viewLifecycleOwner, {
-            textView.text = it
-        })
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentHomeBinding.bind(view)
 
         binding.ivAvatar.setOnClickListener {
             findNavController().navigate(R.id.navigation_login)
         }
-        return root
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        mainViewModel.myInfo.observe(viewLifecycleOwner, { it ->
-            it ?: return@observe
-            when (it.code) {
-                200 -> {
-                    it.data?.let {
-                        updateUiWithUser(it)
-                        mainViewModel.updateMyInfo(it)
-                        binding.textHome.text = it.toString()
+        binding.button3.setOnClickListener {
+            mainViewModel.updateToken(Token(System.currentTimeMillis().toString()))
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                homeViewModel.uiState.collectLatest {
+                    when (it) {
+                        is HomeUiState.GetMyInfoSuccessful -> {
+                            binding.loading.visibility = View.GONE
+                            updateUiWithUser(it.myInfo)
+                            binding.textHome.text = it.toString()
+                        }
+                        is HomeUiState.GetMyInfoFailed -> {
+                            binding.loading.visibility = View.GONE
+                            Toast.makeText(
+                                requireContext(),
+                                it.apiResult.toString(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        is HomeUiState.Error -> {
+                            binding.loading.visibility = View.GONE
+                            Toast.makeText(
+                                requireContext(),
+                                "网络异常。" + it.exception.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        is HomeUiState.Loading -> {
+                            binding.loading.visibility = View.VISIBLE
+                        }
+                        is HomeUiState.None -> {
+                        }
                     }
                 }
-                401 -> {
-//                    {"code":401,"msg":"请求访问：/wl/home/myInfo，认证失败，无法访问系统资源","data":null}
-                    findNavController().navigate(R.id.navigation_login)
-                    Toast.makeText(requireContext(), it.msg, Toast.LENGTH_SHORT).show()
-                }
-                else -> {
-                    findNavController().navigate(R.id.navigation_login)
-                    Toast.makeText(requireContext(), it.msg, Toast.LENGTH_SHORT).show()
-                }
             }
-        })
-        mainViewModel.token.observe(viewLifecycleOwner, {
-            it?.let {
-                mainViewModel.getMyInfo()
-            }
-        })
-        binding.button.setOnClickListener {
-            findNavController().navigate(R.id.navigation_register)
         }
     }
 

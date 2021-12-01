@@ -27,6 +27,10 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
             textView.text = it
         })
 
+        binding.button.setOnClickListener {
+            findNavController().navigate(R.id.navigation_register)
+        }
+
         binding.button2.setOnClickListener {
             findNavController().navigate(R.id.navigation_team)
         }

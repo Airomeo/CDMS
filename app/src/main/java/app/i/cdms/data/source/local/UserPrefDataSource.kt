@@ -1,8 +1,13 @@
-package app.i.cdms.repository
+package app.i.cdms.data.source.local
 
+import android.content.Context
 import android.util.Log
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.*
+import androidx.datastore.preferences.SharedPreferencesMigration
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import app.i.cdms.Constant
 import app.i.cdms.data.model.MyInfo
 import app.i.cdms.data.model.MyInfoJsonAdapter
@@ -18,7 +23,15 @@ import java.io.IOException
  * @author ZZY
  * 2021/10/21.
  */
-class UserPrefRepository(private val dataStore: DataStore<Preferences>) {
+class UserPrefDataSource(private val context: Context) {
+    private val Context.dataStore by preferencesDataStore(
+        name = Constant.USER_PREFERENCES_NAME,
+        produceMigrations = { context ->
+            // Since we're migrating from SharedPreferences, add a migration based on the
+            // SharedPreferences name
+            listOf(SharedPreferencesMigration(context, Constant.USER_PREFERENCES_NAME))
+        }
+    )
 
     private object PreferencesKeys {
         // TODO 加密存储
@@ -30,25 +43,23 @@ class UserPrefRepository(private val dataStore: DataStore<Preferences>) {
         val PREF_CONFERENCE_TIME_ZONE = booleanPreferencesKey(Constant.PREF_CONFERENCE_TIME_ZONE)
     }
 
-    val tokenFlow: Flow<Token?> = dataStore.data
+    val tokenFlow: Flow<Token> = context.dataStore.data
         .catch { exception ->
             // dataStore.data throws an IOException when an error is encountered when reading data
             if (exception is IOException) {
-                Log.e("TAG", "UserPrefRepository: \"Error reading PREF_TOKEN.\"", exception)
+                Log.e("TAG", "UserPrefDataSource: \"Error reading PREF_TOKEN.\"", exception)
                 emit(emptyPreferences())
             } else {
                 throw exception
             }
         }.map { preferences ->
-            preferences[PreferencesKeys.PREF_TOKEN]?.let {
-                Token(it)
-            }
+            Token(preferences[PreferencesKeys.PREF_TOKEN] ?: "")
         }
 
-    val myInfoFlow: Flow<MyInfo?> = dataStore.data.catch { exception ->
+    val myInfoFlow: Flow<MyInfo?> = context.dataStore.data.catch { exception ->
         // dataStore.data throws an IOException when an error is encountered when reading data
         if (exception is IOException) {
-            Log.e("TAG", "UserPrefRepository: \"Error reading PREF_MY_INFO.\"", exception)
+            Log.e("TAG", "UserPrefDataSource: \"Error reading PREF_MY_INFO.\"", exception)
             emit(emptyPreferences())
         } else {
             throw exception
@@ -60,13 +71,13 @@ class UserPrefRepository(private val dataStore: DataStore<Preferences>) {
     }
 
     suspend fun updateToken(token: Token) {
-        dataStore.edit { preferences ->
+        context.dataStore.edit { preferences ->
             preferences[PreferencesKeys.PREF_TOKEN] = token.token
         }
     }
 
     suspend fun updateMyInfo(myInfo: MyInfo) {
-        dataStore.edit { preferences ->
+        context.dataStore.edit { preferences ->
             preferences[PreferencesKeys.PREF_MY_INFO] =
                 MyInfoJsonAdapter(Moshi.Builder().build()).toJson(myInfo)
         }

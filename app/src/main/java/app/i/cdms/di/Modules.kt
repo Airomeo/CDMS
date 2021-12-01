@@ -1,15 +1,16 @@
 package app.i.cdms.di
 
 import app.i.cdms.api.ApiClient
-import app.i.cdms.data.source.local.AppDataStore
 import app.i.cdms.data.source.local.AppDatabase
+import app.i.cdms.data.source.local.UserPrefDataSource
 import app.i.cdms.data.source.remote.agent.AgentDataSource
+import app.i.cdms.data.source.remote.home.HomeDataSource
 import app.i.cdms.data.source.remote.login.LoginDataSource
 import app.i.cdms.data.source.remote.main.MainDataSource
 import app.i.cdms.data.source.remote.register.RegisterDataSource
 import app.i.cdms.data.source.remote.team.TeamDataSource
-import app.i.cdms.repository.UserPrefRepository
 import app.i.cdms.repository.agent.AgentRepository
+import app.i.cdms.repository.home.HomeRepository
 import app.i.cdms.repository.login.LoginRepository
 import app.i.cdms.repository.main.MainRepository
 import app.i.cdms.repository.register.RegisterRepository
@@ -34,11 +35,10 @@ import org.koin.dsl.single
  * 2021/10/18.
  */
 
-val applicationScope = CoroutineScope(SupervisorJob())
+private val applicationScope = CoroutineScope(SupervisorJob())
 
-@KoinReflectAPI
 val apiModule = module {
-    single { ApiClient.create(androidContext()) }
+    single { ApiClient.create(androidContext(), get()) }
 }
 
 val dbModule = module {
@@ -46,8 +46,14 @@ val dbModule = module {
 }
 
 @KoinReflectAPI
+val preferenceModule = module {
+    single<UserPrefDataSource>()
+}
+
+@KoinReflectAPI
 val dataSourceModule = module {
     single<MainDataSource>()
+    single<HomeDataSource>()
     single<LoginDataSource>()
     single<RegisterDataSource>()
     single<TeamDataSource>()
@@ -57,15 +63,11 @@ val dataSourceModule = module {
 @KoinReflectAPI
 val repositoryModule = module {
     single<MainRepository>()
+    single<HomeRepository>()
     single<LoginRepository>()
     single<RegisterRepository>()
     single<TeamRepository>()
     single<AgentRepository>()
-    single<UserPrefRepository>()
-}
-
-val preferenceModule = module {
-    single { AppDataStore(androidContext()).dataStore }
 }
 
 @KoinReflectAPI

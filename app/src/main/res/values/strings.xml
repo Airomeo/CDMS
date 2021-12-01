@@ -25,6 +25,7 @@
     <string name="my_info_id">ID：%s</string>
     <string name="my_info_balance">余额：%s</string>
     <string name="my_info_earns">佣金：%s</string>
+    <string name="my_team">全部用户</string>
     <string name="my_team_all_users">全部用户：%s位</string>
     <string name="my_team_paying_users">充值用户：%s位</string>
     <string name="my_team_agent_balance">余额：%s</string>

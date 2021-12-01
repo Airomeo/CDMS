@@ -6,11 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.i.cdms.R
-import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.RegisterFormState
 import app.i.cdms.data.model.Result
-import app.i.cdms.data.model.Token
 import app.i.cdms.repository.register.RegisterRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(
@@ -20,24 +20,27 @@ class RegisterViewModel(
     private val _registerForm = MutableLiveData<RegisterFormState>()
     val registerFormState: LiveData<RegisterFormState> = _registerForm
 
-    private val _registerResult = MutableLiveData<ApiResult<Any>>()
-    val registerResult: LiveData<ApiResult<Any>> = _registerResult
+    private val _uiState = MutableStateFlow<RegisterUiState>(RegisterUiState.None)
+    val uiState = _uiState.asStateFlow()
 
-    fun register(token: Token?, username: String, password: String, phone: String) {
+    fun register(username: String, password: String, phone: String) {
         viewModelScope.launch {
-            if (token != null) {
-                val result = registerRepository.register(token, username, password, phone)
-                if (result is Result.Success) {
-                    _registerResult.value = result.data
-                } else {
-                    // TODO: 2021/10/20
-                    _registerResult.value =
-                        ApiResult(code = 999, data = null, msg = "R.string.Result.Error")
+            _uiState.value = RegisterUiState.Loading
+            val result = registerRepository.register(username, password, phone)
+            if (result is Result.Success) {
+                when (result.data.code) {
+                    200 -> {
+                        result.data.data?.let {
+                            _uiState.value = RegisterUiState.RegisterSuccess
+                        }
+                    }
+                    else -> {
+                        _uiState.value = RegisterUiState.Error(Exception(result.data.msg))
+//                        Token is null
+                    }
                 }
-            } else {
-                _registerResult.value =
-                    ApiResult(code = 999, data = null, msg = "Token is null")
-                return@launch
+            } else if (result is Result.Error) {
+                _uiState.value = RegisterUiState.Error(result.exception)
             }
         }
     }
@@ -68,4 +71,11 @@ class RegisterViewModel(
         return password.length > 5
     }
     // TODO: Implement the ViewModel
+}
+
+sealed class RegisterUiState {
+    object Loading : RegisterUiState()
+    object RegisterSuccess : RegisterUiState()
+    data class Error(val exception: Throwable) : RegisterUiState()
+    object None : RegisterUiState()
 }

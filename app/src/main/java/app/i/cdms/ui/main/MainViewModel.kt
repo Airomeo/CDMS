@@ -1,50 +1,46 @@
 package app.i.cdms.ui.main
 
-import androidx.lifecycle.*
-import app.i.cdms.data.model.ApiResult
-import app.i.cdms.data.model.MyInfo
-import app.i.cdms.data.model.Result
-import app.i.cdms.repository.UserPrefRepository
+import android.util.Log
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import app.i.cdms.data.model.Token
 import app.i.cdms.repository.main.MainRepository
+import app.i.cdms.utils.Event
+import app.i.cdms.utils.EventBus
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-    private val mainRepository: MainRepository,
-    private val userPrefRepository: UserPrefRepository
+    private val mainRepository: MainRepository
 ) : ViewModel() {
 
-    val token = userPrefRepository.tokenFlow.asLiveData()
-    private val _myInfo = MutableLiveData<ApiResult<MyInfo>>()
-    val myInfo: LiveData<ApiResult<MyInfo>> = _myInfo
+    val token = mainRepository.token.shareIn(viewModelScope, SharingStarted.WhileSubscribed())
 
-    fun getMyInfo() {
+    init {
         viewModelScope.launch {
-            val tokenString = token.value
-            if (tokenString == null) {
-                return@launch
-            } else {
-                // can be launched in a separate asynchronous job
-                val result = mainRepository.getMyInfo(tokenString)
-                if (result is Result.Success) {
-                    _myInfo.value = result.data
+            token.collectLatest {
+                if (it.token.isBlank()) {
+//                    _uiState.emit(MainUiState.NeedLogin)
+                    EventBus.produceEvent(Event.NeedLogin)
+                    Log.d("TAG", "MainViewModel init: token.isBlank()")
                 } else {
-                    // TODO: 2021/10/20
-                    _myInfo.value =
-                        ApiResult(code = 999, data = null, msg = "R.string.getMyInfoFailed")
+                    EventBus.produceEvent(Event.Refresh)
+                    Log.d("TAG", "MainViewModel init: Event.Refresh")
                 }
             }
         }
     }
 
-    fun updateMyInfo(myInfo: MyInfo) {
+    fun verifyToken() {
         viewModelScope.launch {
-            userPrefRepository.updateMyInfo(myInfo)
         }
     }
 
-    fun verifyToken() {
+    fun updateToken(token: Token) {
         viewModelScope.launch {
-            token.value?.token
+            mainRepository.updateToken(token)
         }
     }
 }

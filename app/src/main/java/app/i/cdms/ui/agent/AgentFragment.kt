@@ -15,7 +15,6 @@ import app.i.cdms.databinding.FragmentAgentBinding
 import app.i.cdms.ui.team.TeamViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -33,13 +32,11 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentAgentBinding.bind(view)
 
-//        agent = requireArguments().get("agent") as Agent
-        val indexOfAgent = requireArguments().get("indexOfAgent") as Int
-
+        agent = requireArguments().get("agent") as Agent
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                teamViewModel.myTeam.collect {
-                    agent = it.records[indexOfAgent]
+                teamViewModel.myTeam.collectLatest { myTeam ->
+                    agent = myTeam.records.first { it.userId == agent.userId }
                     with(binding) {
                         tvUsername.text = agent.userName
                         tvId.text = getString(R.string.my_info_id, agent.userId.toString())

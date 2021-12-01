@@ -10,57 +10,68 @@ import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.CaptchaData
 import app.i.cdms.data.model.Result
 import app.i.cdms.data.model.Token
-import app.i.cdms.repository.UserPrefRepository
 import app.i.cdms.repository.login.LoginRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class LoginViewModel(
-    private val loginRepository: LoginRepository,
-    private val userPrefRepository: UserPrefRepository
+    private val loginRepository: LoginRepository
 ) : ViewModel() {
 
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm
 
-    private val _loginResult = MutableLiveData<ApiResult<Token>>()
-    val loginResult: LiveData<ApiResult<Token>> = _loginResult
+    private val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.None)
+    val uiState = _uiState.asStateFlow()
+    private var captchaData: CaptchaData? = null
 
-    private val _captchaResult = MutableLiveData<ApiResult<CaptchaData>>()
-    val captchaResult: LiveData<ApiResult<CaptchaData>> = _captchaResult
+    init {
+        getCaptcha()
+    }
 
     fun getCaptcha() {
         viewModelScope.launch {
             // can be launched in a separate asynchronous job
+            _uiState.value = LoginUiState.Loading
             val result = loginRepository.getCaptcha()
-
             if (result is Result.Success) {
-                _captchaResult.value = result.data
-
-//                if (result.data != null) {
-//                    _captchaResult.value = result.data!!
-//                } else {
-//                    // TODO: 2021/10/19
-//                    _captchaResult.value =
-//                        ApiResult(code = 4000, data = null, msg = "result.data is null")
-//                }
-            } else {
-                // TODO: 2021/10/20  
-                _captchaResult.value = ApiResult(code = 4000, data = null, msg = "result is Error")
+                when (result.data.code) {
+                    200 -> {
+                        result.data.data?.let {
+                            captchaData = it
+                            _uiState.value = LoginUiState.GetCaptchaSuccessful(it)
+                        }
+                    }
+                    else -> {
+                        _uiState.value = LoginUiState.GetCaptchaFailed(result.data)
+                    }
+                }
+            } else if (result is Result.Error) {
+                _uiState.value = LoginUiState.Error(result.exception)
             }
         }
     }
 
-    fun login(username: String, password: String, captcha: Int, uuid: String) {
+    fun login(username: String, password: String, captcha: Int) {
         viewModelScope.launch {
             // can be launched in a separate asynchronous job
+            val uuid = captchaData?.uuid ?: return@launch
+            _uiState.value = LoginUiState.Loading
             val result = loginRepository.login(username, password, captcha, uuid)
             if (result is Result.Success) {
-                _loginResult.value = result.data
-            } else {
-                // TODO: 2021/10/20  
-                _loginResult.value =
-                    ApiResult(code = 999, data = null, msg = "R.string.login_failed")
+                when (result.data.code) {
+                    200 -> {
+                        result.data.data?.let {
+                            _uiState.value = LoginUiState.LoginSuccessful(it)
+                        }
+                    }
+                    else -> {
+                        _uiState.value = LoginUiState.LoginFailed(result.data)
+                    }
+                }
+            } else if (result is Result.Error) {
+                _uiState.value = LoginUiState.Error(result.exception)
             }
         }
     }
@@ -90,12 +101,14 @@ class LoginViewModel(
     private fun isPasswordValid(password: String): Boolean {
         return password.length > 5
     }
+}
 
-    fun updateToken(token: Token) {
-        // TODO: 2021/10/24
-        // 如果用viewModelScope.launch{}，主页mainViewModel.token.observe仍是旧的token。原因不清楚。
-        runBlocking {
-            userPrefRepository.updateToken(token)
-        }
-    }
+sealed class LoginUiState {
+    object Loading : LoginUiState()
+    data class GetCaptchaSuccessful(val captchaData: CaptchaData) : LoginUiState()
+    data class GetCaptchaFailed(val apiResult: ApiResult<Any>) : LoginUiState()
+    data class LoginSuccessful(val token: Token) : LoginUiState()
+    data class LoginFailed(val apiResult: ApiResult<Any>) : LoginUiState()
+    data class Error(val exception: Throwable) : LoginUiState()
+    object None : LoginUiState()
 }
