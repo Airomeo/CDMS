@@ -45,7 +45,7 @@ object Constant {
     val API_MY_INFO = "$API/prod-api/wl/home/myInfo"
     val API_ADD_CHILD = "$API/prod-api/wl/home/addChild"
     val API_MY_TEAM = "$API/prod-api/wl/home/myTeam"
-    val API_CLEAR_ACCOUNT = "$API/prod-api/wl/userAccount/clearAccount"
+    val API_CLEAR_ACCOUNT = "$API/prod-api/wl/home/clearAccount"
     val API_RECORD_LIST = "$API/prod-api/wl/home/recordList"
     val API_ADD_PRICE = "$API/prod-api/wl/home/addPrice"
     val API_EDIT_PRICE = "$API/prod-api/wl/home/editPrice"
