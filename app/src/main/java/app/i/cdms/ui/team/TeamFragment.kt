@@ -58,7 +58,7 @@ class TeamFragment : Fragment(R.layout.fragment_team) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 teamViewModel.uiState.collectLatest {
                     when (it) {
-                        is UiState.Success -> {
+                        is TeamUiState.LoadMyTeam -> {
                             binding.loading.visibility = View.GONE
                             binding.tvAllUsers.text =
                                 getString(R.string.my_team_all_users, it.myTeam.total.toString())
@@ -69,7 +69,11 @@ class TeamFragment : Fragment(R.layout.fragment_team) {
                                 getString(R.string.my_team_paying_users, activeUsers.toString())
                             mAdapter.submitList(it.myTeam.records)
                         }
-                        is UiState.Error -> {
+                        is TeamUiState.LoadSearchResult -> {
+                            binding.loading.visibility = View.GONE
+                            mAdapter.submitList(it.myTeam.records)
+                        }
+                        is TeamUiState.Error -> {
                             binding.loading.visibility = View.GONE
                             Toast.makeText(
                                 requireContext(),
@@ -77,10 +81,10 @@ class TeamFragment : Fragment(R.layout.fragment_team) {
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
-                        is UiState.Loading -> {
+                        is TeamUiState.Loading -> {
                             binding.loading.visibility = View.VISIBLE
                         }
-                        is UiState.None -> {
+                        is TeamUiState.None -> {
                         }
                     }
                 }

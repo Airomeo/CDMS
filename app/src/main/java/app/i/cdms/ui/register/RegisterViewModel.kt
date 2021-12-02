@@ -9,8 +9,8 @@ import app.i.cdms.R
 import app.i.cdms.data.model.RegisterFormState
 import app.i.cdms.data.model.Result
 import app.i.cdms.repository.register.RegisterRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(
@@ -20,27 +20,27 @@ class RegisterViewModel(
     private val _registerForm = MutableLiveData<RegisterFormState>()
     val registerFormState: LiveData<RegisterFormState> = _registerForm
 
-    private val _uiState = MutableStateFlow<RegisterUiState>(RegisterUiState.None)
-    val uiState = _uiState.asStateFlow()
+    private val _uiState = MutableSharedFlow<RegisterUiState>()
+    val uiState = _uiState.asSharedFlow()
 
     fun register(username: String, password: String, phone: String) {
         viewModelScope.launch {
-            _uiState.value = RegisterUiState.Loading
+            _uiState.emit(RegisterUiState.Loading)
             val result = registerRepository.register(username, password, phone)
             if (result is Result.Success) {
                 when (result.data.code) {
                     200 -> {
                         result.data.data?.let {
-                            _uiState.value = RegisterUiState.RegisterSuccess
+                            _uiState.emit(RegisterUiState.RegisterSuccess)
                         }
                     }
                     else -> {
-                        _uiState.value = RegisterUiState.Error(Exception(result.data.msg))
+                        _uiState.emit(RegisterUiState.Error(Exception(result.data.msg)))
 //                        Token is null
                     }
                 }
             } else if (result is Result.Error) {
-                _uiState.value = RegisterUiState.Error(result.exception)
+                _uiState.emit(RegisterUiState.Error(result.exception))
             }
         }
     }

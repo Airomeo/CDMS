@@ -6,7 +6,10 @@ import app.i.cdms.data.model.Agent
 import app.i.cdms.data.model.MyTeam
 import app.i.cdms.data.model.Result
 import app.i.cdms.repository.team.TeamRepository
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
@@ -20,11 +23,11 @@ class TeamViewModel(private val teamRepository: TeamRepository) : ViewModel() {
         MutableStateFlow(MyTeam(1, 1, 1, true, listOf(), 1, listOf(), true, 1, 1))
     val myTeam = _myTeam.asStateFlow()
 
-    // Backing property to avoid state updates from other classes
-    private val _uiState = MutableStateFlow<UiState>(UiState.None)
+//    private lateinit var _mt: MutableStateFlow<MyTeam>
+//    val mt = _mt.asStateFlow()
 
-    // The UI collects from this StateFlow to get its state updates
-    val uiState = _uiState.asStateFlow()
+    private val _uiState = MutableSharedFlow<TeamUiState>()
+    val uiState = _uiState.asSharedFlow()
 
     init {
         getMyTeam(1, 9999)
@@ -32,23 +35,30 @@ class TeamViewModel(private val teamRepository: TeamRepository) : ViewModel() {
 
     private fun getMyTeam(pageNum: Int, pageSize: Int) {
         viewModelScope.launch {
-            _uiState.value = UiState.Loading
+            delay(1)
+            _uiState.emit(TeamUiState.Loading)
             val result = teamRepository.getMyTeam(pageNum, pageSize)
             if (result is Result.Success) {
                 when (result.data.code) {
                     200 -> {
                         result.data.data?.let {
                             _myTeam.emit(it)
-                            _uiState.value =
-                                UiState.Success(filterByKey(myTeam.value, filter.value))
+                            _uiState.emit(
+                                TeamUiState.LoadMyTeam(
+                                    filterByKey(
+                                        myTeam.value,
+                                        filter.value
+                                    )
+                                )
+                            )
                         }
                     }
                     else -> {
-                        _uiState.value = UiState.Error(Exception(result.data.msg))
+                        _uiState.emit(TeamUiState.Error(Exception(result.data.msg)))
                     }
                 }
             } else if (result is Result.Error) {
-                _uiState.value = UiState.Error(result.exception)
+                _uiState.emit(TeamUiState.Error(result.exception))
             }
         }
     }
@@ -63,9 +73,9 @@ class TeamViewModel(private val teamRepository: TeamRepository) : ViewModel() {
     }
 
     fun search(agentFilter: AgentFilter) {
-        _filter.value = agentFilter
-        if (uiState.value is UiState.Success) {
-            _uiState.value = UiState.Success(filterByKey(myTeam.value, filter.value))
+        viewModelScope.launch {
+            _filter.value = agentFilter
+            _uiState.emit(TeamUiState.LoadSearchResult(filterByKey(myTeam.value, filter.value)))
         }
     }
 
@@ -85,12 +95,13 @@ data class AgentFilter(
 )
 
 // Represents different states for the Team screen
-sealed class UiState {
+sealed class TeamUiState {
     //    object Success : UiState()
-    data class Error(val exception: Throwable) : UiState()
-    data class Success(val myTeam: MyTeam) : UiState()
+    data class Error(val exception: Throwable) : TeamUiState()
+    data class LoadMyTeam(val myTeam: MyTeam) : TeamUiState()
+    data class LoadSearchResult(val myTeam: MyTeam) : TeamUiState()
 
-    //    data class Loading(val msg: String) : UiState()
-    object Loading : UiState()
-    object None : UiState()
+    //    data class Loading(val msg: String) : TeamUiState()
+    object Loading : TeamUiState()
+    object None : TeamUiState()
 }

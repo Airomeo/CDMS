@@ -11,8 +11,8 @@ import app.i.cdms.data.model.CaptchaData
 import app.i.cdms.data.model.Result
 import app.i.cdms.data.model.Token
 import app.i.cdms.repository.login.LoginRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
@@ -22,8 +22,8 @@ class LoginViewModel(
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm
 
-    private val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.None)
-    val uiState = _uiState.asStateFlow()
+    private val _uiState = MutableSharedFlow<LoginUiState>()
+    val uiState = _uiState.asSharedFlow()
     private var captchaData: CaptchaData? = null
 
     init {
@@ -33,22 +33,22 @@ class LoginViewModel(
     fun getCaptcha() {
         viewModelScope.launch {
             // can be launched in a separate asynchronous job
-            _uiState.value = LoginUiState.Loading
+            _uiState.emit(LoginUiState.Loading)
             val result = loginRepository.getCaptcha()
             if (result is Result.Success) {
                 when (result.data.code) {
                     200 -> {
                         result.data.data?.let {
                             captchaData = it
-                            _uiState.value = LoginUiState.GetCaptchaSuccessful(it)
+                            _uiState.emit(LoginUiState.GetCaptchaSuccessful(it))
                         }
                     }
                     else -> {
-                        _uiState.value = LoginUiState.GetCaptchaFailed(result.data)
+                        _uiState.emit(LoginUiState.GetCaptchaFailed(result.data))
                     }
                 }
             } else if (result is Result.Error) {
-                _uiState.value = LoginUiState.Error(result.exception)
+                _uiState.emit(LoginUiState.Error(result.exception))
             }
         }
     }
@@ -57,21 +57,21 @@ class LoginViewModel(
         viewModelScope.launch {
             // can be launched in a separate asynchronous job
             val uuid = captchaData?.uuid ?: return@launch
-            _uiState.value = LoginUiState.Loading
+            _uiState.emit(LoginUiState.Loading)
             val result = loginRepository.login(username, password, captcha, uuid)
             if (result is Result.Success) {
                 when (result.data.code) {
                     200 -> {
                         result.data.data?.let {
-                            _uiState.value = LoginUiState.LoginSuccessful(it)
+                            _uiState.emit(LoginUiState.LoginSuccessful(it))
                         }
                     }
                     else -> {
-                        _uiState.value = LoginUiState.LoginFailed(result.data)
+                        _uiState.emit(LoginUiState.LoginFailed(result.data))
                     }
                 }
             } else if (result is Result.Error) {
-                _uiState.value = LoginUiState.Error(result.exception)
+                _uiState.emit(LoginUiState.Error(result.exception))
             }
         }
     }
