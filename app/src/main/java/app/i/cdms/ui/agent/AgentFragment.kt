@@ -17,7 +17,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.navigation.koinNavGraphViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AgentFragment : Fragment(R.layout.fragment_agent) {
@@ -25,7 +25,7 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
     private var _binding: FragmentAgentBinding? = null
     private val binding get() = _binding!!
     private val agentViewModel: AgentViewModel by viewModel()
-    private val teamViewModel: TeamViewModel by sharedViewModel()
+    private val teamViewModel: TeamViewModel by koinNavGraphViewModel(R.id.navigation_team)
     private lateinit var agent: Agent
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

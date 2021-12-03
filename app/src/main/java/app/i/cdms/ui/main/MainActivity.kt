@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
+                R.id.homeFragment, R.id.dashboardFragment, R.id.notificationsFragment
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                 EventBus.events.collectLatest {
                     when (it) {
                         is Event.NeedLogin -> {
-                            navController.navigate(R.id.navigation_login)
+                            navController.navigate(R.id.loginFragment)
                         }
                         is Event.Refresh -> {
 //                            Re-enter current fragment

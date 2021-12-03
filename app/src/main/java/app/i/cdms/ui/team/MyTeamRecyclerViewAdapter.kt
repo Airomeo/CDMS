@@ -34,7 +34,7 @@ class MyTeamRecyclerViewAdapter :
         with(holder.binding) {
             root.setOnClickListener {
                 val bundle = bundleOf("agent" to agent, "indexOfAgent" to position)
-                it.findNavController().navigate(R.id.navigation_agent, bundle)
+                it.findNavController().navigate(R.id.action_teamFragment_to_agentFragment, bundle)
             }
             tvId.text = agent.userId.toString()
             tvUsername.text = agent.userName

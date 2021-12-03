@@ -3,6 +3,7 @@ package app.i.cdms.ui.team
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -10,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.onNavDestinationSelected
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,14 +20,14 @@ import app.i.cdms.R
 import app.i.cdms.databinding.FragmentTeamBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.navigation.koinNavGraphViewModel
 
 /**
  * A fragment representing a list of Items.
  */
 class TeamFragment : Fragment(R.layout.fragment_team) {
 
-    private val teamViewModel: TeamViewModel by sharedViewModel()
+    private val teamViewModel: TeamViewModel by koinNavGraphViewModel(R.id.navigation_team)
     private var _binding: FragmentTeamBinding? = null
     private val binding get() = _binding!!
     private var columnCount = 2
@@ -89,6 +92,18 @@ class TeamFragment : Fragment(R.layout.fragment_team) {
                     }
                 }
             }
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_teamFragment_to_registerFragment -> {
+                findNavController().navigate(R.id.action_teamFragment_to_registerFragment)
+                true
+            }
+            else -> item.onNavDestinationSelected(findNavController()) || super.onOptionsItemSelected(
+                item
+            )
         }
     }
 

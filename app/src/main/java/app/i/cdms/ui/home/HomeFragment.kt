@@ -32,7 +32,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         _binding = FragmentHomeBinding.bind(view)
 
         binding.ivAvatar.setOnClickListener {
-            findNavController().navigate(R.id.navigation_login)
+            findNavController().navigate(R.id.loginFragment)
         }
 
         binding.button3.setOnClickListener {

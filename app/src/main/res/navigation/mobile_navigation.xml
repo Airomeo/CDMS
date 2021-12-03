@@ -3,47 +3,60 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/homeFragment">
 
     <fragment
-        android:id="@+id/navigation_home"
+        android:id="@+id/homeFragment"
         android:name="app.i.cdms.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/dashboardFragment"
         android:name="app.i.cdms.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/notificationsFragment"
         android:name="app.i.cdms.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_notifications">
+        <action
+            android:id="@+id/action_notificationsFragment_to_graph_team"
+            app:destination="@id/navigation_team" />
+    </fragment>
 
     <fragment
-        android:id="@+id/navigation_login"
+        android:id="@+id/loginFragment"
         android:name="app.i.cdms.ui.login.LoginFragment"
         android:label="@string/title_login"
         tools:layout="@layout/fragment_login" />
 
-    <fragment
-        android:id="@+id/navigation_register"
-        android:name="app.i.cdms.ui.register.RegisterFragment"
-        android:label="@string/title_register"
-        tools:layout="@layout/fragment_register" />
-
-    <fragment
+    <navigation
         android:id="@+id/navigation_team"
-        android:name="app.i.cdms.ui.team.TeamFragment"
-        android:label="@string/title_team"
-        tools:layout="@layout/fragment_team" />
-
-    <fragment
-        android:id="@+id/navigation_agent"
-        android:name="app.i.cdms.ui.agent.AgentFragment"
-        android:label="@string/title_agent"
-        tools:layout="@layout/fragment_agent" />
+        app:startDestination="@id/teamFragment">
+        <fragment
+            android:id="@+id/teamFragment"
+            android:name="app.i.cdms.ui.team.TeamFragment"
+            android:label="@string/title_team"
+            tools:layout="@layout/fragment_team">
+            <action
+                android:id="@+id/action_teamFragment_to_agentFragment"
+                app:destination="@id/agentFragment" />
+            <action
+                android:id="@+id/action_teamFragment_to_registerFragment"
+                app:destination="@id/registerFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/agentFragment"
+            android:name="app.i.cdms.ui.agent.AgentFragment"
+            android:label="@string/title_agent"
+            tools:layout="@layout/fragment_agent" />
+        <fragment
+            android:id="@+id/registerFragment"
+            android:name="app.i.cdms.ui.register.RegisterFragment"
+            android:label="@string/title_register"
+            tools:layout="@layout/fragment_register" />
+    </navigation>
 </navigation>

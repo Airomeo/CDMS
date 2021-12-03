@@ -33,8 +33,12 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/nav_setting"
+        android:id="@+id/action_setting"
         android:title="@string/action_settings"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_teamFragment_to_registerFragment"
+        android:title="@string/action_register"
         app:showAsAction="never" />
 
 </menu>
