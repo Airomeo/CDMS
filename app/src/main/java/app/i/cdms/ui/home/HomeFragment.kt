@@ -40,13 +40,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                homeViewModel.uiState.collectLatest {
-                    when (it) {
-                        is HomeUiState.GetMyInfoSuccessful -> {
-                            updateUiWithUser(it.myInfo)
-                            binding.textHome.text = it.toString()
-                        }
-                    }
+                homeViewModel.myInfo.collectLatest {
+                    it ?: return@collectLatest
+                    updateUiWithUser(it)
+                    binding.textHome.text = it.toString()
                 }
             }
         }

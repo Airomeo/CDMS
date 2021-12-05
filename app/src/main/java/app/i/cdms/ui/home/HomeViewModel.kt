@@ -8,15 +8,16 @@ import app.i.cdms.repository.home.HomeRepository
 import app.i.cdms.utils.BaseEvent
 import app.i.cdms.utils.EventBus
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val homeRepository: HomeRepository
 ) : ViewModel() {
-    private val _uiState = MutableSharedFlow<HomeUiState>()
-    val uiState = _uiState.asSharedFlow()
+
+    private val _myInfo = MutableStateFlow<MyInfo?>(null)
+    val myInfo = _myInfo.asSharedFlow()
 
     init {
         getMyInfo()
@@ -33,7 +34,7 @@ class HomeViewModel(
                 when (result.data.code) {
                     200 -> {
                         result.data.data?.let {
-                            _uiState.emit(HomeUiState.GetMyInfoSuccessful(it))
+                            _myInfo.value = it
                             updateMyInfo(it)
                         }
                     }
@@ -52,8 +53,4 @@ class HomeViewModel(
             homeRepository.updateMyInfo(myInfo)
         }
     }
-}
-
-sealed class HomeUiState {
-    data class GetMyInfoSuccessful(val myInfo: MyInfo) : HomeUiState()
 }
