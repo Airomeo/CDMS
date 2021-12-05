@@ -16,7 +16,6 @@ import app.i.cdms.R
 import app.i.cdms.databinding.ActivityMainBinding
 import app.i.cdms.utils.BaseEvent
 import app.i.cdms.utils.EventBus
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -32,19 +31,25 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navView: BottomNavigationView = binding.navView
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         val navController = navHostFragment.navController
+        val topDestinations = setOf(
+            R.id.homeFragment, R.id.dashboardFragment, R.id.notificationsFragment
+        )
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id in topDestinations) {
+                binding.navView.visibility = View.VISIBLE
+            } else {
+                binding.navView.visibility = View.GONE
+            }
+        }
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.homeFragment, R.id.dashboardFragment, R.id.notificationsFragment
-            )
-        )
+        val appBarConfiguration = AppBarConfiguration(topDestinations)
         setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        binding.navView.setupWithNavController(navController)
 
         // 这里call mainViewModel 执行init方法
         mainViewModel
