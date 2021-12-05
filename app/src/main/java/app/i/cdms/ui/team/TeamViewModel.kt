@@ -6,6 +6,8 @@ import app.i.cdms.data.model.Agent
 import app.i.cdms.data.model.MyTeam
 import app.i.cdms.data.model.Result
 import app.i.cdms.repository.team.TeamRepository
+import app.i.cdms.utils.BaseEvent
+import app.i.cdms.utils.EventBus
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,8 +38,9 @@ class TeamViewModel(private val teamRepository: TeamRepository) : ViewModel() {
     private fun getMyTeam(pageNum: Int, pageSize: Int) {
         viewModelScope.launch {
             delay(1)
-            _uiState.emit(TeamUiState.Loading)
+            EventBus.produceEvent(BaseEvent.Loading)
             val result = teamRepository.getMyTeam(pageNum, pageSize)
+            EventBus.produceEvent(BaseEvent.None)
             if (result is Result.Success) {
                 when (result.data.code) {
                     200 -> {
@@ -54,11 +57,11 @@ class TeamViewModel(private val teamRepository: TeamRepository) : ViewModel() {
                         }
                     }
                     else -> {
-                        _uiState.emit(TeamUiState.Error(Exception(result.data.msg)))
+                        EventBus.produceEvent(BaseEvent.Failed(result.data))
                     }
                 }
             } else if (result is Result.Error) {
-                _uiState.emit(TeamUiState.Error(result.exception))
+                EventBus.produceEvent(BaseEvent.Error(result.exception))
             }
         }
     }
@@ -96,12 +99,6 @@ data class AgentFilter(
 
 // Represents different states for the Team screen
 sealed class TeamUiState {
-    //    object Success : UiState()
-    data class Error(val exception: Throwable) : TeamUiState()
     data class LoadMyTeam(val myTeam: MyTeam) : TeamUiState()
     data class LoadSearchResult(val myTeam: MyTeam) : TeamUiState()
-
-    //    data class Loading(val msg: String) : TeamUiState()
-    object Loading : TeamUiState()
-    object None : TeamUiState()
 }

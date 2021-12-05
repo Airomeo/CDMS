@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.i.cdms.data.model.Token
 import app.i.cdms.repository.main.MainRepository
-import app.i.cdms.utils.Event
+import app.i.cdms.utils.BaseEvent
 import app.i.cdms.utils.EventBus
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
@@ -22,12 +22,8 @@ class MainViewModel(
         viewModelScope.launch {
             token.collectLatest {
                 if (it.token.isBlank()) {
-//                    _uiState.emit(MainUiState.NeedLogin)
-                    EventBus.produceEvent(Event.NeedLogin)
+                    EventBus.produceEvent(BaseEvent.NeedLogin)
                     Log.d("TAG", "MainViewModel init: token.isBlank()")
-                } else {
-                    EventBus.produceEvent(Event.Refresh)
-                    Log.d("TAG", "MainViewModel init: Event.Refresh")
                 }
             }
         }
@@ -41,6 +37,8 @@ class MainViewModel(
     fun updateToken(token: Token) {
         viewModelScope.launch {
             mainRepository.updateToken(token)
+            EventBus.produceEvent(BaseEvent.Refresh)
+            Log.d("TAG", "MainViewModel init: Event.Refresh")
         }
     }
 }

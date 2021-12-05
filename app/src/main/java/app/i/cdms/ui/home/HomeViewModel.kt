@@ -2,10 +2,11 @@ package app.i.cdms.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.MyInfo
 import app.i.cdms.data.model.Result
 import app.i.cdms.repository.home.HomeRepository
+import app.i.cdms.utils.BaseEvent
+import app.i.cdms.utils.EventBus
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -25,8 +26,9 @@ class HomeViewModel(
         viewModelScope.launch {
             delay(1)
             // can be launched in a separate asynchronous job
-            _uiState.emit(HomeUiState.Loading)
+            EventBus.produceEvent(BaseEvent.Loading)
             val result = homeRepository.getMyInfo()
+            EventBus.produceEvent(BaseEvent.None)
             if (result is Result.Success) {
                 when (result.data.code) {
                     200 -> {
@@ -36,11 +38,11 @@ class HomeViewModel(
                         }
                     }
                     else -> {
-                        _uiState.emit(HomeUiState.GetMyInfoFailed(result.data))
+                        EventBus.produceEvent(BaseEvent.Failed(result.data))
                     }
                 }
             } else if (result is Result.Error) {
-                _uiState.emit(HomeUiState.Error(result.exception))
+                EventBus.produceEvent(BaseEvent.Error(result.exception))
             }
         }
     }
@@ -53,9 +55,5 @@ class HomeViewModel(
 }
 
 sealed class HomeUiState {
-    object Loading : HomeUiState()
     data class GetMyInfoSuccessful(val myInfo: MyInfo) : HomeUiState()
-    data class GetMyInfoFailed(val apiResult: ApiResult<Any>) : HomeUiState()
-    data class Error(val exception: Throwable) : HomeUiState()
-    object None : HomeUiState()
 }

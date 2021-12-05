@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.i.cdms.data.model.Result
 import app.i.cdms.repository.agent.AgentRepository
+import app.i.cdms.utils.BaseEvent
+import app.i.cdms.utils.EventBus
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -15,19 +17,20 @@ class AgentViewModel(private val agentRepository: AgentRepository) : ViewModel()
 
     fun withdraw(userId: Int) {
         viewModelScope.launch {
-            _uiState.emit(AgentUiState.Loading)
+            EventBus.produceEvent(BaseEvent.Loading)
             val result = agentRepository.withdraw(userId)
+            EventBus.produceEvent(BaseEvent.None)
             if (result is Result.Success) {
                 when (result.data.code) {
                     200 -> {
                         _uiState.emit(AgentUiState.WithdrawSuccess)
                     }
                     else -> {
-                        _uiState.emit(AgentUiState.Error(Exception(result.data.msg)))
+                        EventBus.produceEvent(BaseEvent.Failed(result.data))
                     }
                 }
             } else if (result is Result.Error) {
-                _uiState.emit(AgentUiState.Error(result.exception))
+                EventBus.produceEvent(BaseEvent.Error(result.exception))
             }
         }
     }
@@ -40,22 +43,22 @@ class AgentViewModel(private val agentRepository: AgentRepository) : ViewModel()
         changeAmount: Float
     ) {
         viewModelScope.launch {
-            _uiState.emit(AgentUiState.Loading)
+            EventBus.produceEvent(BaseEvent.Loading)
             val result = agentRepository.transfer(
                 toUserId, userName, remark, recordType, changeAmount
             )
+            EventBus.produceEvent(BaseEvent.None)
             if (result is Result.Success) {
                 when (result.data.code) {
                     200 -> {
                         _uiState.emit(AgentUiState.TransferSuccess(changeAmount))
-
                     }
                     else -> {
-                        _uiState.emit(AgentUiState.Error(Exception(result.data.msg)))
+                        EventBus.produceEvent(BaseEvent.Failed(result.data))
                     }
                 }
             } else if (result is Result.Error) {
-                _uiState.emit(AgentUiState.Error(result.exception))
+                EventBus.produceEvent(BaseEvent.Error(result.exception))
             }
         }
     }
@@ -63,9 +66,6 @@ class AgentViewModel(private val agentRepository: AgentRepository) : ViewModel()
 
 // Represents different states for the Agent screen
 sealed class AgentUiState {
-    data class Error(val exception: Throwable) : AgentUiState()
     data class TransferSuccess(val changeAmount: Float) : AgentUiState()
     object WithdrawSuccess : AgentUiState()
-    object Loading : AgentUiState()
-    object None : AgentUiState()
 }

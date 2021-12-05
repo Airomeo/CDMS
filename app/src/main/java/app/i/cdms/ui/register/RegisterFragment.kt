@@ -5,7 +5,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
@@ -54,22 +53,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 registerViewModel.uiState.collectLatest {
                     when (it) {
                         is RegisterUiState.RegisterSuccess -> {
-                            binding.loading.visibility = View.GONE
                             findNavController().popBackStack()
-                        }
-                        is RegisterUiState.Error -> {
-                            binding.loading.visibility = View.GONE
-                            Toast.makeText(
-                                requireContext(),
-                                it.exception.message ?: "网络异常/异常信息为空",
-                                Toast.LENGTH_SHORT
-                            ).show()
-//                            findNavController().navigate(R.id.navigation_login)
-                        }
-                        is RegisterUiState.Loading -> {
-                            binding.loading.visibility = View.VISIBLE
-                        }
-                        is RegisterUiState.None -> {
                         }
                     }
                 }
@@ -107,7 +91,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             false
         }
         binding.button.setOnClickListener {
-            binding.loading.visibility = View.VISIBLE
             registerViewModel.register(
                 binding.username.text.toString(),
                 binding.password.text.toString(),

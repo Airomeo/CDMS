@@ -45,7 +45,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 loginViewModel.uiState.collectLatest {
                     when (it) {
                         is LoginUiState.GetCaptchaSuccessful -> {
-                            binding.loading.visibility = View.GONE
                             val imageByteArray =
                                 Base64.decode(it.captchaData.imgBytes, Base64.DEFAULT)
                             val bitmap = BitmapFactory.decodeByteArray(
@@ -58,7 +57,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             }
                         }
                         is LoginUiState.GetCaptchaFailed -> {
-                            binding.loading.visibility = View.GONE
                             Toast.makeText(
                                 requireContext(),
                                 it.apiResult.toString(),
@@ -67,31 +65,16 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             captchaImageView.setImageResource(R.drawable.ic_baseline_refresh_24)
                         }
                         is LoginUiState.LoginSuccessful -> {
-                            binding.loading.visibility = View.GONE
                             mainViewModel.updateToken(it.token)
                             findNavController().popBackStack()
                         }
                         is LoginUiState.LoginFailed -> {
-                            binding.loading.visibility = View.GONE
                             Toast.makeText(
                                 requireContext(),
                                 it.apiResult.toString(),
                                 Toast.LENGTH_SHORT
                             ).show()
                             loginViewModel.getCaptcha()
-                        }
-                        is LoginUiState.Error -> {
-                            binding.loading.visibility = View.GONE
-                            Toast.makeText(
-                                requireContext(),
-                                "网络异常。" + it.exception.message,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        is LoginUiState.Loading -> {
-                            binding.loading.visibility = View.VISIBLE
-                        }
-                        is LoginUiState.None -> {
                         }
                     }
                 }

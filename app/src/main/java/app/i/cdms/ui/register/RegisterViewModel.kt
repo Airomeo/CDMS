@@ -9,6 +9,8 @@ import app.i.cdms.R
 import app.i.cdms.data.model.RegisterFormState
 import app.i.cdms.data.model.Result
 import app.i.cdms.repository.register.RegisterRepository
+import app.i.cdms.utils.BaseEvent
+import app.i.cdms.utils.EventBus
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -25,8 +27,9 @@ class RegisterViewModel(
 
     fun register(username: String, password: String, phone: String) {
         viewModelScope.launch {
-            _uiState.emit(RegisterUiState.Loading)
+            EventBus.produceEvent(BaseEvent.Loading)
             val result = registerRepository.register(username, password, phone)
+            EventBus.produceEvent(BaseEvent.None)
             if (result is Result.Success) {
                 when (result.data.code) {
                     200 -> {
@@ -35,12 +38,11 @@ class RegisterViewModel(
                         }
                     }
                     else -> {
-                        _uiState.emit(RegisterUiState.Error(Exception(result.data.msg)))
-//                        Token is null
+                        EventBus.produceEvent(BaseEvent.Failed(result.data))
                     }
                 }
             } else if (result is Result.Error) {
-                _uiState.emit(RegisterUiState.Error(result.exception))
+                EventBus.produceEvent(BaseEvent.Error(result.exception))
             }
         }
     }
@@ -74,8 +76,5 @@ class RegisterViewModel(
 }
 
 sealed class RegisterUiState {
-    object Loading : RegisterUiState()
     object RegisterSuccess : RegisterUiState()
-    data class Error(val exception: Throwable) : RegisterUiState()
-    object None : RegisterUiState()
 }

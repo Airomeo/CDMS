@@ -2,6 +2,7 @@ package app.i.cdms.utils
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.i.cdms.data.model.ApiResult
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -12,17 +13,21 @@ import kotlinx.coroutines.launch
  */
 object EventBus : ViewModel() {
 
-    private val _events = MutableSharedFlow<Event>() // private mutable shared flow
+    private val _events = MutableSharedFlow<BaseEvent>() // private mutable shared flow
     val events = _events.asSharedFlow() // publicly exposed as read-only shared flow
 
-    fun produceEvent(event: Event) {
+    fun produceEvent(event: BaseEvent) {
         viewModelScope.launch {
             _events.emit(event) // suspends until all subscribers receive it
         }
     }
 }
 
-sealed class Event {
-    object NeedLogin : Event()
-    object Refresh : Event()
+sealed class BaseEvent {
+    data class Error(val exception: Throwable) : BaseEvent()
+    data class Failed(val apiResult: ApiResult<Any>) : BaseEvent()
+    object Loading : BaseEvent()
+    object None : BaseEvent()
+    object NeedLogin : BaseEvent()
+    object Refresh : BaseEvent()
 }

@@ -2,7 +2,6 @@ package app.i.cdms.ui.home
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -44,30 +43,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 homeViewModel.uiState.collectLatest {
                     when (it) {
                         is HomeUiState.GetMyInfoSuccessful -> {
-                            binding.loading.visibility = View.GONE
                             updateUiWithUser(it.myInfo)
                             binding.textHome.text = it.toString()
-                        }
-                        is HomeUiState.GetMyInfoFailed -> {
-                            binding.loading.visibility = View.GONE
-                            Toast.makeText(
-                                requireContext(),
-                                it.apiResult.toString(),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        is HomeUiState.Error -> {
-                            binding.loading.visibility = View.GONE
-                            Toast.makeText(
-                                requireContext(),
-                                "网络异常。" + it.exception.message,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        is HomeUiState.Loading -> {
-                            binding.loading.visibility = View.VISIBLE
-                        }
-                        is HomeUiState.None -> {
                         }
                     }
                 }

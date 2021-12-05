@@ -5,7 +5,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -62,7 +61,6 @@ class TeamFragment : Fragment(R.layout.fragment_team) {
                 teamViewModel.uiState.collectLatest {
                     when (it) {
                         is TeamUiState.LoadMyTeam -> {
-                            binding.loading.visibility = View.GONE
                             binding.tvAllUsers.text =
                                 getString(R.string.my_team_all_users, it.myTeam.total.toString())
                             val activeUsers = it.myTeam.records.filter { agent ->
@@ -73,21 +71,7 @@ class TeamFragment : Fragment(R.layout.fragment_team) {
                             mAdapter.submitList(it.myTeam.records)
                         }
                         is TeamUiState.LoadSearchResult -> {
-                            binding.loading.visibility = View.GONE
                             mAdapter.submitList(it.myTeam.records)
-                        }
-                        is TeamUiState.Error -> {
-                            binding.loading.visibility = View.GONE
-                            Toast.makeText(
-                                requireContext(),
-                                it.exception.message ?: "网络异常/异常信息为空",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        is TeamUiState.Loading -> {
-                            binding.loading.visibility = View.VISIBLE
-                        }
-                        is TeamUiState.None -> {
                         }
                     }
                 }

@@ -94,7 +94,6 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
                 agentViewModel.uiState.collectLatest {
                     when (it) {
                         is AgentUiState.TransferSuccess -> {
-                            binding.loading.visibility = View.GONE
                             Toast.makeText(
                                 requireContext(),
                                 R.string.agent_transfer_success,
@@ -106,26 +105,12 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
                             )
                         }
                         is AgentUiState.WithdrawSuccess -> {
-                            binding.loading.visibility = View.GONE
                             Toast.makeText(
                                 requireContext(),
                                 R.string.agent_withdraw_success,
                                 Toast.LENGTH_SHORT
                             ).show()
                             teamViewModel.updateAgentBalanceUIData(0F, agent)
-                        }
-                        is AgentUiState.Error -> {
-                            binding.loading.visibility = View.GONE
-                            Toast.makeText(
-                                requireContext(),
-                                it.exception.message ?: "网络异常/异常信息为空",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        is AgentUiState.Loading -> {
-                            binding.loading.visibility = View.VISIBLE
-                        }
-                        is AgentUiState.None -> {
                         }
                     }
                 }

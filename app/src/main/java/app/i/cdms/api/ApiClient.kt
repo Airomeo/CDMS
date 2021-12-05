@@ -5,13 +5,12 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.util.Log
-import android.widget.Toast
 import app.i.cdms.BuildConfig.DEBUG
 import app.i.cdms.Constant
 import app.i.cdms.data.model.ApiResultJsonAdapter
 import app.i.cdms.data.model.Token
 import app.i.cdms.data.source.local.UserPrefDataSource
-import app.i.cdms.utils.Event
+import app.i.cdms.utils.BaseEvent
 import app.i.cdms.utils.EventBus
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.flow.Flow
@@ -66,7 +65,7 @@ object ApiClient {
             var request = chain.request()
 
             if (!context.isInternetAvailable()) {
-                Toast.makeText(context, "InternetUnavailable", Toast.LENGTH_SHORT).show()
+                Log.d("TAG", "intercept: InternetUnavailable")
                 request = request.newBuilder()
                     .removeHeader("Pragma")
                     .header("Cache-Control", "public, only-if-cached, max-stale=" + 2419200)
@@ -77,8 +76,7 @@ object ApiClient {
         }
     }
 
-    class TokenInterceptor(private val tokenFlow: Flow<Token>) :
-        Interceptor {
+    class TokenInterceptor(private val tokenFlow: Flow<Token>) : Interceptor {
 
         @Throws(IOException::class)
         override fun intercept(chain: Interceptor.Chain): Response {
@@ -112,7 +110,7 @@ object ApiClient {
                     if (apiResult != null && apiResult.code == 401) {
                         Log.d("TAG", "intercept: Go to Login Fragment ")
                         // TODO: 2021/11/16 Go to Login Fragment
-                        EventBus.produceEvent(Event.NeedLogin)
+                        EventBus.produceEvent(BaseEvent.NeedLogin)
                     }
                 }
                 return response

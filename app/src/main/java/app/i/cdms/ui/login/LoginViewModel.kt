@@ -11,6 +11,8 @@ import app.i.cdms.data.model.CaptchaData
 import app.i.cdms.data.model.Result
 import app.i.cdms.data.model.Token
 import app.i.cdms.repository.login.LoginRepository
+import app.i.cdms.utils.BaseEvent
+import app.i.cdms.utils.EventBus
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -33,8 +35,9 @@ class LoginViewModel(
     fun getCaptcha() {
         viewModelScope.launch {
             // can be launched in a separate asynchronous job
-            _uiState.emit(LoginUiState.Loading)
+            EventBus.produceEvent(BaseEvent.Loading)
             val result = loginRepository.getCaptcha()
+            EventBus.produceEvent(BaseEvent.None)
             if (result is Result.Success) {
                 when (result.data.code) {
                     200 -> {
@@ -48,7 +51,7 @@ class LoginViewModel(
                     }
                 }
             } else if (result is Result.Error) {
-                _uiState.emit(LoginUiState.Error(result.exception))
+                EventBus.produceEvent(BaseEvent.Error(result.exception))
             }
         }
     }
@@ -57,8 +60,9 @@ class LoginViewModel(
         viewModelScope.launch {
             // can be launched in a separate asynchronous job
             val uuid = captchaData?.uuid ?: return@launch
-            _uiState.emit(LoginUiState.Loading)
+            EventBus.produceEvent(BaseEvent.Loading)
             val result = loginRepository.login(username, password, captcha, uuid)
+            EventBus.produceEvent(BaseEvent.None)
             if (result is Result.Success) {
                 when (result.data.code) {
                     200 -> {
@@ -71,7 +75,7 @@ class LoginViewModel(
                     }
                 }
             } else if (result is Result.Error) {
-                _uiState.emit(LoginUiState.Error(result.exception))
+                EventBus.produceEvent(BaseEvent.Error(result.exception))
             }
         }
     }
@@ -104,11 +108,8 @@ class LoginViewModel(
 }
 
 sealed class LoginUiState {
-    object Loading : LoginUiState()
     data class GetCaptchaSuccessful(val captchaData: CaptchaData) : LoginUiState()
     data class GetCaptchaFailed(val apiResult: ApiResult<Any>) : LoginUiState()
     data class LoginSuccessful(val token: Token) : LoginUiState()
     data class LoginFailed(val apiResult: ApiResult<Any>) : LoginUiState()
-    data class Error(val exception: Throwable) : LoginUiState()
-    object None : LoginUiState()
 }
