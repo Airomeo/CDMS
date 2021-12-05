@@ -8,11 +8,7 @@ import app.i.cdms.data.model.Result
 import app.i.cdms.repository.team.TeamRepository
 import app.i.cdms.utils.BaseEvent
 import app.i.cdms.utils.EventBus
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class TeamViewModel(private val teamRepository: TeamRepository) : ViewModel() {
@@ -20,16 +16,12 @@ class TeamViewModel(private val teamRepository: TeamRepository) : ViewModel() {
     private val _filter = MutableStateFlow(AgentFilter())
     val filter = _filter.asStateFlow()
 
-    // TODO: 2021/11/15 用MutableSharedFlow还是MutableStateFlow？如果是MutableStateFlow，如何初始化？这段代码还有没有优化空间？
-    private val _myTeam =
-        MutableStateFlow(MyTeam(1, 1, 1, true, listOf(), 1, listOf(), true, 1, 1))
+    private val _myTeam = MutableStateFlow<MyTeam?>(null)
     val myTeam = _myTeam.asStateFlow()
 
-//    private lateinit var _mt: MutableStateFlow<MyTeam>
-//    val mt = _mt.asStateFlow()
-
-    private val _uiState = MutableSharedFlow<TeamUiState>()
-    val uiState = _uiState.asSharedFlow()
+    val uiState = combine(filter, myTeam) { f: AgentFilter, t: MyTeam? ->
+        return@combine filterByKey(t, f)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     init {
         getMyTeam(1, 9999)
@@ -37,7 +29,6 @@ class TeamViewModel(private val teamRepository: TeamRepository) : ViewModel() {
 
     private fun getMyTeam(pageNum: Int, pageSize: Int) {
         viewModelScope.launch {
-            delay(1)
             EventBus.produceEvent(BaseEvent.Loading)
             val result = teamRepository.getMyTeam(pageNum, pageSize)
             EventBus.produceEvent(BaseEvent.None)
@@ -46,14 +37,6 @@ class TeamViewModel(private val teamRepository: TeamRepository) : ViewModel() {
                     200 -> {
                         result.data.data?.let {
                             _myTeam.emit(it)
-                            _uiState.emit(
-                                TeamUiState.LoadMyTeam(
-                                    filterByKey(
-                                        myTeam.value,
-                                        filter.value
-                                    )
-                                )
-                            )
                         }
                     }
                     else -> {
@@ -66,29 +49,26 @@ class TeamViewModel(private val teamRepository: TeamRepository) : ViewModel() {
         }
     }
 
-    private fun filterByKey(myTeam: MyTeam, filter: AgentFilter): MyTeam {
-        var result = myTeam.records
+    private fun filterByKey(myTeam: MyTeam?, filter: AgentFilter): List<Agent> {
+        var result = myTeam?.records ?: return emptyList()
         filter.keyName?.let { result = result.filter { it.userName.contains(filter.keyName) } }
         filter.keyId?.let {
             result = result.filter { it.userId.toString().contains(filter.keyId.toString()) }
         }
-        return myTeam.copy(records = result)
+        return result
     }
 
     fun search(agentFilter: AgentFilter) {
-        viewModelScope.launch {
-            _filter.value = agentFilter
-            _uiState.emit(TeamUiState.LoadSearchResult(filterByKey(myTeam.value, filter.value)))
-        }
+        _filter.value = agentFilter
     }
 
     fun updateAgentBalanceUIData(newBalance: Float, agent: Agent) {
-        val index = myTeam.value.records.indexOf(agent)
-        val newAgent = agent.copy(accountBalance = newBalance)
-        val newRecords = myTeam.value.records.toMutableList().apply {
-            this[index] = newAgent
-        }
-        _myTeam.value = myTeam.value.copy(records = newRecords)
+        myTeam.value ?: return
+        val index = myTeam.value!!.records.indexOf(agent)
+        val newRecords = myTeam.value!!.records.toMutableList()
+        newRecords[index] = agent.copy(accountBalance = newBalance)
+
+        _myTeam.value = myTeam.value!!.copy(records = newRecords)
     }
 }
 
@@ -96,9 +76,3 @@ data class AgentFilter(
     val keyName: String? = null,
     val keyId: Int? = null
 )
-
-// Represents different states for the Team screen
-sealed class TeamUiState {
-    data class LoadMyTeam(val myTeam: MyTeam) : TeamUiState()
-    data class LoadSearchResult(val myTeam: MyTeam) : TeamUiState()
-}

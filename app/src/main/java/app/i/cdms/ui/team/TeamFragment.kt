@@ -59,21 +59,21 @@ class TeamFragment : Fragment(R.layout.fragment_team) {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 teamViewModel.uiState.collectLatest {
-                    when (it) {
-                        is TeamUiState.LoadMyTeam -> {
-                            binding.tvAllUsers.text =
-                                getString(R.string.my_team_all_users, it.myTeam.total.toString())
-                            val activeUsers = it.myTeam.records.filter { agent ->
-                                agent.accountBalance > 0
-                            }.size
-                            binding.tvPayingUsers.text =
-                                getString(R.string.my_team_paying_users, activeUsers.toString())
-                            mAdapter.submitList(it.myTeam.records)
-                        }
-                        is TeamUiState.LoadSearchResult -> {
-                            mAdapter.submitList(it.myTeam.records)
-                        }
-                    }
+                    mAdapter.submitList(it)
+                }
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                teamViewModel.myTeam.collectLatest {
+                    it ?: return@collectLatest
+                    binding.tvAllUsers.text =
+                        getString(R.string.my_team_all_users, it.total.toString())
+                    val activeUsers = it.records.filter { agent ->
+                        agent.accountBalance > 0
+                    }.size
+                    binding.tvPayingUsers.text =
+                        getString(R.string.my_team_paying_users, activeUsers.toString())
                 }
             }
         }
