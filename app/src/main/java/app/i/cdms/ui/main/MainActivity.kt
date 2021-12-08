@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
                             binding.loading.visibility = View.GONE
                             Toast.makeText(
                                 this@MainActivity,
-                                it.apiResult.toString(),
+                                it.toString(),
                                 Toast.LENGTH_SHORT
                             ).show()
                         }

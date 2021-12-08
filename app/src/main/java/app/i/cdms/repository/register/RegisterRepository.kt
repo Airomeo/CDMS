@@ -2,6 +2,7 @@ package app.i.cdms.repository.register
 
 import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.Result
+import app.i.cdms.data.model.SCFResult
 import app.i.cdms.data.source.remote.register.RegisterDataSource
 
 /**
@@ -15,5 +16,13 @@ class RegisterRepository(private val dataSource: RegisterDataSource) {
         phone: String
     ): Result<ApiResult<Any>> {
         return dataSource.register(username, password, phone)
+    }
+
+    suspend fun updateChannelByUsername(
+        username: String,
+        firstCommission: Float,
+        additionalCommission: Float
+    ): Result<SCFResult> {
+        return dataSource.updateChannelByUsername(username, firstCommission, additionalCommission)
     }
 }

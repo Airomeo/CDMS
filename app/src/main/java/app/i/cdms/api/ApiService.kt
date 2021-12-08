@@ -125,4 +125,11 @@ interface ApiService {
     suspend fun myPrice(
         @Url url: String = Constant.API_MY_PRICE
     ): Response<ApiResult<ArrayList<MyPriceItem>>>
+
+    @POST
+    @Headers("Content-Type: application/json")
+    suspend fun updateChannelByUsername(
+        @Url url: String = Constant.API_UPDATE_CHANNEL_BY_USERNAME,
+        @Body payload: Map<String, Any>
+    ): Response<SCFResult>
 }

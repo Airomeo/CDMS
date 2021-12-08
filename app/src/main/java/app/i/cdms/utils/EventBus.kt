@@ -2,7 +2,6 @@ package app.i.cdms.utils
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.i.cdms.data.model.ApiResult
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -25,7 +24,7 @@ object EventBus : ViewModel() {
 
 sealed class BaseEvent {
     data class Error(val exception: Throwable) : BaseEvent()
-    data class Failed(val apiResult: ApiResult<Any>) : BaseEvent()
+    data class Failed(val data: Any) : BaseEvent()
     object Loading : BaseEvent()
     object None : BaseEvent()
     object NeedLogin : BaseEvent()

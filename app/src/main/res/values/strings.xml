@@ -48,6 +48,7 @@
     <string name="agent_withdraw">清账</string>
     <string name="agent_withdraw_success">清账成功</string>
     <string name="agent_set_price">配置渠道价格</string>
+    <string name="register_and_set_channel">开户并配置渠道</string>
     <string name="agent_update_commission">设置佣金</string>
     <string name="transfer_label_amount">金额</string>
     <string name="transfer_label_amount_prefix">¥</string>

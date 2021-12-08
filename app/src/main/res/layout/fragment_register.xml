@@ -10,19 +10,6 @@
     android:paddingBottom="@dimen/fragment_vertical_margin"
     tools:context=".ui.register.RegisterFragment">
 
-    <TextView
-        android:id="@+id/text_dashboard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phone" />
-
     <EditText
         android:id="@+id/username"
         android:layout_width="0dp"
@@ -69,15 +56,77 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
+    <TextView
+        android:id="@+id/tv_first_commission"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/first_commission"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        android:textColor="@color/material_on_surface_emphasis_medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/phone" />
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/sld_first_commission"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:stepSize="0.1"
+        android:value="0.5"
+        android:valueFrom="0"
+        android:valueTo="1.00"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_first_commission"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_first_commission"
+        app:layout_constraintTop_toTopOf="@+id/tv_first_commission" />
+
+    <TextView
+        android:id="@+id/tv_additional_commission"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/additional_commission"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        android:textColor="@color/material_on_surface_emphasis_medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_first_commission" />
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/sld_additional_commission"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:stepSize="0.1"
+        android:value="0.2"
+        android:valueFrom="0"
+        android:valueTo="0.5"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_additional_commission"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_additional_commission"
+        app:layout_constraintTop_toTopOf="@+id/tv_additional_commission" />
+
+    <Button
+        android:id="@+id/btn_register_and_set_channel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/register_and_set_channel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sld_additional_commission"
+        app:layout_constraintVertical_bias="0.2" />
+
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/action_register"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_register_and_set_channel"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phone"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btn_register_and_set_channel"
+        app:layout_constraintTop_toTopOf="@+id/btn_register_and_set_channel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

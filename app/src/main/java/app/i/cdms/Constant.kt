@@ -52,6 +52,9 @@ object Constant {
     val API_REMOVE_PRICE = "$API/prod-api/wl/home/removePrice"
     val API_MY_PRICE = "$API/prod-api/wl/home/myPrice"
     val API_TRANSFER = "$API/prod-api/wl/userAccount/transfer"
+    private const val API_SCF_BASE =
+        "https://service-icw3n5t3-1256871713.sh.apigw.tencentcs.com/release"
+    const val API_UPDATE_CHANNEL_BY_USERNAME = "$API_SCF_BASE/YIDA/updateChannelByUsername"
 
     private val HOST: String
         get() = when {

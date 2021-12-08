@@ -25,7 +25,8 @@ class RegisterViewModel(
     private val _uiState = MutableSharedFlow<RegisterUiState>()
     val uiState = _uiState.asSharedFlow()
 
-    fun register(username: String, password: String, phone: String) {
+    fun register(username: String, password: String, phone: String): Boolean {
+        var flag = false
         viewModelScope.launch {
             EventBus.produceEvent(BaseEvent.Loading)
             val result = registerRepository.register(username, password, phone)
@@ -33,9 +34,8 @@ class RegisterViewModel(
             if (result is Result.Success) {
                 when (result.data.code) {
                     200 -> {
-                        result.data.data?.let {
-                            _uiState.emit(RegisterUiState.RegisterSuccess)
-                        }
+                        _uiState.emit(RegisterUiState.RegisterSuccess(result.data.msg))
+                        flag = true
                     }
                     else -> {
                         EventBus.produceEvent(BaseEvent.Failed(result.data))
@@ -43,6 +43,39 @@ class RegisterViewModel(
                 }
             } else if (result is Result.Error) {
                 EventBus.produceEvent(BaseEvent.Error(result.exception))
+            }
+        }
+        return flag
+    }
+
+    fun registerAndSetChannel(
+        username: String,
+        password: String,
+        phone: String,
+        firstCommission: Float,
+        additionalCommission: Float
+    ) {
+        if (register(username, password, phone)) {
+            viewModelScope.launch {
+                EventBus.produceEvent(BaseEvent.Loading)
+                val result = registerRepository.updateChannelByUsername(
+                    username,
+                    firstCommission,
+                    additionalCommission
+                )
+                EventBus.produceEvent(BaseEvent.None)
+                if (result is Result.Success) {
+                    when (result.data.errorCode) {
+                        200 -> {
+                            _uiState.emit(RegisterUiState.ChannelSuccess(result.data.errorMessage))
+                        }
+                        else -> {
+                            EventBus.produceEvent(BaseEvent.Failed(result.data))
+                        }
+                    }
+                } else if (result is Result.Error) {
+                    EventBus.produceEvent(BaseEvent.Error(result.exception))
+                }
             }
         }
     }
@@ -72,9 +105,9 @@ class RegisterViewModel(
     private fun isPasswordValid(password: String): Boolean {
         return password.length > 5
     }
-    // TODO: Implement the ViewModel
 }
 
 sealed class RegisterUiState {
-    object RegisterSuccess : RegisterUiState()
+    data class RegisterSuccess(val msg: String) : RegisterUiState()
+    data class ChannelSuccess(val msg: String) : RegisterUiState()
 }
