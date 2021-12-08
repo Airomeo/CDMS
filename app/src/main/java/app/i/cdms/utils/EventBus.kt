@@ -25,6 +25,7 @@ object EventBus : ViewModel() {
 sealed class BaseEvent {
     data class Error(val exception: Throwable) : BaseEvent()
     data class Failed(val data: Any) : BaseEvent()
+    data class Toast(val msg: String) : BaseEvent()
     object Loading : BaseEvent()
     object None : BaseEvent()
     object NeedLogin : BaseEvent()

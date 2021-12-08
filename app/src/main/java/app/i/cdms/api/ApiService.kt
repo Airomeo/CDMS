@@ -132,4 +132,9 @@ interface ApiService {
         @Url url: String = Constant.API_UPDATE_CHANNEL_BY_USERNAME,
         @Body payload: Map<String, Any>
     ): Response<SCFResult>
+
+    @GET
+    suspend fun batchUpdateChannel(
+        @Url url: String = Constant.API_BATCH_UPDATE_CHANNEL
+    ): Response<SCFResult>
 }

@@ -33,11 +33,11 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_setting"
-        android:title="@string/action_settings"
+        android:id="@+id/action_batch_update_channel"
+        android:title="@string/action_batch_update_channel"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_teamFragment_to_registerFragment"
+        android:id="@+id/action_register"
         android:title="@string/action_register"
         app:showAsAction="never" />
 

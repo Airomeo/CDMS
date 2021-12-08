@@ -70,6 +70,30 @@ class TeamViewModel(private val teamRepository: TeamRepository) : ViewModel() {
 
         _myTeam.value = myTeam.value!!.copy(records = newRecords)
     }
+
+    fun batchUpdateChannel() {
+        viewModelScope.launch {
+            EventBus.produceEvent(BaseEvent.Loading)
+            val result = teamRepository.batchUpdateChannel()
+            EventBus.produceEvent(BaseEvent.None)
+            if (result is Result.Success) {
+                when (result.data.errorCode) {
+                    200 -> {
+                        EventBus.produceEvent(BaseEvent.Toast(result.data.errorMessage))
+                    }
+                    else -> {
+                        EventBus.produceEvent(BaseEvent.Failed(result.data))
+                    }
+                }
+            } else if (result is Result.Error) {
+                if ("504" in result.exception.toString()) {
+                    EventBus.produceEvent(BaseEvent.Toast("执行成功，请于2分钟后检查结果。"))
+                } else {
+                    EventBus.produceEvent(BaseEvent.Error(result.exception))
+                }
+            }
+        }
+    }
 }
 
 data class AgentFilter(

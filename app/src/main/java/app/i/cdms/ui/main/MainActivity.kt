@@ -92,6 +92,14 @@ class MainActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
+                        is BaseEvent.Toast -> {
+                            binding.loading.visibility = View.GONE
+                            Toast.makeText(
+                                this@MainActivity,
+                                it.msg,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
                 }
             }
