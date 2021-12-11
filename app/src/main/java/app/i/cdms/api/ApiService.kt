@@ -2,6 +2,7 @@ package app.i.cdms.api
 
 import app.i.cdms.Constant
 import app.i.cdms.data.model.*
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -35,20 +36,18 @@ interface ApiService {
     ): Response<ApiResult<CaptchaData>>
 
     @POST
-    @Headers("Content-Type: application/json")
     suspend fun login(
         @Url url: String = Constant.API_LOGIN,
-        @Body payload: Map<String, String>
+        @Body payload: RequestBody
     ): Response<ApiResult<Token>>
 
     @GET
     suspend fun myInfo(@Url url: String = Constant.API_MY_INFO): Response<ApiResult<MyInfo>>
 
     @POST
-    @Headers("Content-Type: application/json")
     suspend fun addChild(
         @Url url: String = Constant.API_ADD_CHILD,
-        @Body payload: Map<String, String>
+        @Body payload: RequestBody
     ): Response<ApiResult<Any>>
 
     @GET
@@ -127,10 +126,15 @@ interface ApiService {
     ): Response<ApiResult<ArrayList<MyPriceItem>>>
 
     @POST
-    @Headers("Content-Type: application/json")
     suspend fun updateChannelByUsername(
         @Url url: String = Constant.API_UPDATE_CHANNEL_BY_USERNAME,
-        @Body payload: Map<String, Any>
+        @Body payload: RequestBody
+    ): Response<SCFResult>
+
+    @POST
+    suspend fun updateChannelByUserId(
+        @Url url: String = Constant.API_UPDATE_CHANNEL_BY_USER_ID,
+        @Body payload: RequestBody
     ): Response<SCFResult>
 
     @GET

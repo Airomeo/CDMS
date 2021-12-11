@@ -7,12 +7,8 @@ import android.os.Build
 import android.util.Log
 import app.i.cdms.BuildConfig.DEBUG
 import app.i.cdms.Constant
-import app.i.cdms.data.model.ApiResultJsonAdapter
 import app.i.cdms.data.model.Token
 import app.i.cdms.data.source.local.UserPrefDataSource
-import app.i.cdms.utils.BaseEvent
-import app.i.cdms.utils.EventBus
-import com.squareup.moshi.Moshi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -99,21 +95,6 @@ object ApiClient {
                 request = request.newBuilder()
                     .addHeader("authorization", "Bearer ${token.token}")
                     .build()
-
-                val response = chain.proceed(request)
-                val body = response.peekBody(Long.MAX_VALUE)
-                if (response.isSuccessful && body != null) {
-                    val apiResult = ApiResultJsonAdapter<Any>(
-                        Moshi.Builder().build(),
-                        arrayOf(Any::class.java)
-                    ).fromJson(body.string())
-                    if (apiResult != null && apiResult.code == 401) {
-                        Log.d("TAG", "intercept: Go to Login Fragment ")
-                        // TODO: 2021/11/16 Go to Login Fragment
-                        EventBus.produceEvent(BaseEvent.NeedLogin)
-                    }
-                }
-                return response
             }
 
             return chain.proceed(request)

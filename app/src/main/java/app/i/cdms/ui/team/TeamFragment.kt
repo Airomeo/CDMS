@@ -87,7 +87,7 @@ class TeamFragment : Fragment(R.layout.fragment_team) {
                 true
             }
             R.id.action_batch_update_channel -> {
-                batchUpdateChannel()
+                showUpdateDialog()
                 true
             }
             else -> item.onNavDestinationSelected(findNavController()) || super.onOptionsItemSelected(
@@ -96,7 +96,7 @@ class TeamFragment : Fragment(R.layout.fragment_team) {
         }
     }
 
-    private fun batchUpdateChannel() {
+    private fun showUpdateDialog() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.dialog_title_warning)
             .setMessage(getString(R.string.my_team_batch_update_channel_message))

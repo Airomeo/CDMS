@@ -38,6 +38,9 @@ class HomeViewModel(
                             updateMyInfo(it)
                         }
                     }
+                    401 -> {
+                        EventBus.produceEvent(BaseEvent.NeedLogin)
+                    }
                     else -> {
                         EventBus.produceEvent(BaseEvent.Failed(result.data))
                     }

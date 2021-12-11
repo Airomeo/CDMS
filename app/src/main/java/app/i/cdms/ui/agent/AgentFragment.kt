@@ -57,6 +57,9 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
                 tvAdditionalCommission.text =
                     getString(R.string.additional_commission, value.toString())
             }
+            btnUpdateChannel.setOnClickListener {
+                showUpdateDialog()
+            }
             btnTransfer.setOnClickListener {
                 showTransferDialog(agent)
             }
@@ -82,7 +85,7 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
                                 )
                             teamViewModel.updateAgentBalanceUIData(
                                 it.changeAmount + agent.accountBalance,
-                                agent
+                                agent.userId
                             )
                         }
                         is AgentUiState.WithdrawSuccess -> {
@@ -93,12 +96,36 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
                             ).show()
                             binding.tvBalance.text =
                                 getString(R.string.my_info_balance, "0.00")
-                            teamViewModel.updateAgentBalanceUIData(0F, agent)
+                            teamViewModel.updateAgentBalanceUIData(0F, agent.userId)
+                        }
+                        is AgentUiState.UpdateChannelSuccess -> {
+                            Toast.makeText(
+                                requireContext(),
+                                it.msg,
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
                 }
             }
         }
+    }
+
+    private fun showUpdateDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.dialog_title_warning)
+            .setMessage(getString(R.string.agent_dialog_update_channel_message, agent.userName))
+            .setPositiveButton(
+                R.string.dialog_positive_text
+            ) { dialog, which ->
+                agentViewModel.updateChannelByUserId(
+                    agent.userId,
+                    binding.sldFirstCommission.value,
+                    binding.sldAdditionalCommission.value
+                )
+            }
+            .setNegativeButton(R.string.dialog_negative_text, null)
+            .show()
     }
 
     private fun showTransferDialog(agent: Agent) {

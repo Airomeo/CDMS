@@ -44,6 +44,7 @@
     <string name="agent_dialog_transfer">转账</string>
     <string name="agent_transfer">转账</string>
     <string name="agent_transfer_success">转账成功</string>
+    <string name="agent_dialog_update_channel_message">是否确认配置：%s的渠道价格？</string>
     <string name="agent_dialog_withdraw">清账</string>
     <string name="agent_dialog_withdraw_message">是否确认清零账户：%s？\n余额将退回您的账户！</string>
     <string name="agent_withdraw">清账</string>

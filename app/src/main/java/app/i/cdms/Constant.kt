@@ -55,6 +55,7 @@ object Constant {
     private const val API_SCF_BASE =
         "https://service-icw3n5t3-1256871713.sh.apigw.tencentcs.com/release"
     const val API_UPDATE_CHANNEL_BY_USERNAME = "$API_SCF_BASE/YIDA/updateChannelByUsername"
+    const val API_UPDATE_CHANNEL_BY_USER_ID = "$API_SCF_BASE/YIDA/updateChannelByUserId"
     const val API_BATCH_UPDATE_CHANNEL = "$API_SCF_BASE/YIDA/batchUpdateChannel"
 
     private val HOST: String

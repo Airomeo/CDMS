@@ -58,7 +58,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
-                        is RegisterUiState.ChannelSuccess -> {
+                        is RegisterUiState.UpdateChannelSuccess -> {
                             Toast.makeText(
                                 requireContext(),
                                 it.msg,

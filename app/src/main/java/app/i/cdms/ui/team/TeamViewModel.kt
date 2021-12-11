@@ -39,6 +39,9 @@ class TeamViewModel(private val teamRepository: TeamRepository) : ViewModel() {
                             _myTeam.emit(it)
                         }
                     }
+                    401 -> {
+                        EventBus.produceEvent(BaseEvent.NeedLogin)
+                    }
                     else -> {
                         EventBus.produceEvent(BaseEvent.Failed(result.data))
                     }
@@ -62,13 +65,12 @@ class TeamViewModel(private val teamRepository: TeamRepository) : ViewModel() {
         _filter.value = agentFilter
     }
 
-    fun updateAgentBalanceUIData(newBalance: Float, agent: Agent) {
+    fun updateAgentBalanceUIData(newBalance: Float, userId: Int) {
         myTeam.value ?: return
-        val index = myTeam.value!!.records.indexOf(agent)
-        val newRecords = myTeam.value!!.records.toMutableList()
-        newRecords[index] = agent.copy(accountBalance = newBalance)
-
-        _myTeam.value = myTeam.value!!.copy(records = newRecords)
+        val records = myTeam.value!!.records.toMutableList()
+        val index = records.indexOfFirst { it.userId == userId }
+        records[index] = records[index].copy(accountBalance = newBalance)
+        _myTeam.value = myTeam.value!!.copy(records = records)
     }
 
     fun batchUpdateChannel() {
@@ -80,6 +82,9 @@ class TeamViewModel(private val teamRepository: TeamRepository) : ViewModel() {
                 when (result.data.errorCode) {
                     200 -> {
                         EventBus.produceEvent(BaseEvent.Toast(result.data.errorMessage))
+                    }
+                    401 -> {
+                        EventBus.produceEvent(BaseEvent.NeedLogin)
                     }
                     else -> {
                         EventBus.produceEvent(BaseEvent.Failed(result.data))

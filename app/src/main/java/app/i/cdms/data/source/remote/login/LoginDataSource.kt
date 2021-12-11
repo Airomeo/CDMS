@@ -5,6 +5,9 @@ import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.CaptchaData
 import app.i.cdms.data.model.Result
 import app.i.cdms.data.model.Token
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
 import java.io.IOException
 
 /**
@@ -32,12 +35,14 @@ class LoginDataSource(private val service: ApiService) {
         captcha: Int,
         uuid: String
     ): Result<ApiResult<Token>> {
-        val payload: Map<String, String> = mapOf(
-            "username" to username,
-            "password" to password,
-            "code" to captcha.toString(),
-            "uuid" to uuid
-        )
+        val payload = JSONObject()
+            .put("username", username)
+            .put("password", password)
+            .put("code", captcha.toString())
+            .put("uuid", uuid)
+            .toString()
+            .toRequestBody("application/json".toMediaType())
+
         return try {
             val response = service.login(payload = payload)
 

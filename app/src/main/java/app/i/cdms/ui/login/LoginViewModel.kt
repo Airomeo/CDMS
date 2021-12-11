@@ -46,6 +46,9 @@ class LoginViewModel(
                             _uiState.emit(LoginUiState.GetCaptchaSuccessful(it))
                         }
                     }
+                    401 -> {
+                        EventBus.produceEvent(BaseEvent.NeedLogin)
+                    }
                     else -> {
                         _uiState.emit(LoginUiState.GetCaptchaFailed(result.data))
                     }
@@ -69,6 +72,9 @@ class LoginViewModel(
                         result.data.data?.let {
                             _uiState.emit(LoginUiState.LoginSuccessful(it))
                         }
+                    }
+                    401 -> {
+                        EventBus.produceEvent(BaseEvent.NeedLogin)
                     }
                     else -> {
                         _uiState.emit(LoginUiState.LoginFailed(result.data))
