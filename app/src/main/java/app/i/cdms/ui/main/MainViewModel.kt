@@ -7,12 +7,15 @@ import app.i.cdms.data.model.Token
 import app.i.cdms.repository.main.MainRepository
 import app.i.cdms.utils.BaseEvent
 import app.i.cdms.utils.EventBus
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel(
+@HiltViewModel
+class MainViewModel @Inject constructor(
     private val mainRepository: MainRepository
 ) : ViewModel() {
 

@@ -7,11 +7,12 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.IOException
+import javax.inject.Inject
 
 /**
  * Class that add child account.
  */
-class RegisterDataSource(private val service: ApiService) {
+class RegisterDataSource @Inject constructor(private val service: ApiService) {
     suspend fun register(
         username: String,
         password: String,

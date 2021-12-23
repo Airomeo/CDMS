@@ -3,10 +3,30 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
+    id 'dagger.hilt.android.plugin'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
+// Creates a variable called keystorePropertiesFile, and initializes it to the
+// keystore.properties file.
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+
+// Initializes a new Properties() object called keystoreProperties.
+def keystoreProperties = new Properties()
+
+// Loads the keystore.properties file into the keystoreProperties object.
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
-    compileSdk 31
+    signingConfigs {
+        config {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
 
     defaultConfig {
         applicationId "app.i.cdms"
@@ -17,15 +37,58 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+    }
+    productFlavors {
+//        free {
+//            applicationIdSuffix ".free"
+//        }
+//        pro {
+//            applicationIdSuffix ".pro"
+//        }
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            manifestPlaceholders = [appLabel: "@string/app_name_debug"]
+        }
+
+        /**
+         * The `initWith` property allows you to copy configurations from other build types,
+         * then configure only the settings you want to change. This one copies the debug build
+         * type, and then changes the manifest placeholder and application ID.
+         */
+        staging {
+            initWith debug
+            manifestPlaceholders = [hostName: "internal.example.com"]
+            applicationIdSuffix ".debugStaging"
+        }
+
         release {
-            debuggable true
-            minifyEnabled false
+            manifestPlaceholders = [appLabel: "@string/app_name"]
+
+            // Enables code shrinking, obfuscation, and optimization for only
+            // your project's release build type.
+            minifyEnabled true
+
+            // Enables resource shrinking, which is performed by the
+            // Android Gradle plugin.
+            shrinkResources true
+
+            // Includes the default ProGuard rules files that are packaged with
+            // the Android Gradle plugin. To learn more, go to the section about
+            // R8 configuration files.
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -62,31 +125,25 @@ dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 
     // define a BOM and its version
-    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.0"))
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.3"))
 
     // define any required OkHttp artifacts without version
-    implementation("com.squareup.okhttp3:okhttp")
-    implementation("com.squareup.okhttp3:logging-interceptor")
+    implementation 'com.squareup.okhttp3:okhttp'
+    implementation 'com.squareup.okhttp3:logging-interceptor'
 
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
 
-    implementation 'com.squareup.moshi:moshi-kotlin:1.12.0'
-    kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.12.0'
+    implementation 'com.squareup.moshi:moshi-kotlin:1.13.0'
+    kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.13.0'
 //    implementation 'com.google.code.gson:gson:2.8.8'
 
-    // Koin core features
-//    implementation "io.insert-koin:koin-core:$koin_version"
-    // Koin main features for Android (Scope,ViewModel ...)
-    implementation "io.insert-koin:koin-android:$koin_version"
-    // Java Compatibility
-    implementation "io.insert-koin:koin-android-compat:$koin_version"
-    // Jetpack WorkManager
-//    implementation "io.insert-koin:koin-androidx-workmanager:$koin_version"
+    implementation 'com.google.dagger:hilt-android:2.40.5'
+    kapt 'com.google.dagger:hilt-android-compiler:2.40.5'
+    // ViewModel
+    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03'
     // Navigation Graph
-    implementation "io.insert-koin:koin-androidx-navigation:$koin_version"
-    // Jetpack Compose
-    implementation "io.insert-koin:koin-androidx-compose:$koin_version"
+    implementation("androidx.hilt:hilt-navigation-fragment:1.0.0")
 
     // Room
     implementation "androidx.room:room-runtime:$room_version"
@@ -95,5 +152,13 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
     // DataStore
     implementation 'androidx.datastore:datastore-preferences:1.0.0'
+
+    // Import the Firebase BoM
+    implementation platform('com.google.firebase:firebase-bom:29.0.3')
+
+    // Add the dependency for the Firebase SDK for Google Analytics
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
 
 }

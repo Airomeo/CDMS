@@ -6,11 +6,12 @@ import app.i.cdms.data.model.MyTeam
 import app.i.cdms.data.model.Result
 import app.i.cdms.data.model.SCFResult
 import java.io.IOException
+import javax.inject.Inject
 
 /**
  * Class that get my team members.
  */
-class TeamDataSource(private val service: ApiService) {
+class TeamDataSource @Inject constructor(private val service: ApiService) {
     suspend fun getMyTeam(pageNum: Int, pageSize: Int): Result<ApiResult<MyTeam>> {
         return try {
             val response = service.myTeam(pageNum = pageNum, pageSize = pageSize)

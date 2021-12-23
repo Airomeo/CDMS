@@ -6,11 +6,15 @@ import app.i.cdms.data.model.Result
 import app.i.cdms.repository.agent.AgentRepository
 import app.i.cdms.utils.BaseEvent
 import app.i.cdms.utils.EventBus
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AgentViewModel(private val agentRepository: AgentRepository) : ViewModel() {
+@HiltViewModel
+class AgentViewModel @Inject constructor(private val agentRepository: AgentRepository) :
+    ViewModel() {
 
     private val _uiState = MutableSharedFlow<AgentUiState>()
     val uiState = _uiState.asSharedFlow()

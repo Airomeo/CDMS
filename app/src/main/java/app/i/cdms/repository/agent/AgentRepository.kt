@@ -4,12 +4,13 @@ import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.Result
 import app.i.cdms.data.model.SCFResult
 import app.i.cdms.data.source.remote.agent.AgentDataSource
+import javax.inject.Inject
 
 /**
  * @author ZZY
  * 2021/10/26.
  */
-class AgentRepository(private val dataSource: AgentDataSource) {
+class AgentRepository @Inject constructor(private val dataSource: AgentDataSource) {
 
     suspend fun withdraw(userId: Int): Result<ApiResult<Any>> {
         return dataSource.withdraw(userId)

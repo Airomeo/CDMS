@@ -8,12 +8,13 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.IOException
+import javax.inject.Inject
 
 /**
  * @author ZZY
  * 2021/11/6.
  */
-class AgentDataSource(private val service: ApiService) {
+class AgentDataSource @Inject constructor(private val service: ApiService) {
 
     suspend fun withdraw(userId: Int): Result<ApiResult<Any>> {
         return try {

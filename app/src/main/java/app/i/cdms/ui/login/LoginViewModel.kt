@@ -13,11 +13,14 @@ import app.i.cdms.data.model.Token
 import app.i.cdms.repository.login.LoginRepository
 import app.i.cdms.utils.BaseEvent
 import app.i.cdms.utils.EventBus
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginViewModel(
+@HiltViewModel
+class LoginViewModel @Inject constructor(
     private val loginRepository: LoginRepository
 ) : ViewModel() {
 

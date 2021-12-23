@@ -12,11 +12,14 @@ import app.i.cdms.repository.agent.AgentRepository
 import app.i.cdms.repository.register.RegisterRepository
 import app.i.cdms.utils.BaseEvent
 import app.i.cdms.utils.EventBus
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RegisterViewModel(
+@HiltViewModel
+class RegisterViewModel @Inject constructor(
     private val registerRepository: RegisterRepository,
     private val agentRepository: AgentRepository
 ) : ViewModel() {

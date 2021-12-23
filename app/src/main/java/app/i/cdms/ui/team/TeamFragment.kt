@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -18,16 +19,17 @@ import androidx.recyclerview.widget.RecyclerView
 import app.i.cdms.R
 import app.i.cdms.databinding.FragmentTeamBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.koin.androidx.navigation.koinNavGraphViewModel
 
 /**
  * A fragment representing a list of Items.
  */
+@AndroidEntryPoint
 class TeamFragment : Fragment(R.layout.fragment_team) {
 
-    private val teamViewModel: TeamViewModel by koinNavGraphViewModel(R.id.navigation_team)
+    private val teamViewModel: TeamViewModel by hiltNavGraphViewModels(R.id.navigation_team)
     private var _binding: FragmentTeamBinding? = null
     private val binding get() = _binding!!
     private var columnCount = 2

@@ -13,17 +13,21 @@ import app.i.cdms.data.model.MyInfo
 import app.i.cdms.data.model.MyInfoJsonAdapter
 import app.i.cdms.data.model.Token
 import com.squareup.moshi.Moshi
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
+import javax.inject.Inject
+import javax.inject.Singleton
 
 
 /**
  * @author ZZY
  * 2021/10/21.
  */
-class UserPrefDataSource(private val context: Context) {
+@Singleton
+class UserPrefDataSource @Inject constructor(@ApplicationContext private val context: Context) {
     private val Context.dataStore by preferencesDataStore(
         name = Constant.USER_PREFERENCES_NAME,
         produceMigrations = { context ->

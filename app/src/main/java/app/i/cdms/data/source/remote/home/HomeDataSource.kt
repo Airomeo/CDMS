@@ -5,11 +5,12 @@ import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.MyInfo
 import app.i.cdms.data.model.Result
 import java.io.IOException
+import javax.inject.Inject
 
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.
  */
-class HomeDataSource(private val service: ApiService) {
+class HomeDataSource @Inject constructor(private val service: ApiService) {
 
     suspend fun getMyInfo(): Result<ApiResult<MyInfo>> {
         return try {

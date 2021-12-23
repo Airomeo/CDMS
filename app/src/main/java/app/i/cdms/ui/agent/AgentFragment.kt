@@ -5,6 +5,8 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -15,17 +17,17 @@ import app.i.cdms.databinding.FragmentAgentBinding
 import app.i.cdms.ui.team.TeamViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.koin.androidx.navigation.koinNavGraphViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
+@AndroidEntryPoint
 class AgentFragment : Fragment(R.layout.fragment_agent) {
 
     private var _binding: FragmentAgentBinding? = null
     private val binding get() = _binding!!
-    private val agentViewModel: AgentViewModel by viewModel()
-    private val teamViewModel: TeamViewModel by koinNavGraphViewModel(R.id.navigation_team)
+    private val agentViewModel: AgentViewModel by viewModels()
+    private val teamViewModel: TeamViewModel by hiltNavGraphViewModels(R.id.navigation_team)
     private lateinit var agent: Agent
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

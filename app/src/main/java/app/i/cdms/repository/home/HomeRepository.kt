@@ -5,12 +5,13 @@ import app.i.cdms.data.model.MyInfo
 import app.i.cdms.data.model.Result
 import app.i.cdms.data.source.local.UserPrefDataSource
 import app.i.cdms.data.source.remote.home.HomeDataSource
+import javax.inject.Inject
 
 /**
  * @author ZZY
  * 2021/10/22.
  */
-class HomeRepository(
+class HomeRepository @Inject constructor(
     private val dataSource: HomeDataSource, private val userPrefDataSource: UserPrefDataSource
 ) {
 
@@ -39,12 +40,6 @@ class HomeRepository(
     }
 
     suspend fun getMyInfo(): Result<ApiResult<MyInfo>> {
-//        val tokenFlow = userPrefDataSource.tokenFlow
-//        Log.d("TAG", "getMyInfo: tokenFlow.first()" + tokenFlow.first())
-//        Log.d("TAG", "getMyInfo: tokenFlow.last()" + tokenFlow.last())
-//        val token = tokenFlow.first()
-//        val token = userPrefDataSource.tokenFlow.first()
-//        Log.d("TAG", "getMyInfo: " + token.toString())
         val result = dataSource.getMyInfo()
         if (result is Result.Success) {
             result.data.data?.let { setLoggedInUser(it) }

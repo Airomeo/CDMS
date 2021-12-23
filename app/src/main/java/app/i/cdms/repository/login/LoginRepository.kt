@@ -5,13 +5,13 @@ import app.i.cdms.data.model.CaptchaData
 import app.i.cdms.data.model.Result
 import app.i.cdms.data.model.Token
 import app.i.cdms.data.source.remote.login.LoginDataSource
+import javax.inject.Inject
 
 /**
  * Class that requests authentication and user information from the remote data source and
  * maintains an in-memory cache of login status and user credentials information.
  */
-
-class LoginRepository(private val dataSource: LoginDataSource) {
+class LoginRepository @Inject constructor(private val dataSource: LoginDataSource) {
 
     suspend fun getCaptcha(): Result<ApiResult<CaptchaData>> {
         return dataSource.getCaptcha()

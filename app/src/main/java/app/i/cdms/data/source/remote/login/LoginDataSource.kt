@@ -9,11 +9,12 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.IOException
+import javax.inject.Inject
 
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.
  */
-class LoginDataSource(private val service: ApiService) {
+class LoginDataSource @Inject constructor(private val service: ApiService) {
 
     suspend fun getCaptcha(): Result<ApiResult<CaptchaData>> {
         return try {

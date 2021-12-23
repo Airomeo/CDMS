@@ -1,14 +1,18 @@
-package app.i.cdms.api
+package app.i.cdms.di
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
 import android.util.Log
-import app.i.cdms.BuildConfig.DEBUG
+import app.i.cdms.BuildConfig
 import app.i.cdms.Constant
+import app.i.cdms.api.ApiService
 import app.i.cdms.data.model.Token
 import app.i.cdms.data.source.local.UserPrefDataSource
+import app.i.cdms.utils.isInternetAvailable
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -17,24 +21,55 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
-import okhttp3.logging.HttpLoggingInterceptor.Level
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
-
+import javax.inject.Qualifier
+import javax.inject.Singleton
 
 /**
  * @author ZZY
- * 2021/10/18.
+ * 2021/12/20.
  */
-object ApiClient {
-    fun create(context: Context, userPrefDataSource: UserPrefDataSource): ApiService {
-        val loggingInterceptor = HttpLoggingInterceptor()
-        loggingInterceptor.level = if (DEBUG) Level.BODY else Level.NONE
+@Module
+@InstallIn(SingletonComponent::class)
+object NetworkModule {
 
-        val okHttpClient = OkHttpClient().newBuilder()
+    @Singleton
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class InterceptorOkHttpClient
+
+    @Singleton
+    @Provides
+    fun provideApiService(
+        // Potential dependencies of this type
+        @InterceptorOkHttpClient okHttpClient: OkHttpClient
+    ): ApiService {
+        return Retrofit.Builder()
+            .baseUrl("https://localhost/")
+            .addConverterFactory(MoshiConverterFactory.create())
+            .client(okHttpClient)
+            .build()
+            .create(ApiService::class.java)
+    }
+
+    @Singleton
+    @InterceptorOkHttpClient
+    @Provides
+    fun provideOkHttpClient(
+        @ApplicationContext context: Context,
+        userPrefDataSource: UserPrefDataSource
+    ): OkHttpClient {
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            if (BuildConfig.DEBUG) {
+                level = HttpLoggingInterceptor.Level.BODY
+            }
+        }
+
+        return OkHttpClient().newBuilder()
             .addInterceptor(CacheInterceptor(context))
             .addInterceptor(TokenInterceptor(userPrefDataSource.tokenFlow))
             .addInterceptor(loggingInterceptor)
@@ -44,14 +79,6 @@ object ApiClient {
             .readTimeout(20, TimeUnit.SECONDS)
             .writeTimeout(20, TimeUnit.SECONDS)
             .build()
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://localhost/")
-            .addConverterFactory(MoshiConverterFactory.create())
-            .client(okHttpClient)
-            .build()
-
-        return retrofit.create(ApiService::class.java)
     }
 
     class CacheInterceptor(private val context: Context) : Interceptor {
@@ -100,35 +127,4 @@ object ApiClient {
             return chain.proceed(request)
         }
     }
-}
-
-
-fun Context.isInternetAvailable(): Boolean {
-    var result = false
-    val connectivityManager =
-        getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        val networkCapabilities = connectivityManager.activeNetwork ?: return false
-        val actNw =
-            connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
-        result = when {
-            actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-            actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-            actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-            else -> false
-        }
-    } else {
-        connectivityManager.run {
-            connectivityManager.activeNetworkInfo?.run {
-                result = when (type) {
-                    ConnectivityManager.TYPE_WIFI -> true
-                    ConnectivityManager.TYPE_MOBILE -> true
-                    ConnectivityManager.TYPE_ETHERNET -> true
-                    else -> false
-                }
-            }
-        }
-    }
-
-    return result
 }

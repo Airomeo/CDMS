@@ -8,10 +8,13 @@ import app.i.cdms.data.model.Result
 import app.i.cdms.repository.team.TeamRepository
 import app.i.cdms.utils.BaseEvent
 import app.i.cdms.utils.EventBus
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TeamViewModel(private val teamRepository: TeamRepository) : ViewModel() {
+@HiltViewModel
+class TeamViewModel @Inject constructor(private val teamRepository: TeamRepository) : ViewModel() {
 
     private val _filter = MutableStateFlow(AgentFilter())
     val filter = _filter.asStateFlow()
