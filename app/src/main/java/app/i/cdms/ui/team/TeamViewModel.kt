@@ -30,7 +30,7 @@ class TeamViewModel @Inject constructor(private val teamRepository: TeamReposito
         getMyTeam(1, 9999)
     }
 
-    private fun getMyTeam(pageNum: Int, pageSize: Int) {
+    fun getMyTeam(pageNum: Int, pageSize: Int) {
         viewModelScope.launch {
             EventBus.produceEvent(BaseEvent.Loading)
             val result = teamRepository.getMyTeam(pageNum, pageSize)
@@ -66,14 +66,6 @@ class TeamViewModel @Inject constructor(private val teamRepository: TeamReposito
 
     fun search(agentFilter: AgentFilter) {
         _filter.value = agentFilter
-    }
-
-    fun updateAgentBalanceUIData(newBalance: Float, userId: Int) {
-        myTeam.value ?: return
-        val records = myTeam.value!!.records.toMutableList()
-        val index = records.indexOfFirst { it.userId == userId }
-        records[index] = records[index].copy(accountBalance = newBalance)
-        _myTeam.value = myTeam.value!!.copy(records = records)
     }
 
     fun batchUpdateChannel() {

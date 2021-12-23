@@ -36,18 +36,38 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
 
         agent = requireArguments().get("agent") as Agent
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                teamViewModel.myTeam.collectLatest { myTeam ->
+                    myTeam ?: return@collectLatest
+                    agent = myTeam.records.find {
+                        it.userId == agent.userId
+                    }!!
+                    with(binding) {
+                        tvUsername.text = agent.userName
+                        tvId.text = getString(R.string.my_info_id, agent.userId.toString())
+                        tvBalance.text =
+                            getString(R.string.my_info_balance, agent.accountBalance.toString())
+                        tvEarns.text = getString(R.string.my_info_earns, agent.earns.toString())
+                        tvChannelCount.text =
+                            getString(R.string.agent_channel_count, agent.channelCount.toString())
+                        tvYto.text =
+                            getString(
+                                R.string.agent_yto_order_count,
+                                agent.ytoOrderCount.toString()
+                            )
+                        tvSto.text =
+                            getString(
+                                R.string.agent_sto_order_count,
+                                agent.stoOrderCount.toString()
+                            )
+                        tvJd.text =
+                            getString(R.string.agent_jd_order_count, agent.jdOrderCount.toString())
+                    }
+                }
+            }
+        }
         with(binding) {
-            tvUsername.text = agent.userName
-            tvId.text = getString(R.string.my_info_id, agent.userId.toString())
-            tvBalance.text = getString(R.string.my_info_balance, agent.accountBalance.toString())
-            tvEarns.text = getString(R.string.my_info_earns, agent.earns.toString())
-            tvChannelCount.text =
-                getString(R.string.agent_channel_count, agent.channelCount.toString())
-            tvYto.text =
-                getString(R.string.agent_yto_order_count, agent.ytoOrderCount.toString())
-            tvSto.text =
-                getString(R.string.agent_sto_order_count, agent.stoOrderCount.toString())
-            tvJd.text = getString(R.string.agent_jd_order_count, agent.jdOrderCount.toString())
             tvFirstCommission.text =
                 getString(R.string.first_commission, sldFirstCommission.value.toString())
             tvAdditionalCommission.text =
@@ -80,15 +100,7 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
                                 R.string.agent_transfer_success,
                                 Toast.LENGTH_SHORT
                             ).show()
-                            binding.tvBalance.text =
-                                getString(
-                                    R.string.my_info_balance,
-                                    (agent.accountBalance + it.changeAmount).toString()
-                                )
-                            teamViewModel.updateAgentBalanceUIData(
-                                it.changeAmount + agent.accountBalance,
-                                agent.userId
-                            )
+                            teamViewModel.getMyTeam(1, 9999)
                         }
                         is AgentUiState.WithdrawSuccess -> {
                             Toast.makeText(
@@ -96,9 +108,7 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
                                 R.string.agent_withdraw_success,
                                 Toast.LENGTH_SHORT
                             ).show()
-                            binding.tvBalance.text =
-                                getString(R.string.my_info_balance, "0.00")
-                            teamViewModel.updateAgentBalanceUIData(0F, agent.userId)
+                            teamViewModel.getMyTeam(1, 9999)
                         }
                         is AgentUiState.UpdateChannelSuccess -> {
                             Toast.makeText(
@@ -106,6 +116,7 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
                                 it.msg,
                                 Toast.LENGTH_SHORT
                             ).show()
+                            teamViewModel.getMyTeam(1, 9999)
                         }
                     }
                 }
