@@ -23,11 +23,11 @@ class AgentViewModel @Inject constructor(private val agentRepository: AgentRepos
         viewModelScope.launch {
             EventBus.produceEvent(BaseEvent.Loading)
             val result = agentRepository.withdraw(userId)
-            EventBus.produceEvent(BaseEvent.None)
             if (result is Result.Success) {
                 when (result.data.code) {
                     200 -> {
                         _uiState.emit(AgentUiState.WithdrawSuccess)
+                        EventBus.produceEvent(BaseEvent.None)
                     }
                     401 -> {
                         EventBus.produceEvent(BaseEvent.NeedLogin)
@@ -54,10 +54,10 @@ class AgentViewModel @Inject constructor(private val agentRepository: AgentRepos
             val result = agentRepository.transfer(
                 toUserId, userName, remark, recordType, changeAmount
             )
-            EventBus.produceEvent(BaseEvent.None)
             if (result is Result.Success) {
                 when (result.data.code) {
                     200 -> {
+                        EventBus.produceEvent(BaseEvent.None)
                         _uiState.emit(AgentUiState.TransferSuccess(changeAmount))
                     }
                     401 -> {
@@ -85,10 +85,10 @@ class AgentViewModel @Inject constructor(private val agentRepository: AgentRepos
                 firstCommission,
                 additionalCommission
             )
-            EventBus.produceEvent(BaseEvent.None)
             if (result is Result.Success) {
                 when (result.data.errorCode) {
                     200 -> {
+                        EventBus.produceEvent(BaseEvent.None)
                         _uiState.emit(AgentUiState.UpdateChannelSuccess(result.data.errorMessage))
                     }
                     401 -> {

@@ -34,11 +34,11 @@ class TeamViewModel @Inject constructor(private val teamRepository: TeamReposito
         viewModelScope.launch {
             EventBus.produceEvent(BaseEvent.Loading)
             val result = teamRepository.getMyTeam(pageNum, pageSize)
-            EventBus.produceEvent(BaseEvent.None)
             if (result is Result.Success) {
                 when (result.data.code) {
                     200 -> {
                         result.data.data?.let {
+                            EventBus.produceEvent(BaseEvent.None)
                             _myTeam.emit(it)
                         }
                     }
@@ -72,7 +72,6 @@ class TeamViewModel @Inject constructor(private val teamRepository: TeamReposito
         viewModelScope.launch {
             EventBus.produceEvent(BaseEvent.Loading)
             val result = teamRepository.batchUpdateChannel()
-            EventBus.produceEvent(BaseEvent.None)
             if (result is Result.Success) {
                 when (result.data.errorCode) {
                     200 -> {

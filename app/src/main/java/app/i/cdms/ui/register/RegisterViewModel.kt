@@ -35,11 +35,11 @@ class RegisterViewModel @Inject constructor(
         viewModelScope.launch {
             EventBus.produceEvent(BaseEvent.Loading)
             val result = registerRepository.register(username, password, phone)
-            EventBus.produceEvent(BaseEvent.None)
             if (result is Result.Success) {
                 when (result.data.code) {
                     200 -> {
                         _uiState.emit(RegisterUiState.RegisterSuccess(result.data.msg))
+                        EventBus.produceEvent(BaseEvent.None)
                         flag = true
                     }
                     401 -> {
@@ -71,10 +71,10 @@ class RegisterViewModel @Inject constructor(
                     firstCommission,
                     additionalCommission
                 )
-                EventBus.produceEvent(BaseEvent.None)
                 if (result is Result.Success) {
                     when (result.data.errorCode) {
                         200 -> {
+                            EventBus.produceEvent(BaseEvent.None)
                             _uiState.emit(RegisterUiState.UpdateChannelSuccess(result.data.errorMessage))
                         }
                         401 -> {

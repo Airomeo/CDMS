@@ -32,11 +32,11 @@ class HomeViewModel @Inject constructor(
             // can be launched in a separate asynchronous job
             EventBus.produceEvent(BaseEvent.Loading)
             val result = homeRepository.getMyInfo()
-            EventBus.produceEvent(BaseEvent.None)
             if (result is Result.Success) {
                 when (result.data.code) {
                     200 -> {
                         result.data.data?.let {
+                            EventBus.produceEvent(BaseEvent.None)
                             _myInfo.value = it
                             updateMyInfo(it)
                         }

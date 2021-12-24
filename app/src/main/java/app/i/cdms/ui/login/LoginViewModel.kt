@@ -40,11 +40,11 @@ class LoginViewModel @Inject constructor(
             // can be launched in a separate asynchronous job
             EventBus.produceEvent(BaseEvent.Loading)
             val result = loginRepository.getCaptcha()
-            EventBus.produceEvent(BaseEvent.None)
             if (result is Result.Success) {
                 when (result.data.code) {
                     200 -> {
                         result.data.data?.let {
+                            EventBus.produceEvent(BaseEvent.None)
                             captchaData = it
                             _uiState.emit(LoginUiState.GetCaptchaSuccessful(it))
                         }
@@ -53,6 +53,7 @@ class LoginViewModel @Inject constructor(
                         EventBus.produceEvent(BaseEvent.NeedLogin)
                     }
                     else -> {
+                        EventBus.produceEvent(BaseEvent.None)
                         _uiState.emit(LoginUiState.GetCaptchaFailed(result.data))
                     }
                 }
@@ -68,11 +69,11 @@ class LoginViewModel @Inject constructor(
             val uuid = captchaData?.uuid ?: return@launch
             EventBus.produceEvent(BaseEvent.Loading)
             val result = loginRepository.login(username, password, captcha, uuid)
-            EventBus.produceEvent(BaseEvent.None)
             if (result is Result.Success) {
                 when (result.data.code) {
                     200 -> {
                         result.data.data?.let {
+                            EventBus.produceEvent(BaseEvent.None)
                             _uiState.emit(LoginUiState.LoginSuccessful(it))
                         }
                     }
@@ -80,6 +81,7 @@ class LoginViewModel @Inject constructor(
                         EventBus.produceEvent(BaseEvent.NeedLogin)
                     }
                     else -> {
+                        EventBus.produceEvent(BaseEvent.None)
                         _uiState.emit(LoginUiState.LoginFailed(result.data))
                     }
                 }
