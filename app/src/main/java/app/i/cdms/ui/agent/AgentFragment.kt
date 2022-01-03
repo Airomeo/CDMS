@@ -63,6 +63,11 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
                             )
                         tvJd.text =
                             getString(R.string.agent_jd_order_count, agent.jdOrderCount.toString())
+                        tvDpk.text =
+                            getString(
+                                R.string.agent_dpk_order_count,
+                                agent.dopOrderCount.toString()
+                            )
                     }
                 }
             }
