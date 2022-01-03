@@ -78,10 +78,19 @@
         app:layout_constraintTop_toTopOf="@+id/tv_balance" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/channel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Clear Token"
+        android:text="渠道明细"
+        app:layout_constraintBottom_toTopOf="@+id/logout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="退出登录"
         app:layout_constraintBottom_toTopOf="@+id/text_home"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -122,8 +122,9 @@ interface ApiService {
 
     @GET
     suspend fun myPrice(
-        @Url url: String = Constant.API_MY_PRICE
-    ): Response<ApiResult<ArrayList<MyPriceItem>>>
+        @Url url: String = Constant.API_MY_PRICE,
+        @Query("userId") userId: Int?
+    ): Response<ApiResult<List<Channel>>>
 
     @POST
     suspend fun updateChannelByUsername(

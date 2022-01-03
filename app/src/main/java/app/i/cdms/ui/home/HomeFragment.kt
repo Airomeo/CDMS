@@ -36,7 +36,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             findNavController().navigate(R.id.loginFragment)
         }
 
-        binding.button3.setOnClickListener {
+        binding.channel.setOnClickListener {
+            findNavController().navigate(R.id.channelFragment)
+        }
+
+        binding.logout.setOnClickListener {
             mainViewModel.updateToken(Token(System.currentTimeMillis().toString()))
         }
 

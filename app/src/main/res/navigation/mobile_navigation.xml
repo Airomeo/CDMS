@@ -33,6 +33,11 @@
         android:label="@string/title_login"
         tools:layout="@layout/fragment_login" />
 
+    <fragment
+        android:id="@+id/channelFragment"
+        android:name="app.i.cdms.ui.channel.ChannelFragment"
+        android:label="@string/title_channel"
+        tools:layout="@layout/fragment_channel" />
     <navigation
         android:id="@+id/navigation_team"
         app:startDestination="@id/teamFragment">
@@ -52,7 +57,11 @@
             android:id="@+id/agentFragment"
             android:name="app.i.cdms.ui.agent.AgentFragment"
             android:label="@string/title_agent"
-            tools:layout="@layout/fragment_agent" />
+            tools:layout="@layout/fragment_agent">
+            <action
+                android:id="@+id/action_agentFragment_to_channelFragment"
+                app:destination="@id/channelFragment" />
+        </fragment>
         <fragment
             android:id="@+id/registerFragment"
             android:name="app.i.cdms.ui.register.RegisterFragment"

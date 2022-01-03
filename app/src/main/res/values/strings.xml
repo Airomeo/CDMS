@@ -9,6 +9,7 @@
     <string name="title_register">Register</string>
     <string name="title_team">Team</string>
     <string name="title_agent">Agent</string>
+    <string name="title_channel">Channel</string>
     <!-- Strings related to login -->
     <string name="prompt_account">Account</string>
     <string name="prompt_password">Password</string>
@@ -36,6 +37,7 @@
     <string name="first_weight">首重</string>
     <string name="additional_weight">续重</string>
     <string name="agent_channel_count">渠道数\n%s</string>
+    <string name="agent_dpk_order_count">德邦日单\n%s</string>
     <string name="agent_jd_order_count">京东日单\n%s</string>
     <string name="agent_sto_order_count">申通日单\n%s</string>
     <string name="agent_yto_order_count">圆通日单\n%s</string>
@@ -84,4 +86,6 @@
     <string name="action_delete_all_completed">删除完成项</string>
     <string name="action_search">搜索</string>
     <string name="action_batch_update_channel">批量更新渠道</string>
+    <string name="price">¥%s</string>
+    <string name="weight">%skg</string>
 </resources>

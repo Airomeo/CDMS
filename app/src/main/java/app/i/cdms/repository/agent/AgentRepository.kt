@@ -1,6 +1,7 @@
 package app.i.cdms.repository.agent
 
 import app.i.cdms.data.model.ApiResult
+import app.i.cdms.data.model.Channel
 import app.i.cdms.data.model.Result
 import app.i.cdms.data.model.SCFResult
 import app.i.cdms.data.source.remote.agent.AgentDataSource
@@ -40,5 +41,9 @@ class AgentRepository @Inject constructor(private val dataSource: AgentDataSourc
         additionalCommission: Float
     ): Result<SCFResult> {
         return dataSource.updateChannelByUserId(userId, firstCommission, additionalCommission)
+    }
+
+    suspend fun getUserPrice(userId: Int?): Result<ApiResult<List<Channel>>> {
+        return dataSource.getUserPrice(userId)
     }
 }

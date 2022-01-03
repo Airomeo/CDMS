@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class MyPriceItem(
+data class Channel(
     @Json(name = "addPrice")
     val addPrice: String,
     @Json(name = "backType")

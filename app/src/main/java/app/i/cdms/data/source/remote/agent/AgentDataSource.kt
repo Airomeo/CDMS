@@ -1,9 +1,7 @@
 package app.i.cdms.data.source.remote.agent
 
 import app.i.cdms.api.ApiService
-import app.i.cdms.data.model.ApiResult
-import app.i.cdms.data.model.Result
-import app.i.cdms.data.model.SCFResult
+import app.i.cdms.data.model.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
@@ -105,6 +103,38 @@ class AgentDataSource @Inject constructor(private val service: ApiService) {
             }
         } catch (e: Throwable) {
             Result.Error(IOException("updateChannelByUserId fail", e))
+        }
+    }
+
+    suspend fun getUserPrice(userId: Int?): Result<ApiResult<List<Channel>>> {
+        return try {
+            val response = service.myPrice(userId = userId)
+            if (response.isSuccessful && response.body() != null) {
+                Result.Success(response.body()!!)
+            } else {
+                // TODO: 2021/10/19
+                Result.Error(Exception(response.toString()))
+            }
+        } catch (e: Throwable) {
+            Result.Error(IOException("Error getUserPrice" + e.localizedMessage, e))
+        }
+    }
+
+    suspend fun getUserConfig(userId: Int): Result<UserConfigResult> {
+        return try {
+            val payload = JSONObject()
+                .put("userId", userId)
+                .toString()
+                .toRequestBody("application/json".toMediaType())
+            val response = service.getUserConfig(payload = payload)
+            if (response.isSuccessful && response.body() != null) {
+                Result.Success(response.body()!!)
+            } else {
+                // TODO: 2021/10/19
+                Result.Error(Exception(response.toString()))
+            }
+        } catch (e: Throwable) {
+            Result.Error(IOException("Error getUserConfig" + e.localizedMessage, e))
         }
     }
 }

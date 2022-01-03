@@ -209,15 +209,25 @@
         app:layout_constraintVertical_chainStyle="packed" />
 
     <Button
+        android:id="@+id/btn_channel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="渠道明细"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_update_channel"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <Button
         android:id="@+id/btn_transfer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/agent_transfer"
         app:layout_constraintBottom_toTopOf="@+id/btn_withdraw"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_update_channel" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_channel" />
 
     <Button
         android:id="@+id/btn_withdraw"
@@ -225,7 +235,6 @@
         android:layout_height="wrap_content"
         android:text="@string/agent_withdraw"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_transfer" />
 
