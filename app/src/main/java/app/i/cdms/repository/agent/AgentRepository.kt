@@ -1,9 +1,6 @@
 package app.i.cdms.repository.agent
 
-import app.i.cdms.data.model.ApiResult
-import app.i.cdms.data.model.Channel
-import app.i.cdms.data.model.Result
-import app.i.cdms.data.model.SCFResult
+import app.i.cdms.data.model.*
 import app.i.cdms.data.source.remote.agent.AgentDataSource
 import javax.inject.Inject
 
@@ -29,21 +26,41 @@ class AgentRepository @Inject constructor(private val dataSource: AgentDataSourc
 
     suspend fun updateChannelByUsername(
         username: String,
+        firstWeight: Float,
         firstCommission: Float,
-        additionalCommission: Float
+        addCommission: Float,
+        limitAddCommission: Float
     ): Result<SCFResult> {
-        return dataSource.updateChannelByUsername(username, firstCommission, additionalCommission)
+        return dataSource.updateChannelByUsername(
+            username,
+            firstWeight,
+            firstCommission,
+            addCommission,
+            limitAddCommission
+        )
     }
 
     suspend fun updateChannelByUserId(
         userId: Int,
+        firstWeight: Float,
         firstCommission: Float,
-        additionalCommission: Float
+        addCommission: Float,
+        doConfig: Int
     ): Result<SCFResult> {
-        return dataSource.updateChannelByUserId(userId, firstCommission, additionalCommission)
+        return dataSource.updateChannelByUserId(
+            userId,
+            firstWeight,
+            firstCommission,
+            addCommission,
+            doConfig
+        )
     }
 
     suspend fun getUserPrice(userId: Int?): Result<ApiResult<List<Channel>>> {
         return dataSource.getUserPrice(userId)
+    }
+
+    suspend fun getUserConfig(userId: Int): Result<UserConfigResult> {
+        return dataSource.getUserConfig(userId)
     }
 }

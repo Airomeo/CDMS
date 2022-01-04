@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import app.i.cdms.R
 import app.i.cdms.data.model.Agent
 import app.i.cdms.databinding.AgentTransferBinding
+import app.i.cdms.databinding.DialogChannelConfigBinding
 import app.i.cdms.databinding.FragmentAgentBinding
 import app.i.cdms.ui.team.TeamViewModel
 import com.google.android.material.chip.Chip
@@ -37,6 +38,7 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
         _binding = FragmentAgentBinding.bind(view)
 
         agent = requireArguments().get("agent") as Agent
+        agentViewModel.getUserConfig(agent.userId)
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -75,17 +77,6 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
             }
         }
         with(binding) {
-            tvFirstCommission.text =
-                getString(R.string.first_commission, sldFirstCommission.value.toString())
-            tvAdditionalCommission.text =
-                getString(R.string.additional_commission, sldAdditionalCommission.value.toString())
-            sldFirstCommission.addOnChangeListener { slider, value, fromUser ->
-                tvFirstCommission.text = getString(R.string.first_commission, value.toString())
-            }
-            sldAdditionalCommission.addOnChangeListener { slider, value, fromUser ->
-                tvAdditionalCommission.text =
-                    getString(R.string.additional_commission, value.toString())
-            }
             btnUpdateChannel.setOnClickListener {
                 showUpdateDialog()
             }
@@ -111,6 +102,7 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
                                 R.string.agent_transfer_success,
                                 Toast.LENGTH_SHORT
                             ).show()
+                            // TODO: 2022/1/4 单独加载该用户数据
                             teamViewModel.getMyTeam(1, 9999)
                         }
                         is AgentUiState.WithdrawSuccess -> {
@@ -119,6 +111,7 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
                                 R.string.agent_withdraw_success,
                                 Toast.LENGTH_SHORT
                             ).show()
+                            // TODO: 2022/1/4 单独加载该用户数据
                             teamViewModel.getMyTeam(1, 9999)
                         }
                         is AgentUiState.UpdateChannelSuccess -> {
@@ -127,26 +120,81 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
                                 it.msg,
                                 Toast.LENGTH_SHORT
                             ).show()
+                            // TODO: 2022/1/4 单独加载该用户数据
                             teamViewModel.getMyTeam(1, 9999)
                         }
                     }
                 }
             }
         }
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                agentViewModel.userConfig.collectLatest {
+                    binding.tvFirstWeight.text = getString(
+                        R.string.config_first_weight,
+                        (it?.firstWeight ?: 1.0F).toString()
+                    )
+                    binding.tvFirstCommission.text = getString(
+                        R.string.config_first_commission,
+                        (it?.firstCommission ?: 0.5F).toString()
+                    )
+                    binding.tvAddCommission.text = getString(
+                        R.string.config_add_commission,
+                        (it?.addCommission ?: 0.2F).toString()
+                    )
+                }
+            }
+        }
     }
 
     private fun showUpdateDialog() {
+        val b = DialogChannelConfigBinding.inflate(layoutInflater, null, false)
+        with(b) {
+            tvFirstWeight.text = binding.tvFirstWeight.text
+            tvFirstCommission.text = binding.tvFirstCommission.text
+            tvAddCommission.text = binding.tvAddCommission.text
+            val config = agentViewModel.userConfig.value
+            sldFirstWeight.value = config?.firstWeight ?: 1.0F
+            sldFirstCommission.value = config?.firstCommission ?: 0.5F
+            sldAddCommission.value = config?.addCommission ?: 0.2F
+            sldFirstWeight.addOnChangeListener { slider, value, fromUser ->
+                tvFirstWeight.text =
+                    getString(R.string.config_first_weight, sldFirstWeight.value.toString())
+            }
+            sldFirstCommission.addOnChangeListener { slider, value, fromUser ->
+                tvFirstCommission.text =
+                    getString(R.string.config_first_commission, value.toString())
+            }
+            sldAddCommission.addOnChangeListener { slider, value, fromUser ->
+                tvAddCommission.text =
+                    getString(R.string.config_add_commission, value.toString())
+            }
+        }
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.dialog_title_warning)
+            .setView(b.root)
             .setMessage(getString(R.string.agent_dialog_update_channel_message, agent.userName))
             .setPositiveButton(
                 R.string.dialog_positive_text
             ) { dialog, which ->
+                val userConfig = agentViewModel.userConfig.value
+                val doConfig = if (userConfig == null) {
+                    1 // addUserConfig
+                } else if (userConfig.firstWeight != b.sldFirstWeight.value || userConfig.firstCommission != b.sldFirstCommission.value || userConfig.addCommission != b.sldAddCommission.value) {
+                    2 // updateUserConfig
+                } else {
+                    0 // Do Nothing
+                }
                 agentViewModel.updateChannelByUserId(
                     agent.userId,
-                    binding.sldFirstCommission.value,
-                    binding.sldAdditionalCommission.value
+                    b.sldFirstWeight.value,
+                    b.sldFirstCommission.value,
+                    b.sldAddCommission.value,
+                    doConfig
                 )
+                binding.tvFirstWeight.text = b.tvFirstWeight.text
+                binding.tvFirstCommission.text = b.tvFirstCommission.text
+                binding.tvAddCommission.text = b.tvAddCommission.text
             }
             .setNegativeButton(R.string.dialog_negative_text, null)
             .show()

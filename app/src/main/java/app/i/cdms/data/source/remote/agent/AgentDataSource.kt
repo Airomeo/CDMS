@@ -57,13 +57,17 @@ class AgentDataSource @Inject constructor(private val service: ApiService) {
     // 根据用户名配置价格
     suspend fun updateChannelByUsername(
         username: String,
+        firstWeight: Float,
         firstCommission: Float,
-        additionalCommission: Float
+        addCommission: Float,
+        limitAddCommission: Float
     ): Result<SCFResult> {
         val payload = JSONObject()
             .put("username", username)
+            .put("firstWeight", firstWeight)
             .put("firstCommission", firstCommission)
-            .put("additionalCommission", additionalCommission)
+            .put("addCommission", addCommission)
+            .put("limitAddCommission", limitAddCommission)
             .toString()
             .toRequestBody("application/json".toMediaType())
 
@@ -83,13 +87,17 @@ class AgentDataSource @Inject constructor(private val service: ApiService) {
     // 根据用户ID配置价格
     suspend fun updateChannelByUserId(
         userId: Int,
+        firstWeight: Float,
         firstCommission: Float,
-        additionalCommission: Float
+        addCommission: Float,
+        doConfig: Int
     ): Result<SCFResult> {
         val payload = JSONObject()
             .put("userId", userId)
+            .put("firstWeight", firstWeight)
             .put("firstCommission", firstCommission)
-            .put("additionalCommission", additionalCommission)
+            .put("addCommission", addCommission)
+            .put("doConfig", doConfig) // 0:Nothing, 1:addUserConfig, 2:updateUserConfig
             .toString()
             .toRequestBody("application/json".toMediaType())
 

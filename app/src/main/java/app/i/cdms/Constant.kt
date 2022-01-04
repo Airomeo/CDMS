@@ -52,13 +52,20 @@ object Constant {
     val API_REMOVE_PRICE = "$API/prod-api/wl/home/removePrice"
     val API_MY_PRICE = "$API/prod-api/wl/home/myPrice"
     val API_TRANSFER = "$API/prod-api/wl/userAccount/transfer"
-    private const val API_SCF_BASE =
-        "https://service-icw3n5t3-1256871713.sh.apigw.tencentcs.com/release"
     private const val API_TCB_BASE =
         "https://i-7g9v864y639e8b0a-1256871713.ap-shanghai.app.tcloudbase.com/express"
-    const val API_UPDATE_CHANNEL_BY_USERNAME = "$API_SCF_BASE/YIDA/updateChannelByUsername"
-    const val API_UPDATE_CHANNEL_BY_USER_ID = "$API_SCF_BASE/YIDA/updateChannelByUserId"
-    const val API_BATCH_UPDATE_CHANNEL = "$API_SCF_BASE/YIDA/batchUpdateChannel"
+    val API_UPDATE_CHANNEL_BY_USERNAME = "$API_SCF_BASE/YIDA/updateChannelByUsername"
+    val API_UPDATE_CHANNEL_BY_USER_ID = "$API_SCF_BASE/YIDA/updateChannelByUserId"
+    val API_BATCH_UPDATE_CHANNEL = "$API_SCF_BASE/YIDA/batchUpdateChannel"
+    const val API_GET_USER_CONFIG = "$API_TCB_BASE/channel/getUserConfig"
+
+    private val API_SCF_BASE: String
+        get() = "https://service-icw3n5t3-1256871713.sh.apigw.tencentcs.com/" + when (BuildConfig.BUILD_TYPE) {
+            "debug" -> "test"
+            "staging" -> Service.PRE.HOST
+            "release" -> "release"
+            else -> "release"
+        }
 
     private val HOST: String
         get() = when {

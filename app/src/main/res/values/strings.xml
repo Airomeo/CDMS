@@ -31,7 +31,7 @@
     <string name="my_team_all_users">全部用户：%s位</string>
     <string name="my_team_paying_users">充值用户：%s位</string>
     <string name="my_team_agent_balance">余额：%s</string>
-    <string name="my_team_batch_update_channel_message">将会按预定规则更新所有用户渠道价格，请于2分钟后检查结果。</string>
+    <string name="my_team_batch_update_channel_message">将会根据每个用户的“配置信息”，批量配置所有用户的所有渠道！！！适合在官方渠道变更时使用，免去一个个设置的麻烦。\n可在每个下级信息页面单独修改“配置信息”，修改后将会保存到云端。\n若未配置，将使用默认配置（首重+ ¥0.5续重+ ¥0.2）。\n此过程耗时较长，请于1分钟后查看结果。是否确认执行？</string>
     <string name="first_commission">首重抽佣\n+%s</string>
     <string name="additional_commission">续重抽佣\n+%s</string>
     <string name="first_weight">首重</string>
@@ -47,14 +47,15 @@
     <string name="agent_dialog_transfer">转账</string>
     <string name="agent_transfer">转账</string>
     <string name="agent_transfer_success">转账成功</string>
-    <string name="agent_dialog_update_channel_message">是否确认配置：%s的渠道价格？</string>
+    <string name="agent_dialog_update_channel_message">将会根据下面的“配置信息”，批量添加新渠道并更新旧渠道。适合新开户后或调整下级抽佣时使用，免去一个个设置的麻烦。\n是否确认配置：%s的渠道？</string>
     <string name="agent_dialog_withdraw">清账</string>
     <string name="agent_dialog_withdraw_message">是否确认清零账户：%s？\n余额将退回您的账户！</string>
     <string name="agent_withdraw">清账</string>
     <string name="agent_withdraw_success">清账成功</string>
-    <string name="agent_set_price">配置渠道价格</string>
+    <string name="agent_update_channel">配置渠道信息</string>
+    <string name="agent_channel_detail">渠道明细</string>
     <string name="register_and_set_channel">开户并配置渠道</string>
-    <string name="agent_update_commission">设置佣金</string>
+    <string name="agent_channel_config">该用户当前的渠道配置信息</string>
     <string name="transfer_label_amount">金额</string>
     <string name="transfer_label_amount_prefix">¥</string>
     <string name="transfer_label_remark">备注</string>
@@ -88,4 +89,9 @@
     <string name="action_batch_update_channel">批量更新渠道</string>
     <string name="price">¥%s</string>
     <string name="weight">%skg</string>
+    <string name="config_first_weight">首重定义：%skg</string>
+    <string name="config_first_commission">首重抽佣：+ ¥%s</string>
+    <string name="config_add_commission">续重抽佣：+ ¥%s</string>
+    <string name="config_limit_first_commission">超过限重后的首重抽佣：+ ¥%s</string>
+    <string name="config_limit_add_commission">超过限重后的续重抽佣：+ ¥%s</string>
 </resources>

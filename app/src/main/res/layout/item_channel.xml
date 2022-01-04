@@ -89,7 +89,7 @@
         app:layout_constraintTop_toTopOf="@+id/view2" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/zero"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0kg"
@@ -115,7 +115,7 @@
         app:layout_constraintTop_toBottomOf="@+id/view3" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="···"

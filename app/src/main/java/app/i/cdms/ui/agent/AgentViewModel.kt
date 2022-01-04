@@ -3,12 +3,15 @@ package app.i.cdms.ui.agent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.i.cdms.data.model.Result
+import app.i.cdms.data.model.UserConfig
 import app.i.cdms.repository.agent.AgentRepository
 import app.i.cdms.utils.BaseEvent
 import app.i.cdms.utils.EventBus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,6 +21,8 @@ class AgentViewModel @Inject constructor(private val agentRepository: AgentRepos
 
     private val _uiState = MutableSharedFlow<AgentUiState>()
     val uiState = _uiState.asSharedFlow()
+    private val _userConfig = MutableStateFlow<UserConfig?>(null)
+    val userConfig = _userConfig.asStateFlow()
 
     fun withdraw(userId: Int) {
         viewModelScope.launch {
@@ -75,15 +80,19 @@ class AgentViewModel @Inject constructor(private val agentRepository: AgentRepos
 
     fun updateChannelByUserId(
         userId: Int,
+        firstWeight: Float,
         firstCommission: Float,
-        additionalCommission: Float
+        addCommission: Float,
+        doConfig: Int
     ) {
         viewModelScope.launch {
             EventBus.produceEvent(BaseEvent.Loading)
             val result = agentRepository.updateChannelByUserId(
                 userId,
+                firstWeight,
                 firstCommission,
-                additionalCommission
+                addCommission,
+                doConfig
             )
             if (result is Result.Success) {
                 when (result.data.errorCode) {
@@ -97,6 +106,21 @@ class AgentViewModel @Inject constructor(private val agentRepository: AgentRepos
                     else -> {
                         EventBus.produceEvent(BaseEvent.Failed(result.data))
                     }
+                }
+            } else if (result is Result.Error) {
+                EventBus.produceEvent(BaseEvent.Error(result.exception))
+            }
+        }
+    }
+
+    fun getUserConfig(userId: Int) {
+        viewModelScope.launch {
+            EventBus.produceEvent(BaseEvent.Loading)
+            val result = agentRepository.getUserConfig(userId)
+            EventBus.produceEvent(BaseEvent.None)
+            if (result is Result.Success) {
+                if (result.data.data.isNotEmpty()) {
+                    _userConfig.emit(result.data.data[0])
                 }
             } else if (result is Result.Error) {
                 EventBus.produceEvent(BaseEvent.Error(result.exception))

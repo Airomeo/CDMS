@@ -142,4 +142,10 @@ interface ApiService {
     suspend fun batchUpdateChannel(
         @Url url: String = Constant.API_BATCH_UPDATE_CHANNEL
     ): Response<SCFResult>
+
+    @POST
+    suspend fun getUserConfig(
+        @Url url: String = Constant.API_GET_USER_CONFIG,
+        @Body payload: RequestBody
+    ): Response<UserConfigResult>
 }
