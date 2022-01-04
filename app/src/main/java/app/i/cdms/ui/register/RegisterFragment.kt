@@ -60,7 +60,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                                 it.msg,
                                 Toast.LENGTH_SHORT
                             ).show()
-                            teamViewModel.getMyTeam(1, 9999)
                         }
                     }
                 }

@@ -27,13 +27,13 @@ class TeamViewModel @Inject constructor(private val teamRepository: TeamReposito
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     init {
-        getMyTeam(1, 9999)
+        getMyTeam(1, 9999, null)
     }
 
-    fun getMyTeam(pageNum: Int, pageSize: Int) {
+    private fun getMyTeam(pageNum: Int, pageSize: Int, userName: String?) {
         viewModelScope.launch {
             EventBus.produceEvent(BaseEvent.Loading)
-            val result = teamRepository.getMyTeam(pageNum, pageSize)
+            val result = teamRepository.getMyTeam(pageNum, pageSize, userName)
             if (result is Result.Success) {
                 when (result.data.code) {
                     200 -> {
@@ -90,6 +90,35 @@ class TeamViewModel @Inject constructor(private val teamRepository: TeamReposito
                 } else {
                     EventBus.produceEvent(BaseEvent.Error(result.exception))
                 }
+            }
+        }
+    }
+
+    fun updateAgentInMyTeam(oldAgent: Agent) {
+        myTeam.value ?: return
+        val records = myTeam.value!!.records.toMutableList()
+        val index = records.indexOf(oldAgent)
+        viewModelScope.launch {
+            EventBus.produceEvent(BaseEvent.Loading)
+            val result = teamRepository.getMyTeam(index + 1, 1, null)
+            if (result is Result.Success) {
+                when (result.data.code) {
+                    200 -> {
+                        result.data.data?.let {
+                            EventBus.produceEvent(BaseEvent.None)
+                            records[index] = it.records.first()
+                            _myTeam.emit(myTeam.value!!.copy(records = records))
+                        }
+                    }
+                    401 -> {
+                        EventBus.produceEvent(BaseEvent.NeedLogin)
+                    }
+                    else -> {
+                        EventBus.produceEvent(BaseEvent.Failed(result.data))
+                    }
+                }
+            } else if (result is Result.Error) {
+                EventBus.produceEvent(BaseEvent.Error(result.exception))
             }
         }
     }

@@ -12,8 +12,12 @@ import javax.inject.Inject
  * 2021/10/26.
  */
 class TeamRepository @Inject constructor(private val dataSource: TeamDataSource) {
-    suspend fun getMyTeam(pageNum: Int, pageSize: Int): Result<ApiResult<MyTeam>> {
-        return dataSource.getMyTeam(pageNum, pageSize)
+    suspend fun getMyTeam(
+        pageNum: Int,
+        pageSize: Int,
+        userName: String?
+    ): Result<ApiResult<MyTeam>> {
+        return dataSource.getMyTeam(pageNum, pageSize, userName)
     }
 
     suspend fun batchUpdateChannel(): Result<SCFResult> {

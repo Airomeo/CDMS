@@ -54,7 +54,8 @@ interface ApiService {
     suspend fun myTeam(
         @Url url: String = Constant.API_MY_TEAM,
         @Query("pageNum") pageNum: Int,
-        @Query("pageSize") pageSize: Int
+        @Query("pageSize") pageSize: Int,
+        @Query("userName") userName: String?
     ): Response<ApiResult<MyTeam>>
 
     @GET

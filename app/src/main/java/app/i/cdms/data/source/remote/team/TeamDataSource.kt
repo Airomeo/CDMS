@@ -12,9 +12,14 @@ import javax.inject.Inject
  * Class that get my team members.
  */
 class TeamDataSource @Inject constructor(private val service: ApiService) {
-    suspend fun getMyTeam(pageNum: Int, pageSize: Int): Result<ApiResult<MyTeam>> {
+    suspend fun getMyTeam(
+        pageNum: Int,
+        pageSize: Int,
+        userName: String?
+    ): Result<ApiResult<MyTeam>> {
         return try {
-            val response = service.myTeam(pageNum = pageNum, pageSize = pageSize)
+            val response =
+                service.myTeam(pageNum = pageNum, pageSize = pageSize, userName = userName)
             if (response.isSuccessful && response.body() != null) {
                 Result.Success(response.body()!!)
             } else {

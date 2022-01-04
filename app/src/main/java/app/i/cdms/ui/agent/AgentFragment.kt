@@ -102,8 +102,7 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
                                 R.string.agent_transfer_success,
                                 Toast.LENGTH_SHORT
                             ).show()
-                            // TODO: 2022/1/4 单独加载该用户数据
-                            teamViewModel.getMyTeam(1, 9999)
+                            teamViewModel.updateAgentInMyTeam(agent)
                         }
                         is AgentUiState.WithdrawSuccess -> {
                             Toast.makeText(
@@ -111,8 +110,7 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
                                 R.string.agent_withdraw_success,
                                 Toast.LENGTH_SHORT
                             ).show()
-                            // TODO: 2022/1/4 单独加载该用户数据
-                            teamViewModel.getMyTeam(1, 9999)
+                            teamViewModel.updateAgentInMyTeam(agent)
                         }
                         is AgentUiState.UpdateChannelSuccess -> {
                             Toast.makeText(
@@ -120,8 +118,7 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
                                 it.msg,
                                 Toast.LENGTH_SHORT
                             ).show()
-                            // TODO: 2022/1/4 单独加载该用户数据
-                            teamViewModel.getMyTeam(1, 9999)
+                            teamViewModel.updateAgentInMyTeam(agent)
                         }
                     }
                 }
