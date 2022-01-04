@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import app.i.cdms.R
 import app.i.cdms.data.model.RegisterFormState
 import app.i.cdms.data.model.Result
-import app.i.cdms.repository.agent.AgentRepository
 import app.i.cdms.repository.register.RegisterRepository
 import app.i.cdms.utils.BaseEvent
 import app.i.cdms.utils.EventBus
@@ -20,8 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val registerRepository: RegisterRepository,
-    private val agentRepository: AgentRepository
+    private val registerRepository: RegisterRepository
 ) : ViewModel() {
 
     private val _registerForm = MutableLiveData<RegisterFormState>()
@@ -30,8 +28,7 @@ class RegisterViewModel @Inject constructor(
     private val _uiState = MutableSharedFlow<RegisterUiState>()
     val uiState = _uiState.asSharedFlow()
 
-    fun register(username: String, password: String, phone: String): Boolean {
-        var flag = false
+    fun register(username: String, password: String, phone: String) {
         viewModelScope.launch {
             EventBus.produceEvent(BaseEvent.Loading)
             val result = registerRepository.register(username, password, phone)
@@ -40,7 +37,6 @@ class RegisterViewModel @Inject constructor(
                     200 -> {
                         _uiState.emit(RegisterUiState.RegisterSuccess(result.data.msg))
                         EventBus.produceEvent(BaseEvent.None)
-                        flag = true
                     }
                     401 -> {
                         EventBus.produceEvent(BaseEvent.NeedLogin)
@@ -51,42 +47,6 @@ class RegisterViewModel @Inject constructor(
                 }
             } else if (result is Result.Error) {
                 EventBus.produceEvent(BaseEvent.Error(result.exception))
-            }
-        }
-        return flag
-    }
-
-    fun registerAndSetChannel(
-        username: String,
-        password: String,
-        phone: String,
-        firstCommission: Float,
-        additionalCommission: Float
-    ) {
-        if (register(username, password, phone)) {
-            viewModelScope.launch {
-                EventBus.produceEvent(BaseEvent.Loading)
-                val result = agentRepository.updateChannelByUsername(
-                    username,
-                    firstCommission,
-                    additionalCommission
-                )
-                if (result is Result.Success) {
-                    when (result.data.errorCode) {
-                        200 -> {
-                            EventBus.produceEvent(BaseEvent.None)
-                            _uiState.emit(RegisterUiState.UpdateChannelSuccess(result.data.errorMessage))
-                        }
-                        401 -> {
-                            EventBus.produceEvent(BaseEvent.NeedLogin)
-                        }
-                        else -> {
-                            EventBus.produceEvent(BaseEvent.Failed(result.data))
-                        }
-                    }
-                } else if (result is Result.Error) {
-                    EventBus.produceEvent(BaseEvent.Error(result.exception))
-                }
             }
         }
     }
@@ -120,5 +80,4 @@ class RegisterViewModel @Inject constructor(
 
 sealed class RegisterUiState {
     data class RegisterSuccess(val msg: String) : RegisterUiState()
-    data class UpdateChannelSuccess(val msg: String) : RegisterUiState()
 }

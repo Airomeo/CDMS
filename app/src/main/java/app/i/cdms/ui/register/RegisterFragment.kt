@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -61,14 +62,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                             ).show()
                             teamViewModel.getMyTeam(1, 9999)
                         }
-                        is RegisterUiState.UpdateChannelSuccess -> {
-                            Toast.makeText(
-                                requireContext(),
-                                it.msg,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            teamViewModel.getMyTeam(1, 9999)
-                        }
                     }
                 }
             }
@@ -94,34 +87,21 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         binding.username.addTextChangedListener(afterTextChangedListener)
         binding.password.addTextChangedListener(afterTextChangedListener)
         binding.phone.addTextChangedListener(afterTextChangedListener)
-        binding.tvFirstCommission.text =
-            getString(R.string.first_commission, binding.sldFirstCommission.value.toString())
-        binding.tvAdditionalCommission.text =
-            getString(
-                R.string.additional_commission,
-                binding.sldAdditionalCommission.value.toString()
-            )
-        binding.sldFirstCommission.addOnChangeListener { slider, value, fromUser ->
-            binding.tvFirstCommission.text = getString(R.string.first_commission, value.toString())
-        }
-        binding.sldAdditionalCommission.addOnChangeListener { slider, value, fromUser ->
-            binding.tvAdditionalCommission.text =
-                getString(R.string.additional_commission, value.toString())
+        binding.phone.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                registerViewModel.register(
+                    binding.username.text.toString(),
+                    binding.password.text.toString(),
+                    binding.phone.text.toString()
+                )
+            }
+            false
         }
         binding.button.setOnClickListener {
             registerViewModel.register(
                 binding.username.text.toString(),
                 binding.password.text.toString(),
                 binding.phone.text.toString()
-            )
-        }
-        binding.btnRegisterAndSetChannel.setOnClickListener {
-            registerViewModel.registerAndSetChannel(
-                binding.username.text.toString(),
-                binding.password.text.toString(),
-                binding.phone.text.toString(),
-                binding.sldFirstCommission.value,
-                binding.sldAdditionalCommission.value
             )
         }
     }
