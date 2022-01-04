@@ -1,41 +1,34 @@
 package app.i.cdms.ui.dashboard
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
+import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import app.i.cdms.Constant
+import app.i.cdms.R
 import app.i.cdms.databinding.FragmentDashboardBinding
 import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
-class DashboardFragment : Fragment() {
 
-    private lateinit var dashboardViewModel: DashboardViewModel
+@AndroidEntryPoint
+class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
+
+    private val dashboardViewModel: DashboardViewModel by viewModels()
     private var _binding: FragmentDashboardBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentDashboardBinding.bind(view)
 
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val textView: TextView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner, {
-            textView.text = it
-        })
-        return root
+        binding.webView.webViewClient = WebViewClient() // set the WebViewClient
+        binding.webView.settings.javaScriptEnabled = true
+        binding.webView.settings.loadsImagesAutomatically = true
+        binding.webView.loadUrl(Constant.API_DOC)
     }
 
     override fun onDestroyView() {

@@ -38,6 +38,7 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
         _binding = FragmentAgentBinding.bind(view)
 
         agent = requireArguments().get("agent") as Agent
+        // TODO: 2022/1/5 待优化，避免重复加载。 
         agentViewModel.getUserConfig(agent.userId)
 
         viewLifecycleOwner.lifecycleScope.launch {
