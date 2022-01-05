@@ -149,4 +149,14 @@ interface ApiService {
         @Url url: String = Constant.API_GET_USER_CONFIG,
         @Body payload: RequestBody
     ): Response<UserConfigResult>
+
+    @GET
+    @Headers(
+        "Accept: application/json, text/plain, */*",
+        "Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7"
+    )
+    suspend fun getNotice(
+        @Url url: String = Constant.API_NOTICE
+    ): Response<NoticeList>
+
 }

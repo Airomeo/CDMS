@@ -2,6 +2,7 @@ package app.i.cdms.repository.home
 
 import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.MyInfo
+import app.i.cdms.data.model.NoticeList
 import app.i.cdms.data.model.Result
 import app.i.cdms.data.source.local.UserPrefDataSource
 import app.i.cdms.data.source.remote.home.HomeDataSource
@@ -50,5 +51,9 @@ class HomeRepository @Inject constructor(
 
     suspend fun updateMyInfo(myInfo: MyInfo) {
         userPrefDataSource.updateMyInfo(myInfo)
+    }
+
+    suspend fun getNotice(): Result<NoticeList> {
+        return dataSource.getNotice()
     }
 }

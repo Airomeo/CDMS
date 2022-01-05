@@ -40,18 +40,21 @@ object Constant {
     /**
      * HOST and API
      */
-    val API_GET_CAPTCHA = "$API/prod-api/captchaImage"
-    val API_LOGIN = "$API/prod-api/login"
-    val API_MY_INFO = "$API/prod-api/wl/home/myInfo"
-    val API_ADD_CHILD = "$API/prod-api/wl/home/addChild"
-    val API_MY_TEAM = "$API/prod-api/wl/home/myTeam"
-    val API_CLEAR_ACCOUNT = "$API/prod-api/wl/home/clearAccount"
-    val API_RECORD_LIST = "$API/prod-api/wl/home/recordList"
-    val API_ADD_PRICE = "$API/prod-api/wl/home/addPrice"
-    val API_EDIT_PRICE = "$API/prod-api/wl/home/editPrice"
-    val API_REMOVE_PRICE = "$API/prod-api/wl/home/removePrice"
-    val API_MY_PRICE = "$API/prod-api/wl/home/myPrice"
-    val API_TRANSFER = "$API/prod-api/wl/userAccount/transfer"
+    private const val API = "https://www.yida178.cn/prod-api"
+    const val API_GET_CAPTCHA = "$API/captchaImage"
+    const val API_LOGIN = "$API/login"
+    const val API_MY_INFO = "$API/wl/home/myInfo"
+    const val API_ADD_CHILD = "$API/wl/home/addChild"
+    const val API_MY_TEAM = "$API/wl/home/myTeam"
+    const val API_CLEAR_ACCOUNT = "$API/wl/home/clearAccount"
+    const val API_RECORD_LIST = "$API/wl/home/recordList"
+    const val API_ADD_PRICE = "$API/wl/home/addPrice"
+    const val API_EDIT_PRICE = "$API/wl/home/editPrice"
+    const val API_REMOVE_PRICE = "$API/wl/home/removePrice"
+    const val API_MY_PRICE = "$API/wl/home/myPrice"
+    const val API_TRANSFER = "$API/wl/userAccount/transfer"
+    const val API_NOTICE = "$API/system/notice/list"
+
     private const val API_TCB_BASE =
         "https://i-7g9v864y639e8b0a-1256871713.ap-shanghai.app.tcloudbase.com/express"
     val API_UPDATE_CHANNEL_BY_USERNAME = "$API_SCF_BASE/YIDA/updateChannelByUsername"
@@ -63,36 +66,9 @@ object Constant {
     private val API_SCF_BASE: String
         get() = "https://service-icw3n5t3-1256871713.sh.apigw.tencentcs.com/" + when (BuildConfig.BUILD_TYPE) {
             "debug" -> "test"
-            "staging" -> Service.PRE.HOST
+            "staging" -> "prepub"
             "release" -> "release"
             else -> "release"
         }
 
-    private val HOST: String
-        get() = when {
-//            BuildConfig.PREPARE -> Service.PRE.HOST
-            BuildConfig.DEBUG -> Service.DEV.HOST
-            else -> Service.PROD.HOST
-        }
-    private val API: String
-        get() = when {
-//            BuildConfig.PREPARE -> Service.PRE.API
-            BuildConfig.DEBUG -> Service.DEV.API
-            else -> Service.PROD.API
-        }
-
-    private enum class Service(val HOST: String, val API: String) {
-        DEV(
-            "https://www.yida178.cn",
-            "https://www.yida178.cn"
-        ),
-        PRE(
-            "https://www.yida178.cn",
-            "https://www.yida178.cn"
-        ),
-        PROD(
-            "https://www.yida178.cn",
-            "https://www.yida178.cn"
-        )
-    }
 }

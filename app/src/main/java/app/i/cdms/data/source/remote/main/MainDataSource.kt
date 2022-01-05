@@ -4,6 +4,6 @@ import app.i.cdms.api.ApiService
 import javax.inject.Inject
 
 /**
- * Class that handles authentication w/ login credentials and retrieves user information.
+ * Class that handles basic logic
  */
 class MainDataSource @Inject constructor(private val service: ApiService)
