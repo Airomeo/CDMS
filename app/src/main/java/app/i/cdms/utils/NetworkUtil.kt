@@ -9,9 +9,7 @@ import android.os.Build
  * @author ZZY
  * 2021/12/23.
  */
-object NetworkUtil {
-
-}
+object NetworkUtil
 
 fun Context.isInternetAvailable(): Boolean {
     var result = false
