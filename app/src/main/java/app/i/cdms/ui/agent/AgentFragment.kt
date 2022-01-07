@@ -56,23 +56,23 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
                         tvEarns.text = getString(R.string.my_info_earns, agent.earns.toString())
                         tvChannelCount.text =
                             getString(R.string.agent_channel_count, agent.channelCount.toString())
-                        tvYto.text =
-                            getString(
-                                R.string.agent_yto_order_count,
-                                agent.ytoOrderCount.toString()
-                            )
-                        tvSto.text =
-                            getString(
-                                R.string.agent_sto_order_count,
-                                agent.stoOrderCount.toString()
-                            )
-                        tvJd.text =
-                            getString(R.string.agent_jd_order_count, agent.jdOrderCount.toString())
-                        tvDpk.text =
-                            getString(
-                                R.string.agent_dpk_order_count,
-                                agent.dopOrderCount.toString()
-                            )
+//                        tvYto.text =
+//                            getString(
+//                                R.string.agent_yto_order_count,
+//                                agent.ytoOrderCount.toString()
+//                            )
+//                        tvSto.text =
+//                            getString(
+//                                R.string.agent_sto_order_count,
+//                                agent.stoOrderCount.toString()
+//                            )
+//                        tvJd.text =
+//                            getString(R.string.agent_jd_order_count, agent.jdOrderCount.toString())
+//                        tvDpk.text =
+//                            getString(
+//                                R.string.agent_dpk_order_count,
+//                                agent.dopOrderCount.toString()
+//                            )
                     }
                 }
             }

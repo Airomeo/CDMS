@@ -45,7 +45,7 @@ object Constant {
     const val API_LOGIN = "$API/login"
     const val API_MY_INFO = "$API/wl/home/myInfo"
     const val API_ADD_CHILD = "$API/wl/home/addChild"
-    const val API_MY_TEAM = "$API/wl/home/myTeam"
+    const val API_MY_TEAM = "$API/wl/home/myTeamNew"
     const val API_CLEAR_ACCOUNT = "$API/wl/home/clearAccount"
     const val API_RECORD_LIST = "$API/wl/home/recordList"
     const val API_ADD_PRICE = "$API/wl/home/addPrice"

@@ -12,19 +12,13 @@ data class Agent(
     @Json(name = "accountBalance")
     val accountBalance: Float,
     @Json(name = "channelCount")
-    val channelCount: Int,
-    @Json(name = "dopOrderCount")
-    val dopOrderCount: Int?,
+    val channelCount: Int?,
     @Json(name = "earns")
     val earns: Float,
-    @Json(name = "jdOrderCount")
-    val jdOrderCount: Int,
-    @Json(name = "stoOrderCount")
-    val stoOrderCount: Int,
     @Json(name = "userId")
     val userId: Int,
+    @Json(name = "sonUserCount")
+    val sonUserCount: Int?,
     @Json(name = "userName")
-    val userName: String,
-    @Json(name = "ytoOrderCount")
-    val ytoOrderCount: Int
+    val userName: String
 ) : Parcelable
