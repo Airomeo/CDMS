@@ -2,6 +2,7 @@ package app.i.cdms.ui.home
 
 import android.os.Bundle
 import android.text.Html
+import android.text.method.ScrollingMovementMethod
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -53,13 +54,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
             }
         }
+        binding.notice.movementMethod = ScrollingMovementMethod()
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 homeViewModel.noticeList.collectLatest {
                     it ?: return@collectLatest
                     if (it.total > 0) {
                         val notice = it.notices.first()
-                        binding.textHome.text =
+                        binding.notice.text =
                             Html.fromHtml(notice.noticeContent, Html.FROM_HTML_MODE_LEGACY)
                                 .toString() + notice.updateTime
                     }

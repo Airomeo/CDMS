@@ -19,7 +19,7 @@
         app:srcCompat="@drawable/ic_avatar" />
 
     <TextView
-        android:id="@+id/text_home"
+        android:id="@+id/notice"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:padding="16dp"
