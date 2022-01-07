@@ -37,7 +37,7 @@ class HomeViewModel @Inject constructor(
             if (result is Result.Success) {
                 when (result.data.code) {
                     200 -> {
-                        EventBus.produceEvent(BaseEvent.None)
+                        EventBus.produceEvent(BaseEvent.Nothing)
                         _noticeList.emit(result.data)
                     }
                     else -> {
@@ -60,7 +60,7 @@ class HomeViewModel @Inject constructor(
                 when (result.data.code) {
                     200 -> {
                         result.data.data?.let {
-                            EventBus.produceEvent(BaseEvent.None)
+                            EventBus.produceEvent(BaseEvent.Nothing)
                             _myInfo.value = it
                             updateMyInfo(it)
                             getNotice()

@@ -3,12 +3,11 @@ package app.i.cdms.data.source.remote.login
 import app.i.cdms.api.ApiService
 import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.CaptchaData
-import app.i.cdms.data.model.Result
 import app.i.cdms.data.model.Token
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
-import java.io.IOException
+import retrofit2.Response
 import javax.inject.Inject
 
 /**
@@ -16,18 +15,8 @@ import javax.inject.Inject
  */
 class LoginDataSource @Inject constructor(private val service: ApiService) {
 
-    suspend fun getCaptcha(): Result<ApiResult<CaptchaData>> {
-        return try {
-            val response = service.getCaptcha()
-            if (response.isSuccessful && response.body() != null) {
-                Result.Success(response.body()!!)
-            } else {
-                // TODO: 2021/10/19
-                Result.Error(Exception(response.toString()))
-            }
-        } catch (e: Throwable) {
-            Result.Error(IOException("Error get CAPTCHA", e))
-        }
+    suspend fun getCaptcha(): Response<ApiResult<CaptchaData>> {
+        return service.getCaptcha()
     }
 
     suspend fun login(
@@ -35,7 +24,7 @@ class LoginDataSource @Inject constructor(private val service: ApiService) {
         password: String,
         captcha: Int,
         uuid: String
-    ): Result<ApiResult<Token>> {
+    ): Response<ApiResult<Token>> {
         val payload = JSONObject()
             .put("username", username)
             .put("password", password)
@@ -44,17 +33,6 @@ class LoginDataSource @Inject constructor(private val service: ApiService) {
             .toString()
             .toRequestBody("application/json".toMediaType())
 
-        return try {
-            val response = service.login(payload = payload)
-
-            if (response.isSuccessful && response.body() != null) {
-                Result.Success(response.body()!!)
-            } else {
-                // TODO: 2021/10/19
-                Result.Error(Exception(response.toString()))
-            }
-        } catch (e: Throwable) {
-            Result.Error(IOException("Error login", e))
-        }
+        return service.login(payload = payload)
     }
 }

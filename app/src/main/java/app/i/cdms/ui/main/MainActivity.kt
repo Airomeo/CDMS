@@ -60,42 +60,36 @@ class MainActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 EventBus.events.collectLatest {
                     Log.d("TAG", "EventBus.event: $it")
+                    binding.loading.visibility = View.GONE
                     when (it) {
                         is BaseEvent.Error -> {
-                            binding.loading.visibility = View.GONE
                             Toast.makeText(
                                 this@MainActivity,
-                                "网络异常。" + it.exception.message,
+                                it.exception.message,
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
                         is BaseEvent.Loading -> {
                             binding.loading.visibility = View.VISIBLE
                         }
-                        is BaseEvent.None -> {
-                            binding.loading.visibility = View.GONE
-                        }
+                        is BaseEvent.Nothing -> {}
                         is BaseEvent.NeedLogin -> {
-                            binding.loading.visibility = View.GONE
                             navController.navigate(R.id.loginFragment)
                         }
                         is BaseEvent.Refresh -> {
-                            binding.loading.visibility = View.GONE
 //                            Re-enter current fragment
                             val id = navController.currentDestination?.id
                             navController.popBackStack(id!!, true)
                             navController.navigate(id)
                         }
                         is BaseEvent.Failed -> {
-                            binding.loading.visibility = View.GONE
                             Toast.makeText(
                                 this@MainActivity,
-                                it.toString(),
+                                it.data.toString(),
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
                         is BaseEvent.Toast -> {
-                            binding.loading.visibility = View.GONE
                             Toast.makeText(
                                 this@MainActivity,
                                 it.msg,

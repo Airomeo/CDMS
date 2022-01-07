@@ -6,16 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.i.cdms.R
-import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.CaptchaData
-import app.i.cdms.data.model.Result
 import app.i.cdms.data.model.Token
 import app.i.cdms.repository.login.LoginRepository
-import app.i.cdms.utils.BaseEvent
-import app.i.cdms.utils.EventBus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,7 +27,9 @@ class LoginViewModel @Inject constructor(
 
     private val _uiState = MutableSharedFlow<LoginUiState>()
     val uiState = _uiState.asSharedFlow()
-    private var captchaData: CaptchaData? = null
+
+    private val _captchaData = MutableStateFlow<CaptchaData?>(null)
+    val captchaData = _captchaData.asStateFlow()
 
     init {
         getCaptcha()
@@ -37,56 +37,20 @@ class LoginViewModel @Inject constructor(
 
     fun getCaptcha() {
         viewModelScope.launch {
-            // can be launched in a separate asynchronous job
-            EventBus.produceEvent(BaseEvent.Loading)
             val result = loginRepository.getCaptcha()
-            if (result is Result.Success) {
-                when (result.data.code) {
-                    200 -> {
-                        result.data.data?.let {
-                            EventBus.produceEvent(BaseEvent.None)
-                            captchaData = it
-                            _uiState.emit(LoginUiState.GetCaptchaSuccessful(it))
-                        }
-                    }
-                    401 -> {
-                        EventBus.produceEvent(BaseEvent.NeedLogin)
-                    }
-                    else -> {
-                        EventBus.produceEvent(BaseEvent.None)
-                        _uiState.emit(LoginUiState.GetCaptchaFailed(result.data))
-                    }
-                }
-            } else if (result is Result.Error) {
-                EventBus.produceEvent(BaseEvent.Error(result.exception))
-            }
+            _captchaData.value = result?.data
         }
     }
 
     fun login(username: String, password: String, captcha: Int) {
         viewModelScope.launch {
             // can be launched in a separate asynchronous job
-            val uuid = captchaData?.uuid ?: return@launch
-            EventBus.produceEvent(BaseEvent.Loading)
+            val uuid = captchaData.value?.uuid ?: return@launch
             val result = loginRepository.login(username, password, captcha, uuid)
-            if (result is Result.Success) {
-                when (result.data.code) {
-                    200 -> {
-                        result.data.data?.let {
-                            EventBus.produceEvent(BaseEvent.None)
-                            _uiState.emit(LoginUiState.LoginSuccessful(it))
-                        }
-                    }
-                    401 -> {
-                        EventBus.produceEvent(BaseEvent.NeedLogin)
-                    }
-                    else -> {
-                        EventBus.produceEvent(BaseEvent.None)
-                        _uiState.emit(LoginUiState.LoginFailed(result.data))
-                    }
-                }
-            } else if (result is Result.Error) {
-                EventBus.produceEvent(BaseEvent.Error(result.exception))
+            if (result?.data == null) {
+                _uiState.emit(LoginUiState.LoginFailed)
+            } else {
+                _uiState.emit(LoginUiState.LoginSuccessful(result.data))
             }
         }
     }
@@ -119,8 +83,6 @@ class LoginViewModel @Inject constructor(
 }
 
 sealed class LoginUiState {
-    data class GetCaptchaSuccessful(val captchaData: CaptchaData) : LoginUiState()
-    data class GetCaptchaFailed(val apiResult: ApiResult<Any>) : LoginUiState()
     data class LoginSuccessful(val token: Token) : LoginUiState()
-    data class LoginFailed(val apiResult: ApiResult<Any>) : LoginUiState()
+    object LoginFailed : LoginUiState()
 }

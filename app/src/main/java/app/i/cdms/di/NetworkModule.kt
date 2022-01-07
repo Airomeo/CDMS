@@ -89,6 +89,7 @@ object NetworkModule {
 
             if (!context.isInternetAvailable()) {
                 Log.d("TAG", "intercept: InternetUnavailable")
+//                EventBus.produceEvent(BaseEvent.Failed("网络异常"))
                 request = request.newBuilder()
                     .removeHeader("Pragma")
                     .header("Cache-Control", "public, only-if-cached, max-stale=" + 2419200)

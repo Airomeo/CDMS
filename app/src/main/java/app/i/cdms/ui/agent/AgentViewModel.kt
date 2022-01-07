@@ -32,7 +32,7 @@ class AgentViewModel @Inject constructor(private val agentRepository: AgentRepos
                 when (result.data.code) {
                     200 -> {
                         _uiState.emit(AgentUiState.WithdrawSuccess)
-                        EventBus.produceEvent(BaseEvent.None)
+                        EventBus.produceEvent(BaseEvent.Nothing)
                     }
                     401 -> {
                         EventBus.produceEvent(BaseEvent.NeedLogin)
@@ -62,7 +62,7 @@ class AgentViewModel @Inject constructor(private val agentRepository: AgentRepos
             if (result is Result.Success) {
                 when (result.data.code) {
                     200 -> {
-                        EventBus.produceEvent(BaseEvent.None)
+                        EventBus.produceEvent(BaseEvent.Nothing)
                         _uiState.emit(AgentUiState.TransferSuccess(changeAmount))
                     }
                     401 -> {
@@ -97,7 +97,7 @@ class AgentViewModel @Inject constructor(private val agentRepository: AgentRepos
             if (result is Result.Success) {
                 when (result.data.errorCode) {
                     200 -> {
-                        EventBus.produceEvent(BaseEvent.None)
+                        EventBus.produceEvent(BaseEvent.Nothing)
                         _uiState.emit(AgentUiState.UpdateChannelSuccess(result.data.errorMessage))
                     }
                     401 -> {
@@ -117,7 +117,7 @@ class AgentViewModel @Inject constructor(private val agentRepository: AgentRepos
         viewModelScope.launch {
             EventBus.produceEvent(BaseEvent.Loading)
             val result = agentRepository.getUserConfig(userId)
-            EventBus.produceEvent(BaseEvent.None)
+            EventBus.produceEvent(BaseEvent.Nothing)
             if (result is Result.Success) {
                 if (result.data.data.isNotEmpty()) {
                     _userConfig.emit(result.data.data[0])

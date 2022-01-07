@@ -7,7 +7,6 @@ import android.text.TextWatcher
 import android.util.Base64
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -46,37 +45,33 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 loginViewModel.uiState.collectLatest {
                     when (it) {
-                        is LoginUiState.GetCaptchaSuccessful -> {
-                            val imageByteArray =
-                                Base64.decode(it.captchaData.imgBytes, Base64.DEFAULT)
-                            val bitmap = BitmapFactory.decodeByteArray(
-                                imageByteArray,
-                                0,
-                                imageByteArray.size
-                            )
-                            captchaImageView.load(bitmap) {
-                                crossfade(true)
-                            }
-                        }
-                        is LoginUiState.GetCaptchaFailed -> {
-                            Toast.makeText(
-                                requireContext(),
-                                it.apiResult.toString(),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            captchaImageView.setImageResource(R.drawable.ic_baseline_refresh_24)
-                        }
                         is LoginUiState.LoginSuccessful -> {
                             mainViewModel.updateToken(it.token)
                             findNavController().popBackStack()
                         }
                         is LoginUiState.LoginFailed -> {
-                            Toast.makeText(
-                                requireContext(),
-                                it.apiResult.toString(),
-                                Toast.LENGTH_SHORT
-                            ).show()
                             loginViewModel.getCaptcha()
+                        }
+                    }
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                loginViewModel.captchaData.collectLatest {
+                    if (it == null) {
+                        captchaImageView.setImageResource(R.drawable.ic_baseline_refresh_24)
+                    } else {
+                        val imageByteArray =
+                            Base64.decode(it.imgBytes, Base64.DEFAULT)
+                        val bitmap = BitmapFactory.decodeByteArray(
+                            imageByteArray,
+                            0,
+                            imageByteArray.size
+                        )
+                        captchaImageView.load(bitmap) {
+                            crossfade(true)
                         }
                     }
                 }

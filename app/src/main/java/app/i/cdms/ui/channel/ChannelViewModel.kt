@@ -32,7 +32,7 @@ class ChannelViewModel @Inject constructor(private val agentRepository: AgentRep
                         result.data.data?.let {
                             _uiState.emit(ChannelUiState.GetPriceSuccess(it))
                         }
-                        EventBus.produceEvent(BaseEvent.None)
+                        EventBus.produceEvent(BaseEvent.Nothing)
                     }
                     401 -> {
                         EventBus.produceEvent(BaseEvent.NeedLogin)

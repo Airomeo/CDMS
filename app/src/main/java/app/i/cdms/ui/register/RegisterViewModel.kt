@@ -36,7 +36,7 @@ class RegisterViewModel @Inject constructor(
                 when (result.data.code) {
                     200 -> {
                         _uiState.emit(RegisterUiState.RegisterSuccess(result.data.msg))
-                        EventBus.produceEvent(BaseEvent.None)
+                        EventBus.produceEvent(BaseEvent.Nothing)
                     }
                     401 -> {
                         EventBus.produceEvent(BaseEvent.NeedLogin)
