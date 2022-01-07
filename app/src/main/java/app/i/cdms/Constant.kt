@@ -54,6 +54,7 @@ object Constant {
     const val API_MY_PRICE = "$API/wl/home/myPrice"
     const val API_TRANSFER = "$API/wl/userAccount/transfer"
     const val API_NOTICE = "$API/system/notice/list"
+    const val API_ORDER_COUNT = "$API/wl/home/getUserOrderCount"
 
     private const val API_TCB_BASE =
         "https://i-7g9v864y639e8b0a-1256871713.ap-shanghai.app.tcloudbase.com/express"

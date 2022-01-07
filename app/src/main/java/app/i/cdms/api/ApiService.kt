@@ -159,4 +159,10 @@ interface ApiService {
         @Url url: String = Constant.API_NOTICE
     ): Response<NoticeList>
 
+    @GET
+    suspend fun getOrderCount(
+        @Url url: String = Constant.API_ORDER_COUNT,
+        @Query("userId") userId: Int
+    ): Response<ApiResult<OrderCount>>
+
 }

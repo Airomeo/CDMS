@@ -39,6 +39,7 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
 
         agent = requireArguments().get("agent") as Agent
         // TODO: 2022/1/5 待优化，避免重复加载。 
+        agentViewModel.getOrderCount(agent.userId)
         agentViewModel.getUserConfig(agent.userId)
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -56,23 +57,32 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
                         tvEarns.text = getString(R.string.my_info_earns, agent.earns.toString())
                         tvChannelCount.text =
                             getString(R.string.agent_channel_count, agent.channelCount.toString())
-//                        tvYto.text =
-//                            getString(
-//                                R.string.agent_yto_order_count,
-//                                agent.ytoOrderCount.toString()
-//                            )
-//                        tvSto.text =
-//                            getString(
-//                                R.string.agent_sto_order_count,
-//                                agent.stoOrderCount.toString()
-//                            )
-//                        tvJd.text =
-//                            getString(R.string.agent_jd_order_count, agent.jdOrderCount.toString())
-//                        tvDpk.text =
-//                            getString(
-//                                R.string.agent_dpk_order_count,
-//                                agent.dopOrderCount.toString()
-//                            )
+                        // TODO: 2022/1/7 显示下级的下级数量 
+                    }
+                }
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                agentViewModel.orderCount.collectLatest {
+                    with(binding) {
+                        tvYto.text =
+                            getString(
+                                R.string.agent_yto_order_count,
+                                it?.ytoOrderCount.toString()
+                            )
+                        tvSto.text =
+                            getString(
+                                R.string.agent_sto_order_count,
+                                it?.stoOrderCount.toString()
+                            )
+                        tvJd.text =
+                            getString(R.string.agent_jd_order_count, it?.jdOrderCount.toString())
+                        tvDpk.text =
+                            getString(
+                                R.string.agent_dpk_order_count,
+                                it?.dopOrderCount.toString()
+                            )
                     }
                 }
             }

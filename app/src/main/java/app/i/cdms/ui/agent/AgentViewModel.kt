@@ -2,6 +2,7 @@ package app.i.cdms.ui.agent
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.i.cdms.data.model.OrderCount
 import app.i.cdms.data.model.Result
 import app.i.cdms.data.model.UserConfig
 import app.i.cdms.repository.agent.AgentRepository
@@ -23,6 +24,15 @@ class AgentViewModel @Inject constructor(private val agentRepository: AgentRepos
     val uiState = _uiState.asSharedFlow()
     private val _userConfig = MutableStateFlow<UserConfig?>(null)
     val userConfig = _userConfig.asStateFlow()
+    private val _orderCount = MutableStateFlow<OrderCount?>(null)
+    val orderCount = _orderCount.asStateFlow()
+
+    fun getOrderCount(userId: Int) {
+        viewModelScope.launch {
+            val result = agentRepository.getOrderCount(userId)
+            _orderCount.value = result?.data
+        }
+    }
 
     fun withdraw(userId: Int) {
         viewModelScope.launch {

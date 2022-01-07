@@ -5,6 +5,7 @@ import app.i.cdms.data.model.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
+import retrofit2.Response
 import java.io.IOException
 import javax.inject.Inject
 
@@ -144,5 +145,9 @@ class AgentDataSource @Inject constructor(private val service: ApiService) {
         } catch (e: Throwable) {
             Result.Error(IOException("Error getUserConfig" + e.localizedMessage, e))
         }
+    }
+
+    suspend fun getOrderCount(userId: Int): Response<ApiResult<OrderCount>> {
+        return service.getOrderCount(userId = userId)
     }
 }
