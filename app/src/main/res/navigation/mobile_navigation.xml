@@ -50,8 +50,8 @@
                 android:id="@+id/action_teamFragment_to_agentFragment"
                 app:destination="@id/agentFragment" />
             <action
-                android:id="@+id/action_teamFragment_to_registerFragment"
-                app:destination="@id/registerFragment" />
+                android:id="@+id/action_teamFragment_to_registerDialogFragment"
+                app:destination="@id/registerDialogFragment" />
         </fragment>
         <fragment
             android:id="@+id/agentFragment"
@@ -62,10 +62,10 @@
                 android:id="@+id/action_agentFragment_to_channelFragment"
                 app:destination="@id/channelFragment" />
         </fragment>
-        <fragment
-            android:id="@+id/registerFragment"
-            android:name="app.i.cdms.ui.register.RegisterFragment"
+        <dialog
+            android:id="@+id/registerDialogFragment"
+            android:name="app.i.cdms.ui.register.RegisterDialogFragment"
             android:label="@string/title_register"
-            tools:layout="@layout/fragment_register" />
+            tools:layout="@layout/dialog_register" />
     </navigation>
 </navigation>

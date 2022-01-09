@@ -46,7 +46,7 @@ class TeamFragment : Fragment(R.layout.fragment_team) {
         val mAdapter = MyTeamRecyclerViewAdapter().apply {
             registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
                 override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                    binding.list.smoothScrollToPosition(0)
+                    binding.list.smoothScrollToPosition(itemCount)
                 }
             })
         }
@@ -85,7 +85,7 @@ class TeamFragment : Fragment(R.layout.fragment_team) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_register -> {
-                findNavController().navigate(R.id.action_teamFragment_to_registerFragment)
+                findNavController().navigate(R.id.action_teamFragment_to_registerDialogFragment)
                 true
             }
             R.id.action_batch_update_channel -> {

@@ -1,19 +1,17 @@
 package app.i.cdms.ui.register
 
 import android.util.Patterns
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.i.cdms.R
+import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.RegisterFormState
-import app.i.cdms.data.model.Result
 import app.i.cdms.repository.register.RegisterRepository
-import app.i.cdms.utils.BaseEvent
-import app.i.cdms.utils.EventBus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,32 +20,16 @@ class RegisterViewModel @Inject constructor(
     private val registerRepository: RegisterRepository
 ) : ViewModel() {
 
-    private val _registerForm = MutableLiveData<RegisterFormState>()
-    val registerFormState: LiveData<RegisterFormState> = _registerForm
+    private val _registerForm = MutableStateFlow<RegisterFormState?>(null)
+    val registerFormState = _registerForm.asStateFlow()
 
-    private val _uiState = MutableSharedFlow<RegisterUiState>()
-    val uiState = _uiState.asSharedFlow()
+    private val _registerResult = MutableSharedFlow<ApiResult<Any>?>()
+    val registerResult = _registerResult.asSharedFlow()
 
     fun register(username: String, password: String, phone: String) {
         viewModelScope.launch {
-            EventBus.produceEvent(BaseEvent.Loading)
             val result = registerRepository.register(username, password, phone)
-            if (result is Result.Success) {
-                when (result.data.code) {
-                    200 -> {
-                        _uiState.emit(RegisterUiState.RegisterSuccess(result.data.msg))
-                        EventBus.produceEvent(BaseEvent.Nothing)
-                    }
-                    401 -> {
-                        EventBus.produceEvent(BaseEvent.NeedLogin)
-                    }
-                    else -> {
-                        EventBus.produceEvent(BaseEvent.Failed(result.data))
-                    }
-                }
-            } else if (result is Result.Error) {
-                EventBus.produceEvent(BaseEvent.Error(result.exception))
-            }
+            _registerResult.emit(result)
         }
     }
 
@@ -76,8 +58,4 @@ class RegisterViewModel @Inject constructor(
     private fun isPasswordValid(password: String): Boolean {
         return password.length > 5
     }
-}
-
-sealed class RegisterUiState {
-    data class RegisterSuccess(val msg: String) : RegisterUiState()
 }

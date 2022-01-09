@@ -15,6 +15,7 @@
         <entry key="app/src/main/res/layout/channel_config.xml" value="0.32382246376811596" />
         <entry key="app/src/main/res/layout/dialog_channel_config.xml" value="0.33" />
         <entry key="app/src/main/res/layout/dialog_channel_config_bak.xml" value="0.32382246376811596" />
+        <entry key="app/src/main/res/layout/dialog_register.xml" value="0.33152173913043476" />
         <entry key="app/src/main/res/layout/fragment_agent.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_agent_item_list.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_channel.xml" value="0.33" />
