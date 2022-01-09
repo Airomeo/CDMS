@@ -13,10 +13,20 @@
         android:layout_height="wrap_content"
         android:text="圆通京津冀、江浙沪皖、同省互发"
         android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/customerType"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/customerType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="personal"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+        app:layout_constraintEnd_toStartOf="@id/actionDown"
+        app:layout_constraintStart_toEndOf="@id/channelName"
+        app:layout_constraintTop_toTopOf="parent" />
     <!--    todo checkbox animation-->
     <ImageView
         android:id="@+id/actionDown"
@@ -46,15 +56,6 @@
         app:layout_constraintEnd_toEndOf="@id/view2"
         app:layout_constraintStart_toStartOf="@id/view2" />
 
-    <TextView
-        android:id="@+id/limitAddPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="¥8.0"
-        app:layout_constraintBottom_toTopOf="@id/view3"
-        app:layout_constraintEnd_toEndOf="@id/view3"
-        app:layout_constraintStart_toStartOf="@id/view3" />
-
     <View
         android:id="@+id/view"
         android:layout_width="60dp"
@@ -72,21 +73,9 @@
         android:layout_height="4dp"
         android:background="@color/purple_500"
         app:layout_constraintBottom_toBottomOf="@+id/view"
-        app:layout_constraintEnd_toStartOf="@+id/view3"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/view"
         app:layout_constraintTop_toTopOf="@+id/view" />
-
-    <View
-        android:id="@+id/view3"
-        android:layout_width="80dp"
-        android:layout_height="4dp"
-        android:background="@color/purple_700"
-        app:layout_constraintBottom_toBottomOf="@+id/view2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/view2"
-        app:layout_constraintTop_toTopOf="@+id/view2" />
 
     <TextView
         android:id="@+id/zero"
@@ -111,15 +100,6 @@
         android:layout_height="wrap_content"
         android:text="30kg"
         app:layout_constraintEnd_toEndOf="@+id/view2"
-        app:layout_constraintStart_toStartOf="@id/view3"
-        app:layout_constraintTop_toBottomOf="@+id/view3" />
-
-    <TextView
-        android:id="@+id/more"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="···"
-        app:layout_constraintEnd_toEndOf="@+id/view3"
-        app:layout_constraintTop_toBottomOf="@+id/view3" />
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

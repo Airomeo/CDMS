@@ -8,11 +8,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import app.i.cdms.R
 import app.i.cdms.databinding.FragmentChannelBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -26,16 +25,9 @@ class ChannelFragment : Fragment(R.layout.fragment_channel) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentChannelBinding.bind(view)
 
-        val userId = arguments?.getInt("userId")
-        channelViewModel.getUserPrice(userId)
+        channelViewModel.getAllChannelDetail()
 
-        val mAdapter = ChannelRecyclerViewAdapter().apply {
-            registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-                override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                    binding.list.smoothScrollToPosition(0)
-                }
-            })
-        }
+        val mAdapter = ChannelRecyclerViewAdapter()
         // Set the adapter
         with(binding.list) {
             adapter = mAdapter
@@ -43,12 +35,8 @@ class ChannelFragment : Fragment(R.layout.fragment_channel) {
         }
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                channelViewModel.uiState.collectLatest {
-                    when (it) {
-                        is ChannelUiState.GetPriceSuccess -> {
-                            mAdapter.submitList(it.list)
-                        }
-                    }
+                channelViewModel.channelDetailListFlow.collect {
+                    mAdapter.submitList(it)
                 }
             }
         }

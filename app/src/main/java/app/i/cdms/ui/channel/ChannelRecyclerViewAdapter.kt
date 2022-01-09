@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import app.i.cdms.R
 import app.i.cdms.data.model.Channel
+import app.i.cdms.data.model.ChannelDetail
 import app.i.cdms.databinding.ItemChannelBinding
 
 
@@ -15,7 +16,7 @@ import app.i.cdms.databinding.ItemChannelBinding
  * [ListAdapter] that can display a [Channel].
  */
 class ChannelRecyclerViewAdapter :
-    ListAdapter<Channel, ChannelRecyclerViewAdapter.ViewHolder>(DIFF_CALLBACK) {
+    ListAdapter<ChannelDetail, ChannelRecyclerViewAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -38,23 +39,28 @@ class ChannelRecyclerViewAdapter :
                 ).show()
             }
             channelName.text = channel.channelName
-            firstPrice.text = root.context.getString(R.string.price, channel.firstPrice)
-            addPrice.text = root.context.getString(R.string.price, channel.addPrice)
-            limitAddPrice.text = root.context.getString(R.string.price, channel.limitAddPrice)
-            firstWeight.text = root.context.getString(R.string.weight, channel.firstWeight)
+            customerType.text = channel.customerChannel?.customerType
+            firstPrice.text = root.context.getString(R.string.price, channel.costPrice.first)
+            addPrice.text =
+                root.context.getString(R.string.price, channel.costPrice.blocks.first().add)
+            firstWeight.text =
+                root.context.getString(R.string.weight, channel.costPrice.blocks.first().start)
             limitWeight.text =
-                root.context.getString(R.string.weight, channel.limitWeight.toString())
+                root.context.getString(R.string.weight, channel.costPrice.blocks.first().end)
         }
     }
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Channel>() {
-            override fun areItemsTheSame(oldItem: Channel, newItem: Channel): Boolean {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ChannelDetail>() {
+            override fun areItemsTheSame(oldItem: ChannelDetail, newItem: ChannelDetail): Boolean {
                 return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: Channel, newItem: Channel): Boolean {
-                return oldItem.userId == newItem.userId
+            override fun areContentsTheSame(
+                oldItem: ChannelDetail,
+                newItem: ChannelDetail
+            ): Boolean {
+                return oldItem.channelId == newItem.channelId
             }
         }
     }

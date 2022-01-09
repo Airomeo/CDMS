@@ -1,9 +1,22 @@
 package app.i.cdms.data.source.remote.main
 
+import app.i.cdms.Constant
 import app.i.cdms.api.ApiService
+import app.i.cdms.data.model.ApiResult
+import app.i.cdms.data.model.ChannelDetail
+import app.i.cdms.data.model.CustomerChannelResult
+import retrofit2.Response
 import javax.inject.Inject
 
 /**
  * Class that handles basic logic
  */
-class MainDataSource @Inject constructor(private val service: ApiService)
+class MainDataSource @Inject constructor(private val service: ApiService) {
+    suspend fun getCustomerChannel(customerType: String): Response<ApiResult<CustomerChannelResult>> {
+        return service.getCustomerChannel(customerType = customerType)
+    }
+
+    suspend fun getCustomerChannelDetail(customerId: Int): Response<ApiResult<List<ChannelDetail>>> {
+        return service.getCustomerChannelDetail(url = Constant.API_CUSTOMER_CHANNEL_DETAIL + "/" + customerId.toString())
+    }
+}

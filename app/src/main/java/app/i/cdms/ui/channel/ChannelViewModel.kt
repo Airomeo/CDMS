@@ -2,53 +2,56 @@ package app.i.cdms.ui.channel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.i.cdms.data.model.Channel
-import app.i.cdms.data.model.Result
-import app.i.cdms.repository.agent.AgentRepository
-import app.i.cdms.utils.BaseEvent
-import app.i.cdms.utils.EventBus
+import app.i.cdms.data.model.ChannelDetail
+import app.i.cdms.data.model.CustomerChannel
+import app.i.cdms.repository.main.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 @HiltViewModel
-class ChannelViewModel @Inject constructor(private val agentRepository: AgentRepository) :
-    ViewModel() {
-    // TODO: Implement the ViewModel
+class ChannelViewModel @Inject constructor(
+    private val mainRepository: MainRepository
+) : ViewModel() {
 
-    private val _uiState = MutableSharedFlow<ChannelUiState>()
-    val uiState = _uiState.asSharedFlow()
+    private val channelDetailList = mutableListOf<ChannelDetail>()
+    private val _channelDetailListFlow = MutableStateFlow<List<ChannelDetail>>(listOf())
+    val channelDetailListFlow = _channelDetailListFlow.asStateFlow()
 
-    fun getUserPrice(userId: Int?) {
+    fun getAllChannelDetail() {
         viewModelScope.launch {
-            EventBus.produceEvent(BaseEvent.Loading)
-            val result = agentRepository.getUserPrice(userId)
-            if (result is Result.Success) {
-                when (result.data.code) {
-                    200 -> {
-                        result.data.data?.let {
-                            _uiState.emit(ChannelUiState.GetPriceSuccess(it))
-                        }
-                        EventBus.produceEvent(BaseEvent.Nothing)
-                    }
-                    401 -> {
-                        EventBus.produceEvent(BaseEvent.NeedLogin)
-                    }
-                    else -> {
-                        EventBus.produceEvent(BaseEvent.Failed(result.data))
-                    }
+            val customerType = listOf("personal", "business", "poizon")
+            for (customer in customerType) {
+                val result = mainRepository.getCustomerChannel(customer)
+                result?.data ?: return@launch
+                val customerChannelResult = result.data
+                customerChannelResult.sto?.forEach {
+                    getChannelDetail(it)
                 }
-            } else if (result is Result.Error) {
-                EventBus.produceEvent(BaseEvent.Error(result.exception))
+                customerChannelResult.yto?.forEach {
+                    getChannelDetail(it)
+                }
+                customerChannelResult.jd?.forEach {
+                    getChannelDetail(it)
+                }
+                customerChannelResult.dop?.forEach {
+                    getChannelDetail(it)
+                }
+            }
+            _channelDetailListFlow.value = channelDetailList
+        }
+    }
+
+    private suspend fun getChannelDetail(customerChannel: CustomerChannel) {
+        val result = mainRepository.getCustomerChannelDetail(customerChannel.id)
+        result?.data?.let {
+            for (item in it) {
+                item.customerChannel = customerChannel
+                channelDetailList.add(item)
             }
         }
     }
-}
-
-// Represents different states for the Agent screen
-sealed class ChannelUiState {
-    data class GetPriceSuccess(val list: List<Channel>) : ChannelUiState()
 }

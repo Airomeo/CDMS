@@ -121,12 +121,6 @@ interface ApiService {
         @Query("changeAmount") changeAmount: Float
     ): Response<ApiResult<Any>>
 
-    @GET
-    suspend fun myPrice(
-        @Url url: String = Constant.API_MY_PRICE,
-        @Query("userId") userId: Int?
-    ): Response<ApiResult<List<Channel>>>
-
     @POST
     suspend fun updateChannelByUsername(
         @Url url: String = Constant.API_UPDATE_CHANNEL_BY_USERNAME,
@@ -151,6 +145,11 @@ interface ApiService {
     ): Response<UserConfigResult>
 
     @GET
+    suspend fun getAllChannelConfig(
+        @Url url: String
+    ): Response<ApiResult<UserChannelConfig>>
+
+    @GET
     @Headers(
         "Accept: application/json, text/plain, */*",
         "Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7"
@@ -164,5 +163,16 @@ interface ApiService {
         @Url url: String = Constant.API_ORDER_COUNT,
         @Query("userId") userId: Int
     ): Response<ApiResult<OrderCount>>
+
+    @GET
+    suspend fun getCustomerChannel(
+        @Url url: String = Constant.API_CUSTOMER_CHANNEL,
+        @Query("customerType") customerType: String
+    ): Response<ApiResult<CustomerChannelResult>>
+
+    @GET
+    suspend fun getCustomerChannelDetail(
+        @Url url: String
+    ): Response<ApiResult<List<ChannelDetail>>>
 
 }
