@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:paddingHorizontal="@dimen/fragment_horizontal_margin"
+    app:layoutDescription="@xml/channel_preview_to_detail_scene">
+    <!--    android:paddingVertical="@dimen/fragment_vertical_margin"-->
+
+    <TextView
+        android:id="@+id/channelName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/fragment_vertical_margin"
+        android:text="圆通京津冀、江浙沪皖、同省互发"
+        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+        app:layout_constraintEnd_toStartOf="@id/customerType"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/customerType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="personal"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+        app:layout_constraintEnd_toStartOf="@id/actionDown"
+        app:layout_constraintStart_toEndOf="@id/channelName"
+        app:layout_constraintTop_toTopOf="@+id/channelName" />
+    <!--    todo checkbox animation-->
+    <ImageView
+        android:id="@+id/actionDown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/customerType"
+        app:srcCompat="@drawable/ic_baseline_keyboard_arrow_down_24" />
+
+    <TextView
+        android:id="@+id/firstPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¥10.0"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintStart_toStartOf="@+id/view" />
+
+    <TextView
+        android:id="@+id/addPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¥2.5"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@id/view2"
+        app:layout_constraintEnd_toEndOf="@id/view2"
+        app:layout_constraintStart_toStartOf="@id/view2" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="60dp"
+        android:layout_height="4dp"
+        android:layout_marginTop="32dp"
+        android:background="@color/purple_200"
+        app:layout_constraintEnd_toStartOf="@+id/view2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/channelName" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:background="@color/purple_500"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/view"
+        app:layout_constraintTop_toTopOf="@+id/view" />
+
+    <TextView
+        android:id="@+id/zero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/fragment_vertical_margin"
+        android:text="0kg"
+        app:layout_constraintBottom_toTopOf="@id/lightGoods"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <TextView
+        android:id="@+id/firstWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1kg"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintStart_toStartOf="@id/view2"
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+    <TextView
+        android:id="@+id/limitWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="30kg"
+        app:layout_constraintEnd_toEndOf="@+id/view2"
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+    <TextView
+        android:id="@+id/lightGoods"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="抛比：6000.0"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/backFeeType"
+        app:layout_constraintStart_toStartOf="@+id/zero"
+        app:layout_constraintTop_toBottomOf="@+id/zero" />
+
+    <TextView
+        android:id="@+id/backFeeType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="逆向费用类型：全额"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/priority"
+        app:layout_constraintStart_toStartOf="@+id/lightGoods"
+        app:layout_constraintTop_toBottomOf="@+id/lightGoods" />
+
+    <TextView
+        android:id="@+id/priority"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="优先级：省"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/areaType"
+        app:layout_constraintStart_toStartOf="@+id/backFeeType"
+        app:layout_constraintTop_toBottomOf="@+id/backFeeType" />
+
+    <TextView
+        android:id="@+id/areaType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/fragment_vertical_margin"
+        android:text="寄收地维度：省"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/priority"
+        app:layout_constraintTop_toBottomOf="@+id/priority" />
+
+</androidx.constraintlayout.motion.widget.MotionLayout>

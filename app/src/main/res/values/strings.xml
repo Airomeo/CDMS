@@ -90,6 +90,10 @@
     <string name="action_batch_update_channel">批量更新渠道</string>
     <string name="price">¥%s</string>
     <string name="weight">%skg</string>
+    <string name="channel_light_weight">抛比：%s</string>
+    <string name="channel_back_fee_type">逆向费用类型：%s</string>
+    <string name="channel_priority">优先级：%s</string>
+    <string name="channel_area_type">寄收地维度：%s</string>
     <string name="config_first_weight">首重定义：%skg</string>
     <string name="config_first_commission">首重抽佣：+ ¥%s</string>
     <string name="config_add_commission">续重抽佣：+ ¥%s</string>

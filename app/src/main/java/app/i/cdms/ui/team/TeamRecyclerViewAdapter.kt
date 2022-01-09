@@ -15,11 +15,10 @@ import app.i.cdms.databinding.ItemTeamAgentBinding
 /**
  * [ListAdapter] that can display a [Agent].
  */
-class MyTeamRecyclerViewAdapter :
-    ListAdapter<Agent, MyTeamRecyclerViewAdapter.ViewHolder>(DIFF_CALLBACK) {
+class TeamRecyclerViewAdapter :
+    ListAdapter<Agent, TeamRecyclerViewAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-
         return ViewHolder(
             ItemTeamAgentBinding.inflate(
                 LayoutInflater.from(parent.context),

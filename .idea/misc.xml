@@ -13,6 +13,7 @@
         <entry key="app/src/main/res/layout/agent_transfer.xml" value="0.5" />
         <entry key="app/src/main/res/layout/cat_exposed_dropdown_popup_item.xml" value="0.3713768115942029" />
         <entry key="app/src/main/res/layout/channel_config.xml" value="0.32382246376811596" />
+        <entry key="app/src/main/res/layout/channel_preview_to_detail.xml" value="0.189209726443769" />
         <entry key="app/src/main/res/layout/dialog_channel_config.xml" value="0.33" />
         <entry key="app/src/main/res/layout/dialog_channel_config_bak.xml" value="0.32382246376811596" />
         <entry key="app/src/main/res/layout/dialog_register.xml" value="0.33152173913043476" />
@@ -33,7 +34,9 @@
         <entry key="app/src/main/res/layout/item_channel.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_channel_commission.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_channel_commission2.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/item_channel_preview_to_detail.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_commission.xml" value="0.3333333333333333" />
+        <entry key="app/src/main/res/layout/item_team_agent.xml" value="0.33152173913043476" />
         <entry key="app/src/main/res/menu/agent.xml" value="0.3890625" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.2203125" />
         <entry key="app/src/main/res/menu/team.xml" value="0.2203125" />

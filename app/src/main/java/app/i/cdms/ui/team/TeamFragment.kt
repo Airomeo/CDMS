@@ -42,7 +42,7 @@ class TeamFragment : Fragment(R.layout.fragment_team) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentTeamBinding.bind(view)
 
-        val mAdapter = MyTeamRecyclerViewAdapter()
+        val mAdapter = TeamRecyclerViewAdapter()
         // Set the adapter
         with(binding.list) {
             adapter = mAdapter

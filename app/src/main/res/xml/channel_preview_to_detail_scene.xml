@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@+id/end"
+        motion:constraintSetStart="@id/start"
+        motion:duration="150">
+        <OnClick />
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start" />
+
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+            android:id="@+id/lightGoods"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toTopOf="@+id/backFeeType"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/zero" />
+        <Constraint
+            android:id="@+id/backFeeType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toTopOf="@+id/priority"
+            motion:layout_constraintStart_toStartOf="@+id/lightGoods"
+            motion:layout_constraintTop_toBottomOf="@+id/lightGoods" />
+        <Constraint
+            android:id="@+id/priority"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toTopOf="@+id/areaType"
+            motion:layout_constraintStart_toStartOf="@+id/backFeeType"
+            motion:layout_constraintTop_toBottomOf="@+id/backFeeType" />
+        <Constraint
+            android:id="@+id/areaType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintStart_toStartOf="@+id/priority"
+            motion:layout_constraintTop_toBottomOf="@+id/priority" />
+        <Constraint
+            android:id="@+id/actionDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotationX="180"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintTop_toTopOf="@+id/customerType" />
+    </ConstraintSet>
+</MotionScene>
