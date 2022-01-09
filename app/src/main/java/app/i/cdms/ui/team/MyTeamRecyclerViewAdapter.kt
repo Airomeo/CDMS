@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import app.i.cdms.R
 import app.i.cdms.data.model.Agent
-import app.i.cdms.databinding.FragmentTeamAgentItemBinding
+import app.i.cdms.databinding.ItemTeamAgentBinding
 
 
 /**
@@ -21,7 +21,7 @@ class MyTeamRecyclerViewAdapter :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         return ViewHolder(
-            FragmentTeamAgentItemBinding.inflate(
+            ItemTeamAgentBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -56,7 +56,7 @@ class MyTeamRecyclerViewAdapter :
         }
     }
 
-    inner class ViewHolder(val binding: FragmentTeamAgentItemBinding) :
+    inner class ViewHolder(val binding: ItemTeamAgentBinding) :
         RecyclerView.ViewHolder(binding.root)
 
 }

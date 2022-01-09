@@ -64,7 +64,6 @@ object Constant {
     val API_UPDATE_CHANNEL_BY_USERNAME = "$API_SCF_BASE/YIDA/updateChannelByUsername"
     val API_UPDATE_CHANNEL_BY_USER_ID = "$API_SCF_BASE/YIDA/updateChannelByUserId"
     val API_BATCH_UPDATE_CHANNEL = "$API_SCF_BASE/YIDA/batchUpdateChannel"
-    const val API_GET_USER_CONFIG = "$API_TCB_BASE/channel/getUserConfig"
     const val API_DOC = "https://docs.qq.com/doc/DWmVtWWFJQ2R1cGVU?tdsourcetag=scan-qr"
 
     private val API_SCF_BASE: String

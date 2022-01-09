@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.i.cdms.data.model.OrderCount
 import app.i.cdms.data.model.Result
+import app.i.cdms.data.model.UserChannelConfig
 import app.i.cdms.data.model.UserConfig
 import app.i.cdms.repository.agent.AgentRepository
 import app.i.cdms.utils.BaseEvent
@@ -24,6 +25,8 @@ class AgentViewModel @Inject constructor(private val agentRepository: AgentRepos
     val uiState = _uiState.asSharedFlow()
     private val _userConfig = MutableStateFlow<UserConfig?>(null)
     val userConfig = _userConfig.asStateFlow()
+    private val _userChannelConfig = MutableStateFlow<UserChannelConfig?>(null)
+    val userChannelConfig = _userChannelConfig.asStateFlow()
     private val _orderCount = MutableStateFlow<OrderCount?>(null)
     val orderCount = _orderCount.asStateFlow()
 
@@ -123,18 +126,10 @@ class AgentViewModel @Inject constructor(private val agentRepository: AgentRepos
         }
     }
 
-    fun getUserConfig(userId: Int) {
+    fun getAllChannelConfig(channelId: Int) {
         viewModelScope.launch {
-            EventBus.produceEvent(BaseEvent.Loading)
-            val result = agentRepository.getUserConfig(userId)
-            EventBus.produceEvent(BaseEvent.Nothing)
-            if (result is Result.Success) {
-                if (result.data.data.isNotEmpty()) {
-                    _userConfig.emit(result.data.data[0])
-                }
-            } else if (result is Result.Error) {
-                EventBus.produceEvent(BaseEvent.Error(result.exception))
-            }
+            val result = agentRepository.getAllChannelConfig(channelId)
+            _userChannelConfig.value = result?.data
         }
     }
 }

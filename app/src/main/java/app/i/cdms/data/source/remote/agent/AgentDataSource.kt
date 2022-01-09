@@ -1,5 +1,6 @@
 package app.i.cdms.data.source.remote.agent
 
+import app.i.cdms.Constant
 import app.i.cdms.api.ApiService
 import app.i.cdms.data.model.*
 import okhttp3.MediaType.Companion.toMediaType
@@ -115,36 +116,8 @@ class AgentDataSource @Inject constructor(private val service: ApiService) {
         }
     }
 
-    suspend fun getUserPrice(userId: Int?): Result<ApiResult<List<Channel>>> {
-        return try {
-            val response = service.myPrice(userId = userId)
-            if (response.isSuccessful && response.body() != null) {
-                Result.Success(response.body()!!)
-            } else {
-                // TODO: 2021/10/19
-                Result.Error(Exception(response.toString()))
-            }
-        } catch (e: Throwable) {
-            Result.Error(IOException("Error getUserPrice" + e.localizedMessage, e))
-        }
-    }
-
-    suspend fun getUserConfig(userId: Int): Result<UserConfigResult> {
-        return try {
-            val payload = JSONObject()
-                .put("userId", userId)
-                .toString()
-                .toRequestBody("application/json".toMediaType())
-            val response = service.getUserConfig(payload = payload)
-            if (response.isSuccessful && response.body() != null) {
-                Result.Success(response.body()!!)
-            } else {
-                // TODO: 2021/10/19
-                Result.Error(Exception(response.toString()))
-            }
-        } catch (e: Throwable) {
-            Result.Error(IOException("Error getUserConfig" + e.localizedMessage, e))
-        }
+    suspend fun getAllChannelConfig(channelId: Int): Response<ApiResult<UserChannelConfig>> {
+        return service.getAllChannelConfig(Constant.API_GET_CHILDREN_PRICE_BY_CHANNEL + "/$channelId")
     }
 
     suspend fun getOrderCount(userId: Int): Response<ApiResult<OrderCount>> {

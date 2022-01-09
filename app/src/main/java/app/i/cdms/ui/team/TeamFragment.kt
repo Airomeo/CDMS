@@ -15,7 +15,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import app.i.cdms.R
 import app.i.cdms.databinding.FragmentTeamBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -43,13 +42,7 @@ class TeamFragment : Fragment(R.layout.fragment_team) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentTeamBinding.bind(view)
 
-        val mAdapter = MyTeamRecyclerViewAdapter().apply {
-            registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-                override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                    binding.list.smoothScrollToPosition(itemCount)
-                }
-            })
-        }
+        val mAdapter = MyTeamRecyclerViewAdapter()
         // Set the adapter
         with(binding.list) {
             adapter = mAdapter

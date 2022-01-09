@@ -36,5 +36,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_all_users"
-        tools:listitem="@layout/fragment_team_agent_item" />
+        tools:listitem="@layout/item_team_agent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

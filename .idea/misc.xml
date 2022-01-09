@@ -16,7 +16,7 @@
         <entry key="app/src/main/res/layout/dialog_channel_config.xml" value="0.33" />
         <entry key="app/src/main/res/layout/dialog_channel_config_bak.xml" value="0.32382246376811596" />
         <entry key="app/src/main/res/layout/dialog_register.xml" value="0.33152173913043476" />
-        <entry key="app/src/main/res/layout/fragment_agent.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_agent.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_agent_item_list.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_channel.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.189209726443769" />
@@ -29,7 +29,10 @@
         <entry key="app/src/main/res/layout/fragment_team.xml" value="0.3890625" />
         <entry key="app/src/main/res/layout/fragment_team_agent_item.xml" value="0.3795289855072464" />
         <entry key="app/src/main/res/layout/fragment_team_item.xml" value="0.38768115942028986" />
+        <entry key="app/src/main/res/layout/item_agent.xml" value="0.75" />
         <entry key="app/src/main/res/layout/item_channel.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/item_channel_commission.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/item_channel_commission2.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_commission.xml" value="0.3333333333333333" />
         <entry key="app/src/main/res/menu/agent.xml" value="0.3890625" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.2203125" />

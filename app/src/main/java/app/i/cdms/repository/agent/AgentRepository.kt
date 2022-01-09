@@ -62,11 +62,7 @@ class AgentRepository @Inject constructor(private val dataSource: AgentDataSourc
         )
     }
 
-    suspend fun getUserPrice(userId: Int?): Result<ApiResult<List<Channel>>> {
-        return dataSource.getUserPrice(userId)
-    }
-
-    suspend fun getUserConfig(userId: Int): Result<UserConfigResult> {
-        return dataSource.getUserConfig(userId)
+    suspend fun getAllChannelConfig(channelId: Int): ApiResult<UserChannelConfig>? {
+        return executeResponse { dataSource.getAllChannelConfig(channelId) }
     }
 }

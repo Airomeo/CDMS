@@ -40,7 +40,6 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
         agent = requireArguments().get("agent") as Agent
         // TODO: 2022/1/5 待优化，避免重复加载。 
         agentViewModel.getOrderCount(agent.userId)
-        agentViewModel.getUserConfig(agent.userId)
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -57,7 +56,8 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
                         tvEarns.text = getString(R.string.my_info_earns, agent.earns.toString())
                         tvChannelCount.text =
                             getString(R.string.agent_channel_count, agent.channelCount.toString())
-                        // TODO: 2022/1/7 显示下级的下级数量 
+                        tvSubUserCount.text =
+                            getString(R.string.agent_sub_user_count, agent.sonUserCount.toString())
                     }
                 }
             }
@@ -135,24 +135,24 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
                 }
             }
         }
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                agentViewModel.userConfig.collectLatest {
-                    binding.tvFirstWeight.text = getString(
-                        R.string.config_first_weight,
-                        (it?.firstWeight ?: 1.0F).toString()
-                    )
-                    binding.tvFirstCommission.text = getString(
-                        R.string.config_first_commission,
-                        (it?.firstCommission ?: 0.5F).toString()
-                    )
-                    binding.tvAddCommission.text = getString(
-                        R.string.config_add_commission,
-                        (it?.addCommission ?: 0.2F).toString()
-                    )
-                }
-            }
-        }
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                agentViewModel.userConfig.collectLatest {
+//                    binding.tvFirstWeight.text = getString(
+//                        R.string.config_first_weight,
+//                        (it?.firstWeight ?: 1.0F).toString()
+//                    )
+//                    binding.tvFirstCommission.text = getString(
+//                        R.string.config_first_commission,
+//                        (it?.firstCommission ?: 0.5F).toString()
+//                    )
+//                    binding.tvAddCommission.text = getString(
+//                        R.string.config_add_commission,
+//                        (it?.addCommission ?: 0.2F).toString()
+//                    )
+//                }
+//            }
+//        }
     }
 
     private fun showUpdateDialog() {
