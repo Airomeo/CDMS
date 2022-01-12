@@ -3,9 +3,9 @@ package app.i.cdms.repository.home
 import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.MyInfo
 import app.i.cdms.data.model.NoticeList
-import app.i.cdms.data.model.Result
 import app.i.cdms.data.source.local.UserPrefDataSource
 import app.i.cdms.data.source.remote.home.HomeDataSource
+import app.i.cdms.repository.BaseRepository
 import javax.inject.Inject
 
 /**
@@ -14,7 +14,7 @@ import javax.inject.Inject
  */
 class HomeRepository @Inject constructor(
     private val dataSource: HomeDataSource, private val userPrefDataSource: UserPrefDataSource
-) {
+) : BaseRepository() {
 
     // in-memory cache of the loggedInUser object
     var user: MyInfo? = null
@@ -40,20 +40,15 @@ class HomeRepository @Inject constructor(
         dataSource.logout()
     }
 
-    suspend fun getMyInfo(): Result<ApiResult<MyInfo>> {
-        val result = dataSource.getMyInfo()
-        if (result is Result.Success) {
-            result.data.data?.let { setLoggedInUser(it) }
-        }
-
-        return result
+    suspend fun getMyInfo(): ApiResult<MyInfo>? {
+        return executeResponse { dataSource.getMyInfo() }
     }
 
     suspend fun updateMyInfo(myInfo: MyInfo) {
         userPrefDataSource.updateMyInfo(myInfo)
     }
 
-    suspend fun getNotice(): Result<NoticeList> {
-        return dataSource.getNotice()
+    suspend fun getNotice(): NoticeList? {
+        return executeResponse { dataSource.getNotice() }
     }
 }

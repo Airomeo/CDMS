@@ -2,12 +2,14 @@ package app.i.cdms.data.source.remote.agent
 
 import app.i.cdms.Constant
 import app.i.cdms.api.ApiService
-import app.i.cdms.data.model.*
+import app.i.cdms.data.model.ApiResult
+import app.i.cdms.data.model.OrderCount
+import app.i.cdms.data.model.SCFResult
+import app.i.cdms.data.model.UserChannelConfig
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import retrofit2.Response
-import java.io.IOException
 import javax.inject.Inject
 
 /**
@@ -16,18 +18,8 @@ import javax.inject.Inject
  */
 class AgentDataSource @Inject constructor(private val service: ApiService) {
 
-    suspend fun withdraw(userId: Int): Result<ApiResult<Any>> {
-        return try {
-            val response = service.clearAccount(userId = userId)
-            if (response.isSuccessful && response.body() != null) {
-                Result.Success(response.body()!!)
-            } else {
-                // TODO: 2021/10/19
-                Result.Error(Exception(response.toString()))
-            }
-        } catch (e: Throwable) {
-            Result.Error(IOException("Error withdraw" + e.localizedMessage, e))
-        }
+    suspend fun withdraw(userId: Int): Response<ApiResult<Any>> {
+        return service.clearAccount(userId = userId)
     }
 
     suspend fun transfer(
@@ -36,24 +28,14 @@ class AgentDataSource @Inject constructor(private val service: ApiService) {
         remark: String?,
         recordType: String,
         changeAmount: Float
-    ): Result<ApiResult<Any>> {
-        return try {
-            val response = service.transfer(
-                toUserId = toUserId,
-                userName = userName,
-                remark = remark,
-                recordType = recordType,
-                changeAmount = changeAmount
-            )
-            if (response.isSuccessful && response.body() != null) {
-                Result.Success(response.body()!!)
-            } else {
-                // TODO: 2021/10/19
-                Result.Error(Exception(response.toString()))
-            }
-        } catch (e: Throwable) {
-            Result.Error(IOException("Error transfer" + e.localizedMessage, e))
-        }
+    ): Response<ApiResult<Any>> {
+        return service.transfer(
+            toUserId = toUserId,
+            userName = userName,
+            remark = remark,
+            recordType = recordType,
+            changeAmount = changeAmount
+        )
     }
 
     // 根据用户名配置价格
@@ -63,7 +45,7 @@ class AgentDataSource @Inject constructor(private val service: ApiService) {
         firstCommission: Float,
         addCommission: Float,
         limitAddCommission: Float
-    ): Result<SCFResult> {
+    ): Response<SCFResult> {
         val payload = JSONObject()
             .put("username", username)
             .put("firstWeight", firstWeight)
@@ -73,17 +55,7 @@ class AgentDataSource @Inject constructor(private val service: ApiService) {
             .toString()
             .toRequestBody("application/json".toMediaType())
 
-        return try {
-            val response = service.updateChannelByUsername(payload = payload)
-            if (response.isSuccessful && response.body() != null) {
-                Result.Success(response.body()!!)
-            } else {
-                // TODO: 2021/10/19
-                Result.Error(Exception(response.toString()))
-            }
-        } catch (e: Throwable) {
-            Result.Error(IOException("updateChannelByUsername fail", e))
-        }
+        return service.updateChannelByUsername(payload = payload)
     }
 
     // 根据用户ID配置价格
@@ -93,7 +65,7 @@ class AgentDataSource @Inject constructor(private val service: ApiService) {
         firstCommission: Float,
         addCommission: Float,
         doConfig: Int
-    ): Result<SCFResult> {
+    ): Response<SCFResult> {
         val payload = JSONObject()
             .put("userId", userId)
             .put("firstWeight", firstWeight)
@@ -103,17 +75,7 @@ class AgentDataSource @Inject constructor(private val service: ApiService) {
             .toString()
             .toRequestBody("application/json".toMediaType())
 
-        return try {
-            val response = service.updateChannelByUserId(payload = payload)
-            if (response.isSuccessful && response.body() != null) {
-                Result.Success(response.body()!!)
-            } else {
-                // TODO: 2021/10/19
-                Result.Error(Exception(response.toString()))
-            }
-        } catch (e: Throwable) {
-            Result.Error(IOException("updateChannelByUserId fail", e))
-        }
+        return service.updateChannelByUserId(payload = payload)
     }
 
     suspend fun getAllChannelConfig(channelId: Int): Response<ApiResult<UserChannelConfig>> {

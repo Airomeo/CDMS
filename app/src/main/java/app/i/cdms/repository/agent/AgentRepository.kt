@@ -1,6 +1,9 @@
 package app.i.cdms.repository.agent
 
-import app.i.cdms.data.model.*
+import app.i.cdms.data.model.ApiResult
+import app.i.cdms.data.model.OrderCount
+import app.i.cdms.data.model.SCFResult
+import app.i.cdms.data.model.UserChannelConfig
 import app.i.cdms.data.source.remote.agent.AgentDataSource
 import app.i.cdms.repository.BaseRepository
 import javax.inject.Inject
@@ -16,8 +19,8 @@ class AgentRepository @Inject constructor(private val dataSource: AgentDataSourc
         return executeResponse { dataSource.getOrderCount(userId) }
     }
 
-    suspend fun withdraw(userId: Int): Result<ApiResult<Any>> {
-        return dataSource.withdraw(userId)
+    suspend fun withdraw(userId: Int): ApiResult<Any>? {
+        return executeResponse { dataSource.withdraw(userId) }
     }
 
     suspend fun transfer(
@@ -26,8 +29,16 @@ class AgentRepository @Inject constructor(private val dataSource: AgentDataSourc
         remark: String?,
         recordType: String,
         changeAmount: Float
-    ): Result<ApiResult<Any>> {
-        return dataSource.transfer(toUserId, userName, remark, recordType, changeAmount)
+    ): ApiResult<Any>? {
+        return executeResponse {
+            dataSource.transfer(
+                toUserId,
+                userName,
+                remark,
+                recordType,
+                changeAmount
+            )
+        }
     }
 
     suspend fun updateChannelByUsername(
@@ -36,14 +47,16 @@ class AgentRepository @Inject constructor(private val dataSource: AgentDataSourc
         firstCommission: Float,
         addCommission: Float,
         limitAddCommission: Float
-    ): Result<SCFResult> {
-        return dataSource.updateChannelByUsername(
-            username,
-            firstWeight,
-            firstCommission,
-            addCommission,
-            limitAddCommission
-        )
+    ): SCFResult? {
+        return executeResponse {
+            dataSource.updateChannelByUsername(
+                username,
+                firstWeight,
+                firstCommission,
+                addCommission,
+                limitAddCommission
+            )
+        }
     }
 
     suspend fun updateChannelByUserId(
@@ -52,14 +65,16 @@ class AgentRepository @Inject constructor(private val dataSource: AgentDataSourc
         firstCommission: Float,
         addCommission: Float,
         doConfig: Int
-    ): Result<SCFResult> {
-        return dataSource.updateChannelByUserId(
-            userId,
-            firstWeight,
-            firstCommission,
-            addCommission,
-            doConfig
-        )
+    ): SCFResult? {
+        return executeResponse {
+            dataSource.updateChannelByUserId(
+                userId,
+                firstWeight,
+                firstCommission,
+                addCommission,
+                doConfig
+            )
+        }
     }
 
     suspend fun getAllChannelConfig(channelId: Int): ApiResult<UserChannelConfig>? {

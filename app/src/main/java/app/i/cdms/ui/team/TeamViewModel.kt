@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.i.cdms.data.model.Agent
 import app.i.cdms.data.model.MyTeam
-import app.i.cdms.data.model.Result
 import app.i.cdms.repository.team.TeamRepository
 import app.i.cdms.utils.BaseEvent
 import app.i.cdms.utils.EventBus
@@ -32,26 +31,8 @@ class TeamViewModel @Inject constructor(private val teamRepository: TeamReposito
 
     private fun getMyTeam(pageNum: Int, pageSize: Int, userName: String?) {
         viewModelScope.launch {
-            EventBus.produceEvent(BaseEvent.Loading)
             val result = teamRepository.getMyTeam(pageNum, pageSize, userName)
-            if (result is Result.Success) {
-                when (result.data.code) {
-                    200 -> {
-                        result.data.data?.let {
-                            EventBus.produceEvent(BaseEvent.Nothing)
-                            _myTeam.emit(it)
-                        }
-                    }
-                    401 -> {
-                        EventBus.produceEvent(BaseEvent.NeedLogin)
-                    }
-                    else -> {
-                        EventBus.produceEvent(BaseEvent.Failed(result.data))
-                    }
-                }
-            } else if (result is Result.Error) {
-                EventBus.produceEvent(BaseEvent.Error(result.exception))
-            }
+            _myTeam.value = result?.data
         }
     }
 
@@ -70,26 +51,9 @@ class TeamViewModel @Inject constructor(private val teamRepository: TeamReposito
 
     fun batchUpdateChannel() {
         viewModelScope.launch {
-            EventBus.produceEvent(BaseEvent.Loading)
             val result = teamRepository.batchUpdateChannel()
-            if (result is Result.Success) {
-                when (result.data.errorCode) {
-                    200 -> {
-                        EventBus.produceEvent(BaseEvent.Toast(result.data.errorMessage))
-                    }
-                    401 -> {
-                        EventBus.produceEvent(BaseEvent.NeedLogin)
-                    }
-                    else -> {
-                        EventBus.produceEvent(BaseEvent.Failed(result.data))
-                    }
-                }
-            } else if (result is Result.Error) {
-                if ("504" in result.exception.toString()) {
-                    EventBus.produceEvent(BaseEvent.Toast("执行成功，请于2分钟后检查结果。"))
-                } else {
-                    EventBus.produceEvent(BaseEvent.Error(result.exception))
-                }
+            result?.errorMessage?.let {
+                EventBus.produceEvent(BaseEvent.Toast(it))
             }
         }
     }
@@ -99,26 +63,10 @@ class TeamViewModel @Inject constructor(private val teamRepository: TeamReposito
         val records = myTeam.value!!.records.toMutableList()
         val index = records.indexOf(oldAgent)
         viewModelScope.launch {
-            EventBus.produceEvent(BaseEvent.Loading)
             val result = teamRepository.getMyTeam(index + 1, 1, null)
-            if (result is Result.Success) {
-                when (result.data.code) {
-                    200 -> {
-                        result.data.data?.let {
-                            EventBus.produceEvent(BaseEvent.Nothing)
-                            records[index] = it.records.first()
-                            _myTeam.emit(myTeam.value!!.copy(records = records))
-                        }
-                    }
-                    401 -> {
-                        EventBus.produceEvent(BaseEvent.NeedLogin)
-                    }
-                    else -> {
-                        EventBus.produceEvent(BaseEvent.Failed(result.data))
-                    }
-                }
-            } else if (result is Result.Error) {
-                EventBus.produceEvent(BaseEvent.Error(result.exception))
+            result?.data?.let {
+                records[index] = it.records.first()
+                _myTeam.emit(myTeam.value!!.copy(records = records))
             }
         }
     }

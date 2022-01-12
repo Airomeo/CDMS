@@ -20,7 +20,12 @@ open class BaseRepository {
             EventBus.produceEvent(BaseEvent.Loading)
             block.invoke()
         }.onFailure {
-            EventBus.produceEvent(BaseEvent.Error(it))
+            if ("504" in it.toString()) {
+                // 云函数超时
+                EventBus.produceEvent(BaseEvent.Toast("执行成功，请于2分钟后检查结果。"))
+            } else {
+                EventBus.produceEvent(BaseEvent.Error(it))
+            }
         }.onSuccess {
             EventBus.produceEvent(BaseEvent.Nothing)
             if (it.isSuccessful) {
@@ -28,7 +33,7 @@ open class BaseRepository {
                     is ApiResult<*> -> {
                         when (body.code) {
                             200 -> {
-                                return body as T
+                                return body
                             }
                             401 -> {
                                 EventBus.produceEvent(BaseEvent.NeedLogin)
@@ -39,10 +44,10 @@ open class BaseRepository {
                         }
                     }
                     is UserConfigResult -> {
-
+                        return body
                     }
                     is SCFResult -> {
-
+                        return body
                     }
                     null -> {
                         // Response body is null.

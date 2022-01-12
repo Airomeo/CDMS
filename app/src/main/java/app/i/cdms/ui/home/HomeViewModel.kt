@@ -4,10 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.i.cdms.data.model.MyInfo
 import app.i.cdms.data.model.NoticeList
-import app.i.cdms.data.model.Result
 import app.i.cdms.repository.home.HomeRepository
-import app.i.cdms.utils.BaseEvent
-import app.i.cdms.utils.EventBus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,21 +29,7 @@ class HomeViewModel @Inject constructor(
 
     private fun getNotice() {
         viewModelScope.launch {
-            EventBus.produceEvent(BaseEvent.Loading)
-            val result = homeRepository.getNotice()
-            if (result is Result.Success) {
-                when (result.data.code) {
-                    200 -> {
-                        EventBus.produceEvent(BaseEvent.Nothing)
-                        _noticeList.emit(result.data)
-                    }
-                    else -> {
-                        EventBus.produceEvent(BaseEvent.Failed(result.data))
-                    }
-                }
-            } else if (result is Result.Error) {
-                EventBus.produceEvent(BaseEvent.Error(result.exception))
-            }
+            _noticeList.value = homeRepository.getNotice()
         }
     }
 
@@ -54,27 +37,11 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             delay(1)
             // can be launched in a separate asynchronous job
-            EventBus.produceEvent(BaseEvent.Loading)
             val result = homeRepository.getMyInfo()
-            if (result is Result.Success) {
-                when (result.data.code) {
-                    200 -> {
-                        result.data.data?.let {
-                            EventBus.produceEvent(BaseEvent.Nothing)
-                            _myInfo.value = it
-                            updateMyInfo(it)
-                            getNotice()
-                        }
-                    }
-                    401 -> {
-                        EventBus.produceEvent(BaseEvent.NeedLogin)
-                    }
-                    else -> {
-                        EventBus.produceEvent(BaseEvent.Failed(result.data))
-                    }
-                }
-            } else if (result is Result.Error) {
-                EventBus.produceEvent(BaseEvent.Error(result.exception))
+            result?.let {
+                _myInfo.value = it.data
+                updateMyInfo(it.data!!)
+                getNotice()
             }
         }
     }

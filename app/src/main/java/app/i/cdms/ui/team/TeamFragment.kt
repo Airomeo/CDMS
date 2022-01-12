@@ -98,7 +98,7 @@ class TeamFragment : Fragment(R.layout.fragment_team) {
             .setPositiveButton(
                 R.string.dialog_positive_text
             ) { dialog, which ->
-                teamViewModel.batchUpdateChannel()
+//                teamViewModel.batchUpdateChannel()
             }
             .setNegativeButton(R.string.dialog_negative_text, null)
             .show()

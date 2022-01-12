@@ -3,12 +3,9 @@ package app.i.cdms.ui.agent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.i.cdms.data.model.OrderCount
-import app.i.cdms.data.model.Result
 import app.i.cdms.data.model.UserChannelConfig
 import app.i.cdms.data.model.UserConfig
 import app.i.cdms.repository.agent.AgentRepository
-import app.i.cdms.utils.BaseEvent
-import app.i.cdms.utils.EventBus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,23 +36,9 @@ class AgentViewModel @Inject constructor(private val agentRepository: AgentRepos
 
     fun withdraw(userId: Int) {
         viewModelScope.launch {
-            EventBus.produceEvent(BaseEvent.Loading)
             val result = agentRepository.withdraw(userId)
-            if (result is Result.Success) {
-                when (result.data.code) {
-                    200 -> {
-                        _uiState.emit(AgentUiState.WithdrawSuccess)
-                        EventBus.produceEvent(BaseEvent.Nothing)
-                    }
-                    401 -> {
-                        EventBus.produceEvent(BaseEvent.NeedLogin)
-                    }
-                    else -> {
-                        EventBus.produceEvent(BaseEvent.Failed(result.data))
-                    }
-                }
-            } else if (result is Result.Error) {
-                EventBus.produceEvent(BaseEvent.Error(result.exception))
+            result?.let {
+                _uiState.emit(AgentUiState.WithdrawSuccess)
             }
         }
     }
@@ -68,25 +51,11 @@ class AgentViewModel @Inject constructor(private val agentRepository: AgentRepos
         changeAmount: Float
     ) {
         viewModelScope.launch {
-            EventBus.produceEvent(BaseEvent.Loading)
             val result = agentRepository.transfer(
                 toUserId, userName, remark, recordType, changeAmount
             )
-            if (result is Result.Success) {
-                when (result.data.code) {
-                    200 -> {
-                        EventBus.produceEvent(BaseEvent.Nothing)
-                        _uiState.emit(AgentUiState.TransferSuccess(changeAmount))
-                    }
-                    401 -> {
-                        EventBus.produceEvent(BaseEvent.NeedLogin)
-                    }
-                    else -> {
-                        EventBus.produceEvent(BaseEvent.Failed(result.data))
-                    }
-                }
-            } else if (result is Result.Error) {
-                EventBus.produceEvent(BaseEvent.Error(result.exception))
+            result.let {
+                _uiState.emit(AgentUiState.TransferSuccess(changeAmount))
             }
         }
     }
@@ -99,7 +68,6 @@ class AgentViewModel @Inject constructor(private val agentRepository: AgentRepos
         doConfig: Int
     ) {
         viewModelScope.launch {
-            EventBus.produceEvent(BaseEvent.Loading)
             val result = agentRepository.updateChannelByUserId(
                 userId,
                 firstWeight,
@@ -107,21 +75,8 @@ class AgentViewModel @Inject constructor(private val agentRepository: AgentRepos
                 addCommission,
                 doConfig
             )
-            if (result is Result.Success) {
-                when (result.data.errorCode) {
-                    200 -> {
-                        EventBus.produceEvent(BaseEvent.Nothing)
-                        _uiState.emit(AgentUiState.UpdateChannelSuccess(result.data.errorMessage))
-                    }
-                    401 -> {
-                        EventBus.produceEvent(BaseEvent.NeedLogin)
-                    }
-                    else -> {
-                        EventBus.produceEvent(BaseEvent.Failed(result.data))
-                    }
-                }
-            } else if (result is Result.Error) {
-                EventBus.produceEvent(BaseEvent.Error(result.exception))
+            result?.let {
+                _uiState.emit(AgentUiState.UpdateChannelSuccess(it.errorMessage))
             }
         }
     }
