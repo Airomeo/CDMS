@@ -4,14 +4,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import app.i.cdms.R
 import app.i.cdms.data.model.Agent
 import app.i.cdms.databinding.AgentTransferBinding
@@ -87,10 +85,6 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
             }
         }
         with(binding) {
-            btnChannel.setOnClickListener {
-                val bundle = bundleOf("userId" to agent.userId)
-                findNavController().navigate(R.id.action_agentFragment_to_channelFragment, bundle)
-            }
             btnTransfer.setOnClickListener {
                 showTransferDialog(agent)
             }
@@ -115,14 +109,6 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
                             Toast.makeText(
                                 requireContext(),
                                 R.string.agent_withdraw_success,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            teamViewModel.updateAgentInMyTeam(agent)
-                        }
-                        is AgentUiState.UpdateChannelSuccess -> {
-                            Toast.makeText(
-                                requireContext(),
-                                it.msg,
                                 Toast.LENGTH_SHORT
                             ).show()
                             teamViewModel.updateAgentInMyTeam(agent)

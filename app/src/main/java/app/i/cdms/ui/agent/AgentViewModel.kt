@@ -3,7 +3,6 @@ package app.i.cdms.ui.agent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.i.cdms.data.model.OrderCount
-import app.i.cdms.data.model.UserConfig
 import app.i.cdms.repository.agent.AgentRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -19,8 +18,6 @@ class AgentViewModel @Inject constructor(private val agentRepository: AgentRepos
 
     private val _uiState = MutableSharedFlow<AgentUiState>()
     val uiState = _uiState.asSharedFlow()
-    private val _userConfig = MutableStateFlow<UserConfig?>(null)
-    val userConfig = _userConfig.asStateFlow()
     private val _orderCount = MutableStateFlow<OrderCount?>(null)
     val orderCount = _orderCount.asStateFlow()
 
@@ -61,6 +58,5 @@ class AgentViewModel @Inject constructor(private val agentRepository: AgentRepos
 // Represents different states for the Agent screen
 sealed class AgentUiState {
     data class TransferSuccess(val changeAmount: Float) : AgentUiState()
-    data class UpdateChannelSuccess(val msg: String) : AgentUiState()
     object WithdrawSuccess : AgentUiState()
 }

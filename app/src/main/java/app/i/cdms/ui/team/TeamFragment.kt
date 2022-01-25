@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.i.cdms.R
 import app.i.cdms.databinding.FragmentTeamBinding
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -81,27 +80,10 @@ class TeamFragment : Fragment(R.layout.fragment_team) {
                 findNavController().navigate(R.id.action_teamFragment_to_registerDialogFragment)
                 true
             }
-//            R.id.action_batch_update_channel -> {
-//                showUpdateDialog()
-//                true
-//            }
             else -> item.onNavDestinationSelected(findNavController()) || super.onOptionsItemSelected(
                 item
             )
         }
-    }
-
-    private fun showUpdateDialog() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.dialog_title_warning)
-            .setMessage(getString(R.string.my_team_batch_update_channel_message))
-            .setPositiveButton(
-                R.string.dialog_positive_text
-            ) { dialog, which ->
-//                teamViewModel.batchUpdateChannel()
-            }
-            .setNegativeButton(R.string.dialog_negative_text, null)
-            .show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
