@@ -9,7 +9,7 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_bind_channel_to_user"
-        android:title="配置渠道至用户"
+        android:title="@string/action_batch_update_channel"
         app:showAsAction="never" />
 
 </menu>
