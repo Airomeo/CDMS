@@ -2,7 +2,6 @@ package app.i.cdms.repository.team
 
 import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.MyTeam
-import app.i.cdms.data.model.SCFResult
 import app.i.cdms.data.source.remote.team.TeamDataSource
 import app.i.cdms.repository.BaseRepository
 import javax.inject.Inject
@@ -19,9 +18,5 @@ class TeamRepository @Inject constructor(private val dataSource: TeamDataSource)
         userName: String?
     ): ApiResult<MyTeam>? {
         return executeResponse { dataSource.getMyTeam(pageNum, pageSize, userName) }
-    }
-
-    suspend fun batchUpdateChannel(): SCFResult? {
-        return executeResponse { dataSource.batchUpdateChannel() }
     }
 }

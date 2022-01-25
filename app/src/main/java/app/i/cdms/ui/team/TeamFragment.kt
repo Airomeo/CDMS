@@ -81,10 +81,10 @@ class TeamFragment : Fragment(R.layout.fragment_team) {
                 findNavController().navigate(R.id.action_teamFragment_to_registerDialogFragment)
                 true
             }
-            R.id.action_batch_update_channel -> {
-                showUpdateDialog()
-                true
-            }
+//            R.id.action_batch_update_channel -> {
+//                showUpdateDialog()
+//                true
+//            }
             else -> item.onNavDestinationSelected(findNavController()) || super.onOptionsItemSelected(
                 item
             )

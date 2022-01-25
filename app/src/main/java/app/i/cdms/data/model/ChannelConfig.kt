@@ -5,10 +5,10 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class UserChannelConfig(
+data class ChannelConfig(
     @Json(name = "userName")
     val userName: String,
-    @Json(name = "user_id")
+    @Json(name = "userId")
     val userId: Int,
     @Json(name = "channelId")
     val channelId: Int?,
@@ -17,9 +17,9 @@ data class UserChannelConfig(
     @Json(name = "calcFeeType")
     val calcFeeType: String?,
     @Json(name = "discountPercent")
-    val discountPercent: Any?,
+    val discountPercent: String?,
     @Json(name = "perAdd")
-    val perAdd: Any?,
+    val perAdd: String?,
     @Json(name = "firstProfit")
     val firstProfit: String?,
     @Json(name = "addProfit")

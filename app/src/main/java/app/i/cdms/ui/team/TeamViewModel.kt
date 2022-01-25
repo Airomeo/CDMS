@@ -5,8 +5,6 @@ import androidx.lifecycle.viewModelScope
 import app.i.cdms.data.model.Agent
 import app.i.cdms.data.model.MyTeam
 import app.i.cdms.repository.team.TeamRepository
-import app.i.cdms.utils.BaseEvent
-import app.i.cdms.utils.EventBus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -47,15 +45,6 @@ class TeamViewModel @Inject constructor(private val teamRepository: TeamReposito
 
     fun search(agentFilter: AgentFilter) {
         _filter.value = agentFilter
-    }
-
-    fun batchUpdateChannel() {
-        viewModelScope.launch {
-            val result = teamRepository.batchUpdateChannel()
-            result?.errorMessage?.let {
-                EventBus.produceEvent(BaseEvent.Toast(it))
-            }
-        }
     }
 
     fun updateAgentInMyTeam(oldAgent: Agent) {

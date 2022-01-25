@@ -121,27 +121,10 @@ interface ApiService {
         @Query("changeAmount") changeAmount: Float
     ): Response<ApiResult<Any>>
 
-    @POST
-    suspend fun updateChannelByUsername(
-        @Url url: String = Constant.API_UPDATE_CHANNEL_BY_USERNAME,
-        @Body payload: RequestBody
-    ): Response<SCFResult>
-
-    @POST
-    suspend fun updateChannelByUserId(
-        @Url url: String = Constant.API_UPDATE_CHANNEL_BY_USER_ID,
-        @Body payload: RequestBody
-    ): Response<SCFResult>
-
     @GET
-    suspend fun batchUpdateChannel(
-        @Url url: String = Constant.API_BATCH_UPDATE_CHANNEL
-    ): Response<SCFResult>
-
-    @GET
-    suspend fun getAllChannelConfig(
+    suspend fun getChannelConfigForAllUsers(
         @Url url: String
-    ): Response<ApiResult<UserChannelConfig>>
+    ): Response<ApiResult<List<ChannelConfig>>>
 
     @GET
     @Headers(
@@ -168,5 +151,22 @@ interface ApiService {
     suspend fun getCustomerChannelDetail(
         @Url url: String
     ): Response<ApiResult<List<ChannelDetail>>>
+
+    @POST
+    suspend fun bindChannelToUser(
+        @Url url: String = Constant.API_BIND_CHANNEL_TO_USER,
+        @Body payload: RequestBody
+    ): Response<ApiResult<Any>>
+
+    @PUT
+    suspend fun updateChildPrice(
+        @Url url: String = Constant.API_UPDATE_CHILD_PRICE,
+        @Body payload: RequestBody
+    ): Response<ApiResult<Any>>
+
+    @DELETE
+    suspend fun deleteChildPrice(
+        @Url url: String
+    ): Response<ApiResult<Any>>
 
 }

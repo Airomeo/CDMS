@@ -6,7 +6,6 @@ import app.i.cdms.data.model.MyInfo
 import app.i.cdms.data.model.NoticeList
 import app.i.cdms.repository.home.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -35,7 +34,6 @@ class HomeViewModel @Inject constructor(
 
     private fun getMyInfo() {
         viewModelScope.launch {
-            delay(1)
             // can be launched in a separate asynchronous job
             val result = homeRepository.getMyInfo()
             result?.let {

@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
                         is BaseEvent.Toast -> {
                             Toast.makeText(
                                 this@MainActivity,
-                                it.msg,
+                                getString(it.resId),
                                 Toast.LENGTH_SHORT
                             ).show()
                         }

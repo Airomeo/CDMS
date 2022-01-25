@@ -3,7 +3,6 @@ package app.i.cdms.ui.agent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.i.cdms.data.model.OrderCount
-import app.i.cdms.data.model.UserChannelConfig
 import app.i.cdms.data.model.UserConfig
 import app.i.cdms.repository.agent.AgentRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,8 +21,6 @@ class AgentViewModel @Inject constructor(private val agentRepository: AgentRepos
     val uiState = _uiState.asSharedFlow()
     private val _userConfig = MutableStateFlow<UserConfig?>(null)
     val userConfig = _userConfig.asStateFlow()
-    private val _userChannelConfig = MutableStateFlow<UserChannelConfig?>(null)
-    val userChannelConfig = _userChannelConfig.asStateFlow()
     private val _orderCount = MutableStateFlow<OrderCount?>(null)
     val orderCount = _orderCount.asStateFlow()
 
@@ -57,34 +54,6 @@ class AgentViewModel @Inject constructor(private val agentRepository: AgentRepos
             result.let {
                 _uiState.emit(AgentUiState.TransferSuccess(changeAmount))
             }
-        }
-    }
-
-    fun updateChannelByUserId(
-        userId: Int,
-        firstWeight: Float,
-        firstCommission: Float,
-        addCommission: Float,
-        doConfig: Int
-    ) {
-        viewModelScope.launch {
-            val result = agentRepository.updateChannelByUserId(
-                userId,
-                firstWeight,
-                firstCommission,
-                addCommission,
-                doConfig
-            )
-            result?.let {
-                _uiState.emit(AgentUiState.UpdateChannelSuccess(it.errorMessage))
-            }
-        }
-    }
-
-    fun getAllChannelConfig(channelId: Int) {
-        viewModelScope.launch {
-            val result = agentRepository.getAllChannelConfig(channelId)
-            _userChannelConfig.value = result?.data
         }
     }
 }

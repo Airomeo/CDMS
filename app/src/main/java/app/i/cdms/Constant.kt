@@ -54,16 +54,17 @@ object Constant {
     const val API_TRANSFER = "$API/wl/userAccount/transfer"
     const val API_NOTICE = "$API/system/notice/list"
     const val API_ORDER_COUNT = "$API/wl/home/getUserOrderCount"
-    const val API_GET_CHILDREN_PRICE_BY_CHANNEL =
-        "$API/logistics/userChannelPrice/getChildrenPriceByChannel"
     const val API_CUSTOMER_CHANNEL = "$API/wl/home/selfCustomer"
     const val API_CUSTOMER_CHANNEL_DETAIL = "$API/wl/home/selfCustomerDetail"
+    const val API_GET_CUSTOMER_CHANNELS = "$API/wl/home/getCustomerChannels"
+    const val API_GET_CHILDREN_PRICE_BY_CHANNEL =
+        "$API/logistics/userChannelPrice/getChildrenPriceByChannel"
+    const val API_BIND_CHANNEL_TO_USER = "$API/logistics/userChannelPrice/bindChannel2Users"
+    const val API_UPDATE_CHILD_PRICE = "$API/logistics/userChannelPrice/updateChildPrice"
+    const val API_DELETE_CHILD_PRICE = "$API/logistics/userChannelPrice/126/2770"
 
     private const val API_TCB_BASE =
         "https://i-7g9v864y639e8b0a-1256871713.ap-shanghai.app.tcloudbase.com/express"
-    val API_UPDATE_CHANNEL_BY_USERNAME = "$API_SCF_BASE/YIDA/updateChannelByUsername"
-    val API_UPDATE_CHANNEL_BY_USER_ID = "$API_SCF_BASE/YIDA/updateChannelByUserId"
-    val API_BATCH_UPDATE_CHANNEL = "$API_SCF_BASE/YIDA/batchUpdateChannel"
     const val API_DOC = "https://docs.qq.com/doc/DWmVtWWFJQ2R1cGVU?tdsourcetag=scan-qr"
 
     private val API_SCF_BASE: String

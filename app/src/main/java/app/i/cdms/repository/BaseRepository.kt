@@ -1,8 +1,7 @@
 package app.i.cdms.repository
 
+import app.i.cdms.R
 import app.i.cdms.data.model.ApiResult
-import app.i.cdms.data.model.SCFResult
-import app.i.cdms.data.model.UserConfigResult
 import app.i.cdms.utils.BaseEvent
 import app.i.cdms.utils.EventBus
 import retrofit2.Response
@@ -22,7 +21,7 @@ open class BaseRepository {
         }.onFailure {
             if ("504" in it.toString()) {
                 // 云函数超时
-                EventBus.produceEvent(BaseEvent.Toast("执行成功，请于2分钟后检查结果。"))
+                EventBus.produceEvent(BaseEvent.Toast(R.string.api_wait))
             } else {
                 EventBus.produceEvent(BaseEvent.Error(it))
             }
@@ -43,18 +42,22 @@ open class BaseRepository {
                             }
                         }
                     }
-                    is UserConfigResult -> {
-                        return body
-                    }
-                    is SCFResult -> {
-                        return body
-                    }
+//                    is UserConfigResult -> {
+//                        return body
+//                    }
+//                    is SCFResult -> {
+//                        return body
+//                    }
+//                    is NoticeList -> {
+//                        return body
+//                    }
                     null -> {
                         // Response body is null.
                         // EventBus.produceEvent(BaseEvent.Failed("Response body is null."))
                     }
                     else -> {
-                        EventBus.produceEvent(BaseEvent.Error(Exception("Other unhandled type")))
+//                        EventBus.produceEvent(BaseEvent.Error(Exception("Other unhandled type")))
+                        return body
                     }
                 }
             } else {

@@ -45,10 +45,11 @@
     <string name="dialog_title_warning">警告</string>
     <string name="dialog_positive_text">确认</string>
     <string name="dialog_negative_text">取消</string>
+    <string name="dialog_next">下一步</string>
     <string name="agent_dialog_transfer">转账</string>
     <string name="agent_transfer">转账</string>
     <string name="agent_transfer_success">转账成功</string>
-    <string name="agent_dialog_update_channel_message">将会根据下面的“配置信息”，批量添加新渠道并更新旧渠道。适合新开户后或调整下级抽佣时使用，免去一个个设置的麻烦。\n是否确认配置：%s的渠道？</string>
+    <string name="agent_dialog_update_channel_message">批量调整下级抽佣，将会根据下面的“配置信息”，为所选用户添加新渠道/更新旧渠道。</string>
     <string name="agent_dialog_withdraw">清账</string>
     <string name="agent_dialog_withdraw_message">是否确认清零账户：%s？\n余额将退回您的账户！</string>
     <string name="agent_withdraw">清账</string>
@@ -87,7 +88,7 @@
     <string name="action_show_completed">显示完成项</string>
     <string name="action_delete_all_completed">删除完成项</string>
     <string name="action_search">搜索</string>
-    <string name="action_batch_update_channel">批量更新渠道</string>
+    <string name="action_batch_update_channel">配置渠道至用户</string>
     <string name="price">¥%s</string>
     <string name="weight">%skg</string>
     <string name="channel_light_weight">抛比：%s</string>
@@ -99,4 +100,16 @@
     <string name="config_add_commission">续重抽佣：+ ¥%s</string>
     <string name="config_limit_first_commission">超过限重后的首重抽佣：+ ¥%s</string>
     <string name="config_limit_add_commission">超过限重后的续重抽佣：+ ¥%s</string>
+    <string name="config_discount">折扣：+ %s%%</string>
+    <string name="config_discount_commission">"折扣"抽佣：+ %s%%</string>
+    <string name="config_per_add">单笔加收：+ ¥%s</string>
+    <string name="config_per_add_commission">"单笔加收"抽佣：+ ¥%s</string>
+    <string name="channel_update_config_no_user_selected">未选择用户！</string>
+    <string name="channel_update_config_waiting">正在配置，请等待进度条消失。</string>
+    <string name="channel_update_config_finished">配置完毕。</string>
+    <string name="channel_update_config_dialog_title">选择用户</string>
+    <string name="channel_update_config_dialog_select_user">反选</string>
+    <string name="channel_config_commission_title">配置抽佣</string>
+    <string name="channel_config_commission_default">默认值</string>
+    <string name="api_wait">执行成功，请于2分钟后检查结果。</string>
 </resources>

@@ -7,38 +7,16 @@
     android:paddingVertical="@dimen/fragment_vertical_margin">
 
     <TextView
-        android:id="@+id/tvFirstWeight"
+        android:id="@+id/tvFirstCommission"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="@string/config_first_weight"
+        android:layout_marginStart="8dp"
+        android:text="@string/config_first_commission"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
         android:textColor="@color/material_on_surface_emphasis_medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.slider.Slider
-        android:id="@+id/sldFirstWeight"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:stepSize="0.5"
-        android:valueFrom="0"
-        android:valueTo="1.00"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvFirstWeight" />
-
-    <TextView
-        android:id="@+id/tvFirstCommission"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/config_first_commission"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-        android:textColor="@color/material_on_surface_emphasis_medium"
-        app:layout_constraintStart_toStartOf="@+id/tvFirstWeight"
-        app:layout_constraintTop_toBottomOf="@+id/sldFirstWeight" />
 
     <com.google.android.material.slider.Slider
         android:id="@+id/sldFirstCommission"
@@ -55,11 +33,12 @@
         android:id="@+id/tvAddCommission"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:text="@string/config_add_commission"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
         android:textColor="@color/material_on_surface_emphasis_medium"
-        app:layout_constraintStart_toStartOf="@+id/tvFirstWeight"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sldFirstCommission" />
 
     <com.google.android.material.slider.Slider
@@ -72,4 +51,50 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvAddCommission" />
+
+    <TextView
+        android:id="@+id/tvDiscount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/config_discount_commission"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        android:textColor="@color/material_on_surface_emphasis_medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sldAddCommission" />
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/sldDiscount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:stepSize="1"
+        android:valueFrom="0"
+        android:valueTo="10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDiscount" />
+
+    <TextView
+        android:id="@+id/tvPerAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/config_per_add_commission"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        android:textColor="@color/material_on_surface_emphasis_medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sldDiscount" />
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/sldPerAdd"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:stepSize="0.1"
+        android:valueFrom="0"
+        android:valueTo="1.00"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPerAdd" />
 </androidx.constraintlayout.widget.ConstraintLayout>

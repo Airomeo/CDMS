@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:title="@string/action_sort"
-        app:showAsAction="never">
-        <menu>
-            <item
-                android:id="@+id/action_sort_by_deadline"
-                android:checkable="true"
-                android:title="@string/action_sort_by_deadline"
-                app:showAsAction="never" />
-            <item
-                android:id="@+id/action_sort_by_priority"
-                android:checkable="true"
-                android:title="@string/action_sort_by_priority"
-                app:showAsAction="never" />
-        </menu>
-    </item>
-    <item
-        android:id="@+id/action_show_completed"
-        android:checkable="true"
-        android:title="@string/action_show_completed"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_delete_all_completed"
-        android:title="@string/action_delete_all_completed"
-        app:showAsAction="never" />
+    <!--    <item-->
+    <!--        android:title="@string/action_sort"-->
+    <!--        app:showAsAction="never">-->
+    <!--        <menu>-->
+    <!--            <item-->
+    <!--                android:id="@+id/action_sort_by_deadline"-->
+    <!--                android:checkable="true"-->
+    <!--                android:title="@string/action_sort_by_deadline"-->
+    <!--                app:showAsAction="never" />-->
+    <!--            <item-->
+    <!--                android:id="@+id/action_sort_by_priority"-->
+    <!--                android:checkable="true"-->
+    <!--                android:title="@string/action_sort_by_priority"-->
+    <!--                app:showAsAction="never" />-->
+    <!--        </menu>-->
+    <!--    </item>-->
+    <!--    <item-->
+    <!--        android:id="@+id/action_show_completed"-->
+    <!--        android:checkable="true"-->
+    <!--        android:title="@string/action_show_completed"-->
+    <!--        app:showAsAction="never" />-->
+    <!--    <item-->
+    <!--        android:id="@+id/action_delete_all_completed"-->
+    <!--        android:title="@string/action_delete_all_completed"-->
+    <!--        app:showAsAction="never" />-->
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_baseline_search_24"
         android:title="@string/action_search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/action_batch_update_channel"
-        android:title="@string/action_batch_update_channel"
-        app:showAsAction="never" />
+    <!--    <item-->
+    <!--        android:id="@+id/action_batch_update_channel"-->
+    <!--        android:title="@string/action_batch_update_channel"-->
+    <!--        app:showAsAction="never" />-->
     <item
         android:id="@+id/action_register"
         android:title="@string/action_register"

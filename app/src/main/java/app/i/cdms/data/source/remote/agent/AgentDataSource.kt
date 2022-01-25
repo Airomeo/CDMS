@@ -3,11 +3,11 @@ package app.i.cdms.data.source.remote.agent
 import app.i.cdms.Constant
 import app.i.cdms.api.ApiService
 import app.i.cdms.data.model.ApiResult
+import app.i.cdms.data.model.ChannelConfig
 import app.i.cdms.data.model.OrderCount
-import app.i.cdms.data.model.SCFResult
-import app.i.cdms.data.model.UserChannelConfig
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Response
 import javax.inject.Inject
@@ -38,51 +38,69 @@ class AgentDataSource @Inject constructor(private val service: ApiService) {
         )
     }
 
-    // 根据用户名配置价格
-    suspend fun updateChannelByUsername(
-        username: String,
-        firstWeight: Float,
-        firstCommission: Float,
-        addCommission: Float,
-        limitAddCommission: Float
-    ): Response<SCFResult> {
-        val payload = JSONObject()
-            .put("username", username)
-            .put("firstWeight", firstWeight)
-            .put("firstCommission", firstCommission)
-            .put("addCommission", addCommission)
-            .put("limitAddCommission", limitAddCommission)
-            .toString()
-            .toRequestBody("application/json".toMediaType())
-
-        return service.updateChannelByUsername(payload = payload)
-    }
-
-    // 根据用户ID配置价格
-    suspend fun updateChannelByUserId(
-        userId: Int,
-        firstWeight: Float,
-        firstCommission: Float,
-        addCommission: Float,
-        doConfig: Int
-    ): Response<SCFResult> {
-        val payload = JSONObject()
-            .put("userId", userId)
-            .put("firstWeight", firstWeight)
-            .put("firstCommission", firstCommission)
-            .put("addCommission", addCommission)
-            .put("doConfig", doConfig) // 0:Nothing, 1:addUserConfig, 2:updateUserConfig
-            .toString()
-            .toRequestBody("application/json".toMediaType())
-
-        return service.updateChannelByUserId(payload = payload)
-    }
-
-    suspend fun getAllChannelConfig(channelId: Int): Response<ApiResult<UserChannelConfig>> {
-        return service.getAllChannelConfig(Constant.API_GET_CHILDREN_PRICE_BY_CHANNEL + "/$channelId")
+    suspend fun getChannelConfigForAllUsers(channelId: Int): Response<ApiResult<List<ChannelConfig>>> {
+        return service.getChannelConfigForAllUsers(Constant.API_GET_CHILDREN_PRICE_BY_CHANNEL + "/$channelId")
     }
 
     suspend fun getOrderCount(userId: Int): Response<ApiResult<OrderCount>> {
         return service.getOrderCount(userId = userId)
+    }
+
+    // 根据用户ID配置渠道
+    suspend fun bindChannelToUser(
+        firstCommission: Float?,
+        addCommission: Float?,
+        channelId: Int,
+        customerId: Int,
+        discountPercent: Float?,
+        perAdd: Float?,
+        userIds: List<Int>
+    ): Response<ApiResult<Any>> {
+        val payload = JSONObject()
+            .put("firstProfit", firstCommission)
+            .put("addProfit", addCommission)
+            .put("channelId", channelId)
+            .put("customerId", customerId)
+            .put("discountPercent", discountPercent)
+            .put("perAdd", perAdd)
+            .put("userIds", JSONArray(userIds))
+            .toString()
+            .toRequestBody("application/json".toMediaType())
+
+        return service.bindChannelToUser(payload = payload)
+    }
+
+    // 根据用户ID更新渠道配置
+    suspend fun updateChildPrice(
+        firstCommission: Float?,
+        addCommission: Float?,
+        channelId: Int,
+        customerId: Int,
+        discountPercent: Float?,
+        perAdd: Float?,
+        userIds: List<Int>
+    ): Response<ApiResult<Any>> {
+        val payload = JSONObject()
+            .put("firstProfit", firstCommission)
+            .put("addProfit", addCommission)
+            .put("channelId", channelId)
+            .put("customerId", customerId)
+            .put("discountPercent", discountPercent)
+            .put("perAdd", perAdd)
+            .put("userIds", JSONArray(userIds))
+            .toString()
+            .toRequestBody("application/json".toMediaType())
+
+        return service.updateChildPrice(payload = payload)
+    }
+
+    // 根据用户ID更新渠道配置
+    suspend fun deleteChildPrice(
+        channelId: Int,
+        userIds: List<Int>
+    ): Response<ApiResult<Any>> {
+        val userIdsStr = userIds.toString().drop(1).dropLast(1)
+        val url = Constant.API_DELETE_CHILD_PRICE + "/" + channelId + "/" + userIdsStr
+        return service.deleteChildPrice(url)
     }
 }

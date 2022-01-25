@@ -1,6 +1,7 @@
 package app.i.cdms.ui.channel
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -32,13 +33,37 @@ class ChannelRecyclerViewAdapter :
         with(holder.binding) {
             channelName.text = channel.channelName
             customerType.text = channel.customerChannel?.customerType
-            firstPrice.text = root.context.getString(R.string.price, channel.costPrice.first)
-            addPrice.text =
-                root.context.getString(R.string.price, channel.costPrice.blocks.first().add)
-            firstWeight.text =
-                root.context.getString(R.string.weight, channel.costPrice.blocks.first().start)
-            limitWeight.text =
-                root.context.getString(R.string.weight, channel.costPrice.blocks.first().end)
+            when (channel.calcFeeType) {
+                "profit" -> {
+                    discount.visibility = View.INVISIBLE
+                    perAdd.visibility = View.INVISIBLE
+                    firstPrice.text =
+                        root.context.getString(R.string.price, channel.costPrice!!.first)
+                    addPrice.text =
+                        root.context.getString(R.string.price, channel.costPrice.blocks.first().add)
+                    firstWeight.text =
+                        root.context.getString(
+                            R.string.weight,
+                            channel.costPrice.blocks.first().start
+                        )
+                    limitWeight.text =
+                        root.context.getString(
+                            R.string.weight,
+                            channel.costPrice.blocks.first().end
+                        )
+                }
+                "discount" -> {
+                    discount.visibility = View.VISIBLE
+                    perAdd.visibility = View.VISIBLE
+                    val percent = channel.discountPercent?.toFloat()?.times(100)
+                    firstPrice.text = ""
+                    addPrice.text = ""
+                    discount.text =
+                        root.context.getString(R.string.config_discount, percent.toString())
+                    perAdd.text =
+                        root.context.getString(R.string.config_per_add, channel.perAdd)
+                }
+            }
             lightGoods.text = root.context.getString(
                 R.string.channel_light_weight,
                 channel.customerChannel?.lightGoods
@@ -56,10 +81,16 @@ class ChannelRecyclerViewAdapter :
                 R.string.channel_priority,
                 channel.customerChannel?.priority.toString()
             )
-            val areaStr = if (channel.customerChannel?.areaType == "P") {
-                "省"
-            } else {
-                channel.customerChannel?.areaType
+            val areaStr = when (channel.customerChannel?.areaType) {
+                "P" -> {
+                    "省"
+                }
+                "C" -> {
+                    "城"
+                }
+                else -> {
+                    channel.customerChannel?.areaType
+                }
             }
             areaType.text = root.context.getString(
                 R.string.channel_area_type,
@@ -71,14 +102,14 @@ class ChannelRecyclerViewAdapter :
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ChannelDetail>() {
             override fun areItemsTheSame(oldItem: ChannelDetail, newItem: ChannelDetail): Boolean {
-                return oldItem == newItem
+                return oldItem.channelId == newItem.channelId
             }
 
             override fun areContentsTheSame(
                 oldItem: ChannelDetail,
                 newItem: ChannelDetail
             ): Boolean {
-                return oldItem.channelId == newItem.channelId
+                return oldItem == newItem
             }
         }
     }

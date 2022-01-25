@@ -17,6 +17,6 @@ class MainDataSource @Inject constructor(private val service: ApiService) {
     }
 
     suspend fun getCustomerChannelDetail(customerId: Int): Response<ApiResult<List<ChannelDetail>>> {
-        return service.getCustomerChannelDetail(url = Constant.API_CUSTOMER_CHANNEL_DETAIL + "/" + customerId.toString())
+        return service.getCustomerChannelDetail(url = Constant.API_GET_CUSTOMER_CHANNELS + "/" + customerId.toString())
     }
 }

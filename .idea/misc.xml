@@ -34,11 +34,12 @@
         <entry key="app/src/main/res/layout/item_channel.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_channel_commission.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_channel_commission2.xml" value="0.5" />
-        <entry key="app/src/main/res/layout/item_channel_preview_to_detail.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/item_channel_preview_to_detail.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_commission.xml" value="0.3333333333333333" />
         <entry key="app/src/main/res/layout/item_team_agent.xml" value="0.33152173913043476" />
         <entry key="app/src/main/res/menu/agent.xml" value="0.3890625" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.2203125" />
+        <entry key="app/src/main/res/menu/channel.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/menu/team.xml" value="0.2203125" />
       </map>
     </option>
