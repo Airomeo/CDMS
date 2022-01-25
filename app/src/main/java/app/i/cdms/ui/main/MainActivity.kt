@@ -1,5 +1,7 @@
 package app.i.cdms.ui.main
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -14,9 +16,11 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import app.i.cdms.R
+import app.i.cdms.data.model.Release
 import app.i.cdms.databinding.ActivityMainBinding
 import app.i.cdms.utils.BaseEvent
 import app.i.cdms.utils.EventBus
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -96,10 +100,27 @@ class MainActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
+                        is BaseEvent.Update -> {
+                            showUpdateDialog(it.release)
+                        }
                     }
                 }
             }
         }
+    }
+
+    private fun showUpdateDialog(release: Release) {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.update_title)
+            .setMessage(getString(R.string.update_content, release.updateContent))
+            .setPositiveButton(
+                R.string.update_go
+            ) { dialog, which ->
+                val uri = Uri.parse(release.updateUrl)
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                startActivity(intent)
+            }
+            .show()
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -169,4 +169,9 @@ interface ApiService {
         @Url url: String
     ): Response<ApiResult<Any>>
 
+    @GET
+    suspend fun checkUpdate(
+        @Url url: String = Constant.API_UPDATE
+    ): Response<Release>
+
 }

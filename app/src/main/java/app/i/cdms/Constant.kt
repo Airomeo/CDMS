@@ -65,6 +65,7 @@ object Constant {
 
     private const val API_TCB_BASE =
         "https://i-7g9v864y639e8b0a-1256871713.ap-shanghai.app.tcloudbase.com/express"
+    const val API_UPDATE = "${API_TCB_BASE}/update"
     const val API_DOC = "https://docs.qq.com/doc/DWmVtWWFJQ2R1cGVU?tdsourcetag=scan-qr"
 
     private val API_SCF_BASE: String

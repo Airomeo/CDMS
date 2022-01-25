@@ -5,6 +5,7 @@ import app.i.cdms.api.ApiService
 import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.ChannelDetail
 import app.i.cdms.data.model.CustomerChannelResult
+import app.i.cdms.data.model.Release
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -18,5 +19,9 @@ class MainDataSource @Inject constructor(private val service: ApiService) {
 
     suspend fun getCustomerChannelDetail(customerId: Int): Response<ApiResult<List<ChannelDetail>>> {
         return service.getCustomerChannelDetail(url = Constant.API_GET_CUSTOMER_CHANNELS + "/" + customerId.toString())
+    }
+
+    suspend fun checkUpdate(): Response<Release> {
+        return service.checkUpdate()
     }
 }

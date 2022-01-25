@@ -112,4 +112,7 @@
     <string name="channel_config_commission_title">配置抽佣</string>
     <string name="channel_config_commission_default">默认值</string>
     <string name="api_wait">执行成功，请于2分钟后检查结果。</string>
+    <string name="update_title">发现新版本</string>
+    <string name="update_content">《更新日志》：\n%s</string>
+    <string name="update_go">前往更新</string>
 </resources>
