@@ -39,7 +39,7 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
         agentViewModel.getOrderCount(agent.userId)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 teamViewModel.myTeam.collectLatest { myTeam ->
                     myTeam ?: return@collectLatest
                     agent = myTeam.records.find {
@@ -60,7 +60,7 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
             }
         }
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 agentViewModel.orderCount.collectLatest {
                     with(binding) {
                         tvYto.text =
@@ -94,7 +94,7 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 agentViewModel.uiState.collectLatest {
                     when (it) {
                         is AgentUiState.TransferSuccess -> {

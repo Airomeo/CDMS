@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">CDMS</string>
-    <string name="app_name_debug">CDMS Debug</string>
+    <string name="app_name">聚快递</string>
+    <string name="app_name_debug">聚快递 Debug</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>

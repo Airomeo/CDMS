@@ -9,7 +9,9 @@ import app.i.cdms.repository.main.MainRepository
 import app.i.cdms.utils.BaseEvent
 import app.i.cdms.utils.EventBus
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -45,12 +47,14 @@ class MainViewModel @Inject constructor(
     }
 
     private fun checkUpdate() {
-        viewModelScope.launch {
-            val result = mainRepository.checkUpdate()
-            result ?: return@launch
+        if (!BuildConfig.DEBUG) {
+            viewModelScope.launch {
+                val result = mainRepository.checkUpdate()
+                result ?: return@launch
 
-            if (result.versionCode > BuildConfig.VERSION_CODE) {
-                EventBus.produceEvent(BaseEvent.Update(result))
+                if (result.versionCode > BuildConfig.VERSION_CODE) {
+                    EventBus.produceEvent(BaseEvent.Update(result))
+                }
             }
         }
     }

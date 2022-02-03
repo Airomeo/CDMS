@@ -52,14 +52,14 @@ class TeamFragment : Fragment(R.layout.fragment_team) {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 teamViewModel.uiState.collectLatest {
                     mAdapter.submitList(it)
                 }
             }
         }
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 teamViewModel.myTeam.collectLatest {
                     it ?: return@collectLatest
                     binding.tvAllUsers.text =

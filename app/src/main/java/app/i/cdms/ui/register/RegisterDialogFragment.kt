@@ -9,7 +9,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.*
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import app.i.cdms.R
 import app.i.cdms.databinding.DialogRegisterBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -84,7 +86,7 @@ class RegisterDialogFragment : DialogFragment() {
         // DialogFragment lifecycleOwner
         // https://developer.android.com/guide/fragments/dialogs#lifecycle
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 registerViewModel.registerFormState.collectLatest { registerFormState ->
                     registerFormState ?: return@collectLatest
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled =
@@ -103,7 +105,7 @@ class RegisterDialogFragment : DialogFragment() {
         }
 
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 registerViewModel.registerResult.collectLatest {
                     it ?: return@collectLatest
                     if (it.code == 200) {

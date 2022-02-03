@@ -1,7 +1,10 @@
 package app.i.cdms.ui.channel
 
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -19,9 +22,10 @@ import app.i.cdms.utils.BaseEvent
 import app.i.cdms.utils.EventBus
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.job
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ChannelFragment : Fragment(R.layout.fragment_channel) {
@@ -48,7 +52,7 @@ class ChannelFragment : Fragment(R.layout.fragment_channel) {
             layoutManager = LinearLayoutManager(context)
         }
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 channelViewModel.channelDetailListFlow.collect {
                     mAdapter.submitList(it)
                 }

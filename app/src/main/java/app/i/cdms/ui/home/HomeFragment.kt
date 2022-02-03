@@ -47,7 +47,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 homeViewModel.myInfo.collectLatest {
                     it ?: return@collectLatest
                     updateUiWithUser(it)
@@ -56,7 +56,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
         binding.notice.movementMethod = ScrollingMovementMethod()
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 homeViewModel.noticeList.collectLatest {
                     it ?: return@collectLatest
                     if (it.total > 0) {

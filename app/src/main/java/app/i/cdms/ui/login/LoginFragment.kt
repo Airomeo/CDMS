@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import app.i.cdms.BuildConfig
 import app.i.cdms.R
 import app.i.cdms.databinding.FragmentLoginBinding
 import app.i.cdms.ui.main.MainViewModel
@@ -41,8 +42,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         val loginButton = binding.login
         val captchaImageView = binding.imageView
 
+        if (BuildConfig.DEBUG) {
+            usernameEditText.setText("朱朝阳")
+            passwordEditText.setText("bonjour")
+        }
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 loginViewModel.uiState.collectLatest {
                     when (it) {
                         is LoginUiState.LoginSuccessful -> {
@@ -58,7 +63,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 loginViewModel.captchaData.collectLatest {
                     if (it == null) {
                         captchaImageView.setImageResource(R.drawable.ic_baseline_refresh_24)
