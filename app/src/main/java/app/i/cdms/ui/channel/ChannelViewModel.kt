@@ -128,7 +128,7 @@ class ChannelViewModel @Inject constructor(
                     )
                 }
             }
+            EventBus.produceEvent(BaseEvent.Toast(R.string.channel_update_config_finished))
         }
-        EventBus.produceEvent(BaseEvent.Toast(R.string.channel_update_config_finished))
     }
 }
