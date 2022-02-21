@@ -14,6 +14,7 @@ class MainRepository @Inject constructor(
     private val dataSource: MainDataSource, private val userPrefDataSource: UserPrefDataSource
 ) : BaseRepository() {
     val token = userPrefDataSource.tokenFlow
+    val areaListFlow = userPrefDataSource.areaListFlow
 
     suspend fun updateToken(token: Token) {
         userPrefDataSource.updateToken(token)
@@ -29,5 +30,12 @@ class MainRepository @Inject constructor(
 
     suspend fun checkUpdate(): Release? {
         return executeResponse { dataSource.checkUpdate() }
+    }
+
+    suspend fun getAndUpdateAreaList() {
+        val result = executeResponse { dataSource.getAreaList() }
+        result?.data?.let {
+            userPrefDataSource.updateAreaList(it)
+        }
     }
 }

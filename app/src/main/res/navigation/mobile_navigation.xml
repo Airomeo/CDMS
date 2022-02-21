@@ -38,6 +38,13 @@
         android:name="app.i.cdms.ui.channel.ChannelFragment"
         android:label="@string/title_channel"
         tools:layout="@layout/fragment_channel" />
+
+    <fragment
+        android:id="@+id/bookFragment"
+        android:name="app.i.cdms.ui.book.BookFragment"
+        android:label="@string/title_book"
+        tools:layout="@layout/fragment_book" />
+
     <navigation
         android:id="@+id/navigation_team"
         app:startDestination="@id/teamFragment">

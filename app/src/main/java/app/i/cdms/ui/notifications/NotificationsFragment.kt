@@ -32,6 +32,10 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
         binding.button.setOnClickListener {
             findNavController().navigate(R.id.navigation_team)
         }
+
+        binding.button2.setOnClickListener {
+            findNavController().navigate(R.id.bookFragment)
+        }
     }
 
     override fun onDestroyView() {

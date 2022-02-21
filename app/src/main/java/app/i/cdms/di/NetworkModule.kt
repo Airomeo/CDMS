@@ -105,14 +105,10 @@ object NetworkModule {
         @Throws(IOException::class)
         override fun intercept(chain: Interceptor.Chain): Response {
             var request = chain.request()
-
-            val ignore = listOf(Constant.API_GET_CAPTCHA, Constant.API_LOGIN)
-            if (request.url.toString() !in ignore) {
-
+            if (request.url.toString() !in Constant.ignoreTokenList) {
                 val token = runBlocking {
                     tokenFlow.first()
                 }
-                Log.d("TAG", "intercept runBlocking token: $token")
 
                 if (token.token.isBlank()) {
                     Log.d("TAG", "ApiClient token null. Cancel request")

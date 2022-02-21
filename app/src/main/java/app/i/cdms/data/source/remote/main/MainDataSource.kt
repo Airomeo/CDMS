@@ -2,10 +2,7 @@ package app.i.cdms.data.source.remote.main
 
 import app.i.cdms.Constant
 import app.i.cdms.api.ApiService
-import app.i.cdms.data.model.ApiResult
-import app.i.cdms.data.model.ChannelDetail
-import app.i.cdms.data.model.CustomerChannelResult
-import app.i.cdms.data.model.Release
+import app.i.cdms.data.model.*
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -23,5 +20,9 @@ class MainDataSource @Inject constructor(private val service: ApiService) {
 
     suspend fun checkUpdate(): Response<Release> {
         return service.checkUpdate()
+    }
+
+    suspend fun getAreaList(): Response<ApiResult<List<Area>>> {
+        return service.getAreaList()
     }
 }

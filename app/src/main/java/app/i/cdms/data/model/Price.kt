@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class CostPrice(
+data class Price(
     @Json(name = "blocks")
     val blocks: List<Block>,
     @Json(name = "first")

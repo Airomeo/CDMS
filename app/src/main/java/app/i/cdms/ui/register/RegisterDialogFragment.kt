@@ -86,7 +86,7 @@ class RegisterDialogFragment : DialogFragment() {
         // DialogFragment lifecycleOwner
         // https://developer.android.com/guide/fragments/dialogs#lifecycle
         lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 registerViewModel.registerFormState.collectLatest { registerFormState ->
                     registerFormState ?: return@collectLatest
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled =
@@ -105,7 +105,7 @@ class RegisterDialogFragment : DialogFragment() {
         }
 
         lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 registerViewModel.registerResult.collectLatest {
                     it ?: return@collectLatest
                     if (it.code == 200) {

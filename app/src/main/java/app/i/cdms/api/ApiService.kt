@@ -174,4 +174,42 @@ interface ApiService {
         @Url url: String = Constant.API_UPDATE
     ): Response<Release>
 
+    @GET
+    suspend fun getAreaList(
+        @Url url: String = Constant.API_GET_AREA
+    ): Response<ApiResult<List<Area>>>
+
+    @POST
+    suspend fun parseAddressByJd(
+        @Url url: String = Constant.API_PARSE_ADDRESS_BY_JD,
+        @Body payload: RequestBody
+    ): Response<YunYangBaseResponse<ParsedAddressByJd>>
+
+    @POST
+    suspend fun getPreOrderFee(
+        @Url url: String = Constant.API_GET_PER_ORDER_FEE,
+        @Body payload: RequestBody
+    ): Response<ApiResult<PreOrderFeeResult>>
+
+    @POST
+    suspend fun submitOrder(
+        @Url url: String = Constant.API_SUBMIT_ORDER,
+        @Body payload: RequestBody
+    ): Response<ApiResult<String>>
+
+    @POST
+    suspend fun getCompareFee(
+        @Url url: String = Constant.API_GET_COMPARE_FEE,
+        @Body payload: RequestBody
+    ): Response<ApiResult<List<BookChannelDetail>>>
+
+    @POST
+    suspend fun parseAddressBySf(
+        @Url url: String = Constant.API_PARSE_ADDRESS_BY_SF,
+        @Query("lang") lang: String = "sc",
+        @Query("region") region: String = "cn",
+        @Query("translate") translate: String = "sc",
+        @Body payload: RequestBody
+    ): Response<ShunFengBaseResponse<List<ParsedAddressBySf>>>
+
 }

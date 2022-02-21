@@ -9,9 +9,7 @@ import app.i.cdms.repository.main.MainRepository
 import app.i.cdms.utils.BaseEvent
 import app.i.cdms.utils.EventBus
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,18 +18,20 @@ class MainViewModel @Inject constructor(
     private val mainRepository: MainRepository
 ) : ViewModel() {
 
-    val token = mainRepository.token.shareIn(viewModelScope, SharingStarted.WhileSubscribed())
-
     init {
+        initToken()
+        checkUpdate()
+    }
+
+    private fun initToken() {
         viewModelScope.launch {
-            token.collectLatest {
+            mainRepository.token.collectLatest {
                 if (it.token.isBlank()) {
                     EventBus.produceEvent(BaseEvent.NeedLogin)
-                    Log.d("TAG", "MainViewModel init: token.isBlank()")
                 }
+                Log.d("TAG", "MainViewModel init: token = " + it.token)
             }
         }
-        checkUpdate()
     }
 
     fun verifyToken() {

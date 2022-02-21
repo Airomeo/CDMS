@@ -1,4 +1,4 @@
-package app.i.cdms.ui.channel
+package app.i.cdms.ui.book
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,16 +7,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import app.i.cdms.R
+import app.i.cdms.data.model.BookChannelDetail
 import app.i.cdms.data.model.Channel
-import app.i.cdms.data.model.ChannelDetail
 import app.i.cdms.databinding.ItemChannelBinding
 
 
 /**
  * [ListAdapter] that can display a [Channel].
  */
-class ChannelRecyclerViewAdapter :
-    ListAdapter<ChannelDetail, ChannelRecyclerViewAdapter.ViewHolder>(DIFF_CALLBACK) {
+class BookChannelRecyclerViewAdapter(
+    private val rootOnClickCallback: (channel: BookChannelDetail) -> Unit
+) :
+    ListAdapter<BookChannelDetail, BookChannelRecyclerViewAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -33,12 +35,15 @@ class ChannelRecyclerViewAdapter :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val channel = getItem(position)
         with(holder.binding) {
-            root.setOnClickListener { }
+            root.setOnClickListener {
+                rootOnClickCallback.invoke(channel)
+            }
             actionDown.setOnClickListener {
                 it.animate().rotation(it.rotation + 180F)
                 if (it.rotation % 360F > 0) {
 //                    channel.copy(unfold = false)
 //                    channel.unfold = false
+//                    channel = channel.copy(unfold = false)
                     lightGoods.visibility = View.GONE
                     backFeeType.visibility = View.GONE
                     priority.visibility = View.GONE
@@ -51,9 +56,10 @@ class ChannelRecyclerViewAdapter :
                     priority.visibility = View.VISIBLE
                     areaType.visibility = View.VISIBLE
                 }
+//                notifyItemChanged(position)
             }
-            channelName.text = channel.channelName
-            customerType.text = when (channel.customerChannel?.customerType) {
+            channelName.text = "¥" + channel.preOrderFee + " " + channel.channelName
+            customerType.text = when (channel.customerType) {
                 "personal" -> "个人"
                 "business" -> "商家"
                 "poizon" -> "得物"
@@ -70,10 +76,7 @@ class ChannelRecyclerViewAdapter :
                     firstWeight.text =
                         root.context.getString(R.string.weight, channel.price.blocks[0].start)
                     limitWeight.text =
-                        root.context.getString(
-                            R.string.weight,
-                            channel.customerChannel?.limitWeight
-                        )
+                        root.context.getString(R.string.weight, channel.limitWeight)
                     if (channel.price.blocks.size == 2) {
                         view3.visibility = View.VISIBLE
                         addPrice2.visibility = View.VISIBLE
@@ -98,48 +101,32 @@ class ChannelRecyclerViewAdapter :
             }
             lightGoods.text = root.context.getString(
                 R.string.channel_light_weight,
-                channel.customerChannel?.lightGoods
+                channel.lightGoods
             )
-            val backFeeStr = when (channel.customerChannel?.backFeeType) {
+            val backFeeStr = when (channel.backFeeType) {
                 "whole" -> "全额"
                 "half" -> "半价"
-                else -> channel.customerChannel?.backFeeType
+                else -> channel.backFeeType
             }
             backFeeType.text = root.context.getString(
                 R.string.channel_back_fee_type,
                 backFeeStr
             )
-            priority.text = root.context.getString(
-                R.string.channel_priority,
-                channel.customerChannel?.priority.toString()
-            )
-            val areaStr = when (channel.customerChannel?.areaType) {
-                "P" -> {
-                    "省"
-                }
-                "C" -> {
-                    "城"
-                }
-                else -> {
-                    channel.customerChannel?.areaType
-                }
-            }
-            areaType.text = root.context.getString(
-                R.string.channel_area_type,
-                areaStr
-            )
         }
     }
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ChannelDetail>() {
-            override fun areItemsTheSame(oldItem: ChannelDetail, newItem: ChannelDetail): Boolean {
-                return oldItem.channelId == newItem.channelId
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<BookChannelDetail>() {
+            override fun areItemsTheSame(
+                oldItem: BookChannelDetail,
+                newItem: BookChannelDetail
+            ): Boolean {
+                return oldItem.channelName == newItem.channelName
             }
 
             override fun areContentsTheSame(
-                oldItem: ChannelDetail,
-                newItem: ChannelDetail
+                oldItem: BookChannelDetail,
+                newItem: BookChannelDetail
             ): Boolean {
                 return oldItem == newItem
             }

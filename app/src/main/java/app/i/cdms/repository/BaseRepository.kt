@@ -2,6 +2,8 @@ package app.i.cdms.repository
 
 import app.i.cdms.R
 import app.i.cdms.data.model.ApiResult
+import app.i.cdms.data.model.ShunFengBaseResponse
+import app.i.cdms.data.model.YunYangBaseResponse
 import app.i.cdms.utils.BaseEvent
 import app.i.cdms.utils.EventBus
 import retrofit2.Response
@@ -36,6 +38,47 @@ open class BaseRepository {
                             }
                             401 -> {
                                 EventBus.produceEvent(BaseEvent.NeedLogin)
+                            }
+                            else -> {
+                                EventBus.produceEvent(BaseEvent.Failed(body.msg))
+                            }
+                        }
+                    }
+                    is YunYangBaseResponse<*> -> {
+                        when (body.code) {
+                            "0" -> {
+//                                {
+//                                    "id": "16139358-c431-4597-b867-ce95ae07a114",
+//                                    "code": "0",
+//                                    "message": "解析失败：格式错误！请重新输入！",
+//                                    "result": null,
+//                                    "error": null
+//                                }
+                                EventBus.produceEvent(BaseEvent.Failed(body.message))
+                            }
+                            "1" -> {
+//                                ParseAddressByJdResult
+                                return body
+                            }
+                            "200" -> {
+//                                {
+//                                    "id": "d62a730e-98bd-41be-86a8-16b739e8961b",
+//                                    "code": "200",
+//                                    "message": "OK",
+//                                    "result": null,
+//                                    "error": null
+//                                }
+                                return body
+                            }
+                            else -> {
+                                EventBus.produceEvent(BaseEvent.Failed(body.toString()))
+                            }
+                        }
+                    }
+                    is ShunFengBaseResponse<*> -> {
+                        when (body.code) {
+                            0 -> {
+                                return body
                             }
                             else -> {
                                 EventBus.produceEvent(BaseEvent.Failed(body.toString()))

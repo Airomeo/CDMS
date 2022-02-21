@@ -7,7 +7,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout6"
         style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_width="@dimen/material_textinput_default_width"
+        android:layout_width="245dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:hint="@string/transfer_label_amount"
@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:prefixText="@string/transfer_label_amount_prefix">
 
-        <AutoCompleteTextView
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
             android:id="@+id/tv_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout2"
         style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-        android:layout_width="@dimen/material_textinput_default_width"
+        android:layout_width="245dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"

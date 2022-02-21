@@ -28,7 +28,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         binding.webView.webViewClient = WebViewClient() // set the WebViewClient
         binding.webView.settings.javaScriptEnabled = true
         binding.webView.settings.loadsImagesAutomatically = true
-        binding.webView.loadUrl(Constant.API_DOC)
+        binding.webView.loadUrl(Constant.URL_DOC)
     }
 
     override fun onDestroyView() {

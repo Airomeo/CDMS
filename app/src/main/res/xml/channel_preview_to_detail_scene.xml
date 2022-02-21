@@ -6,7 +6,7 @@
         motion:constraintSetEnd="@+id/end"
         motion:constraintSetStart="@id/start"
         motion:duration="150">
-        <OnClick />
+        <OnClick motion:targetId="@+id/actionDown" />
     </Transition>
 
     <ConstraintSet android:id="@+id/start">
@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             motion:layout_constraintBottom_toTopOf="@id/view2"
-            motion:layout_constraintEnd_toEndOf="@id/view2"
+            motion:layout_constraintEnd_toEndOf="@id/view3"
             motion:layout_constraintStart_toEndOf="@id/discount"
             motion:visibilityMode="ignore" />
         <Constraint
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             motion:layout_constraintBottom_toTopOf="@id/view2"
-            motion:layout_constraintEnd_toEndOf="@id/view2"
+            motion:layout_constraintEnd_toEndOf="@id/view3"
             motion:layout_constraintStart_toEndOf="@id/discount"
             motion:visibilityMode="ignore" />
         <Constraint
@@ -73,12 +73,5 @@
             android:layout_height="wrap_content"
             motion:layout_constraintStart_toStartOf="@+id/priority"
             motion:layout_constraintTop_toBottomOf="@+id/priority" />
-        <Constraint
-            android:id="@+id/actionDown"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:rotationX="180"
-            motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintTop_toTopOf="@+id/customerType" />
     </ConstraintSet>
 </MotionScene>

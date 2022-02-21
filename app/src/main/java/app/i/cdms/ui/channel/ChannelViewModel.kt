@@ -61,8 +61,8 @@ class ChannelViewModel @Inject constructor(
         val result = mainRepository.getCustomerChannelDetail(customerChannel.id)
         result?.data?.let {
             for (item in it) {
-                item.customerChannel = customerChannel
-                channelDetailList.add(item)
+                val copy = item.copy(customerChannel = customerChannel)
+                channelDetailList.add(copy)
             }
         }
     }

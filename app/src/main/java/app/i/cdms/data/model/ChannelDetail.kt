@@ -13,7 +13,7 @@ data class ChannelDetail(
     @Json(name = "channelName")
     val channelName: String,
     @Json(name = "costPrice")
-    val costPrice: CostPrice?,
+    val price: Price?,
     @Json(name = "discountPercent")
     val discountPercent: String?,
     @Json(name = "perAdd")
@@ -22,6 +22,6 @@ data class ChannelDetail(
     val sort: Int,
     @Json(name = "srArea")
     val srArea: List<String>?,
-    @Json(name = "customerChannel")
-    var customerChannel: CustomerChannel?,
+    val customerChannel: CustomerChannel?,
+    val unfold: Boolean = false
 )

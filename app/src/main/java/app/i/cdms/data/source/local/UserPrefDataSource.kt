@@ -9,15 +9,19 @@ import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import app.i.cdms.Constant
+import app.i.cdms.data.model.Area
 import app.i.cdms.data.model.MyInfo
 import app.i.cdms.data.model.MyInfoJsonAdapter
 import app.i.cdms.data.model.Token
+import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
+import java.lang.reflect.Type
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -43,6 +47,7 @@ class UserPrefDataSource @Inject constructor(@ApplicationContext private val con
         val SHOW_COMPLETED = booleanPreferencesKey(Constant.PREF_SHOW_COMPLETED)
         val PREF_TOKEN = stringPreferencesKey(Constant.PREF_TOKEN)
         val PREF_MY_INFO = stringPreferencesKey(Constant.PREF_MY_INFO)
+        val PREF_AREA_LIST = stringPreferencesKey(Constant.PREF_AREA_LIST)
         val PREF_SELECTED_THEME = stringPreferencesKey(Constant.PREF_SELECTED_THEME)
         val PREF_CONFERENCE_TIME_ZONE = booleanPreferencesKey(Constant.PREF_CONFERENCE_TIME_ZONE)
     }
@@ -70,7 +75,36 @@ class UserPrefDataSource @Inject constructor(@ApplicationContext private val con
         }
     }.map { preferences ->
         preferences[PreferencesKeys.PREF_MY_INFO]?.let {
-            MyInfoJsonAdapter(Moshi.Builder().build()).fromJson(it)
+            kotlin.runCatching {
+                MyInfoJsonAdapter(Moshi.Builder().build()).fromJson(it)
+            }.onFailure {
+                Log.e("TAG", "PREF_MY_INFO.", it)
+            }.getOrNull()
+        }
+    }
+
+    val areaListFlow: Flow<List<Area>?> = context.dataStore.data.catch { exception ->
+        // dataStore.data throws an IOException when an error is encountered when reading data
+        if (exception is IOException) {
+            Log.e("TAG", "UserPrefDataSource: \"Error reading PREF_AREA_LIST.\"", exception)
+            emit(emptyPreferences())
+        } else {
+            throw exception
+        }
+    }.map { preferences ->
+        preferences[PreferencesKeys.PREF_AREA_LIST]?.let {
+            val type: Type = Types.newParameterizedType(
+                List::class.java,
+                Area::class.java
+            )
+            val moshi: Moshi = Moshi.Builder().build()
+            val jsonAdapter: JsonAdapter<List<Area>> = moshi.adapter(type)
+
+            kotlin.runCatching {
+                jsonAdapter.fromJson(it)
+            }.onFailure {
+                Log.e("TAG", "PREF_AREA_LIST.", it)
+            }.getOrNull()
         }
     }
 
@@ -84,6 +118,18 @@ class UserPrefDataSource @Inject constructor(@ApplicationContext private val con
         context.dataStore.edit { preferences ->
             preferences[PreferencesKeys.PREF_MY_INFO] =
                 MyInfoJsonAdapter(Moshi.Builder().build()).toJson(myInfo)
+        }
+    }
+
+    suspend fun updateAreaList(areaList: List<Area>) {
+        context.dataStore.edit { preferences ->
+            val type: Type = Types.newParameterizedType(
+                List::class.java,
+                Area::class.java
+            )
+            val moshi: Moshi = Moshi.Builder().build()
+            val jsonAdapter: JsonAdapter<List<Area>> = moshi.adapter(type)
+            preferences[PreferencesKeys.PREF_AREA_LIST] = jsonAdapter.toJson(areaList)
         }
     }
 }
