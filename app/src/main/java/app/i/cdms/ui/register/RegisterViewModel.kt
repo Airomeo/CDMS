@@ -4,8 +4,8 @@ import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.i.cdms.R
-import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.RegisterFormState
+import app.i.cdms.data.model.YiDaBaseResponse
 import app.i.cdms.repository.register.RegisterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -23,7 +23,7 @@ class RegisterViewModel @Inject constructor(
     private val _registerForm = MutableStateFlow<RegisterFormState?>(null)
     val registerFormState = _registerForm.asStateFlow()
 
-    private val _registerResult = MutableSharedFlow<ApiResult<Any>?>()
+    private val _registerResult = MutableSharedFlow<YiDaBaseResponse<Any>?>()
     val registerResult = _registerResult.asSharedFlow()
 
     fun register(username: String, password: String, phone: String) {

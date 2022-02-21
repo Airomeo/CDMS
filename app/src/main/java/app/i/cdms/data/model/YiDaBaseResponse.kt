@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class ApiResult<out T : Any?>(
+data class YiDaBaseResponse<out T : Any?>(
     @Json(name = "code")
     val code: Int,
     @Json(name = "data")

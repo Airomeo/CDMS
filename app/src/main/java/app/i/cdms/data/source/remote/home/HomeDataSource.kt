@@ -1,9 +1,9 @@
 package app.i.cdms.data.source.remote.home
 
 import app.i.cdms.api.ApiService
-import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.MyInfo
 import app.i.cdms.data.model.NoticeList
+import app.i.cdms.data.model.YiDaBaseResponse
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -12,7 +12,7 @@ import javax.inject.Inject
  */
 class HomeDataSource @Inject constructor(private val service: ApiService) {
 
-    suspend fun getMyInfo(): Response<ApiResult<MyInfo>> {
+    suspend fun getMyInfo(): Response<YiDaBaseResponse<MyInfo>> {
         return service.myInfo()
     }
 

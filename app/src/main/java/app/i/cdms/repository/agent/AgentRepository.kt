@@ -1,8 +1,8 @@
 package app.i.cdms.repository.agent
 
-import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.ChannelConfig
 import app.i.cdms.data.model.OrderCount
+import app.i.cdms.data.model.YiDaBaseResponse
 import app.i.cdms.data.source.remote.agent.AgentDataSource
 import app.i.cdms.repository.BaseRepository
 import javax.inject.Inject
@@ -14,11 +14,11 @@ import javax.inject.Inject
 class AgentRepository @Inject constructor(private val dataSource: AgentDataSource) :
     BaseRepository() {
 
-    suspend fun getOrderCount(userId: Int): ApiResult<OrderCount>? {
+    suspend fun getOrderCount(userId: Int): YiDaBaseResponse<OrderCount>? {
         return executeResponse { dataSource.getOrderCount(userId) }
     }
 
-    suspend fun withdraw(userId: Int): ApiResult<Any>? {
+    suspend fun withdraw(userId: Int): YiDaBaseResponse<Any>? {
         return executeResponse { dataSource.withdraw(userId) }
     }
 
@@ -28,7 +28,7 @@ class AgentRepository @Inject constructor(private val dataSource: AgentDataSourc
         remark: String?,
         recordType: String,
         changeAmount: Float
-    ): ApiResult<Any>? {
+    ): YiDaBaseResponse<Any>? {
         return executeResponse {
             dataSource.transfer(
                 toUserId,
@@ -40,7 +40,7 @@ class AgentRepository @Inject constructor(private val dataSource: AgentDataSourc
         }
     }
 
-    suspend fun getChannelConfigForAllUsers(channelId: Int): ApiResult<List<ChannelConfig>>? {
+    suspend fun getChannelConfigForAllUsers(channelId: Int): YiDaBaseResponse<List<ChannelConfig>>? {
         return executeResponse { dataSource.getChannelConfigForAllUsers(channelId) }
     }
 
@@ -52,7 +52,7 @@ class AgentRepository @Inject constructor(private val dataSource: AgentDataSourc
         discountPercent: Float?,
         perAdd: Float?,
         userIds: List<Int>
-    ): ApiResult<Any>? {
+    ): YiDaBaseResponse<Any>? {
         return executeResponse {
             dataSource.bindChannelToUser(
                 firstCommission,
@@ -74,7 +74,7 @@ class AgentRepository @Inject constructor(private val dataSource: AgentDataSourc
         discountPercent: Float?,
         perAdd: Float?,
         userIds: List<Int>
-    ): ApiResult<Any>? {
+    ): YiDaBaseResponse<Any>? {
         return executeResponse {
             dataSource.updateChildPrice(
                 firstCommission,

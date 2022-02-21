@@ -33,7 +33,7 @@ class BookDataSource @Inject constructor(private val service: ApiService) {
 
     suspend fun getPreOrderFee(
         bookBody: BookBody
-    ): Response<ApiResult<PreOrderFeeResult>> {
+    ): Response<YiDaBaseResponse<PreOrderFeeResult>> {
         val payload = JSONObject()
             .put("senderAddress", bookBody.senderAddress)
             .put("senderMobile", bookBody.senderMobile)
@@ -82,7 +82,7 @@ class BookDataSource @Inject constructor(private val service: ApiService) {
 
     suspend fun submitOrder(
         bookBody: BookBody
-    ): Response<ApiResult<String>> {
+    ): Response<YiDaBaseResponse<String>> {
         val payload = JSONObject()
             .put("senderAddress", bookBody.senderAddress)
             .put("senderMobile", bookBody.senderMobile)
@@ -131,7 +131,7 @@ class BookDataSource @Inject constructor(private val service: ApiService) {
 
     suspend fun getCompareFee(
         bookBody: BookBody
-    ): Response<ApiResult<List<BookChannelDetail>>> {
+    ): Response<YiDaBaseResponse<List<BookChannelDetail>>> {
         val payload = JSONObject()
             .put("receiveCityCode", bookBody.receiveValues?.get(1))
             .put("receiveCity", bookBody.receiveCity)

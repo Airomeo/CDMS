@@ -20,11 +20,11 @@ class MainRepository @Inject constructor(
         userPrefDataSource.updateToken(token)
     }
 
-    suspend fun getCustomerChannel(customerType: String): ApiResult<CustomerChannelResult>? {
+    suspend fun getCustomerChannel(customerType: String): YiDaBaseResponse<CustomerChannelResult>? {
         return executeResponse { dataSource.getCustomerChannel(customerType) }
     }
 
-    suspend fun getCustomerChannelDetail(customerId: Int): ApiResult<List<ChannelDetail>>? {
+    suspend fun getCustomerChannelDetail(customerId: Int): YiDaBaseResponse<List<ChannelDetail>>? {
         return executeResponse { dataSource.getCustomerChannelDetail(customerId) }
     }
 

@@ -1,8 +1,8 @@
 package app.i.cdms.repository
 
 import app.i.cdms.R
-import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.ShunFengBaseResponse
+import app.i.cdms.data.model.YiDaBaseResponse
 import app.i.cdms.data.model.YunYangBaseResponse
 import app.i.cdms.utils.BaseEvent
 import app.i.cdms.utils.EventBus
@@ -31,7 +31,7 @@ open class BaseRepository {
             EventBus.produceEvent(BaseEvent.Nothing)
             if (it.isSuccessful) {
                 when (val body = it.body()) {
-                    is ApiResult<*> -> {
+                    is YiDaBaseResponse<*> -> {
                         when (body.code) {
                             200 -> {
                                 return body

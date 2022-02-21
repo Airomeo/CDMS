@@ -1,9 +1,9 @@
 package app.i.cdms.data.source.remote.login
 
 import app.i.cdms.api.ApiService
-import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.CaptchaData
 import app.i.cdms.data.model.Token
+import app.i.cdms.data.model.YiDaBaseResponse
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
@@ -15,7 +15,7 @@ import javax.inject.Inject
  */
 class LoginDataSource @Inject constructor(private val service: ApiService) {
 
-    suspend fun getCaptcha(): Response<ApiResult<CaptchaData>> {
+    suspend fun getCaptcha(): Response<YiDaBaseResponse<CaptchaData>> {
         return service.getCaptcha()
     }
 
@@ -24,7 +24,7 @@ class LoginDataSource @Inject constructor(private val service: ApiService) {
         password: String,
         captcha: Int,
         uuid: String
-    ): Response<ApiResult<Token>> {
+    ): Response<YiDaBaseResponse<Token>> {
         val payload = JSONObject()
             .put("username", username)
             .put("password", password)

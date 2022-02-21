@@ -1,8 +1,8 @@
 package app.i.cdms.repository.home
 
-import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.MyInfo
 import app.i.cdms.data.model.NoticeList
+import app.i.cdms.data.model.YiDaBaseResponse
 import app.i.cdms.data.source.local.UserPrefDataSource
 import app.i.cdms.data.source.remote.home.HomeDataSource
 import app.i.cdms.repository.BaseRepository
@@ -40,7 +40,7 @@ class HomeRepository @Inject constructor(
         dataSource.logout()
     }
 
-    suspend fun getMyInfo(): ApiResult<MyInfo>? {
+    suspend fun getMyInfo(): YiDaBaseResponse<MyInfo>? {
         return executeResponse { dataSource.getMyInfo() }
     }
 

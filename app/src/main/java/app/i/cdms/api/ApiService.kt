@@ -33,22 +33,22 @@ interface ApiService {
     @GET
     suspend fun getCaptcha(
         @Url url: String = Constant.API_GET_CAPTCHA
-    ): Response<ApiResult<CaptchaData>>
+    ): Response<YiDaBaseResponse<CaptchaData>>
 
     @POST
     suspend fun login(
         @Url url: String = Constant.API_LOGIN,
         @Body payload: RequestBody
-    ): Response<ApiResult<Token>>
+    ): Response<YiDaBaseResponse<Token>>
 
     @GET
-    suspend fun myInfo(@Url url: String = Constant.API_MY_INFO): Response<ApiResult<MyInfo>>
+    suspend fun myInfo(@Url url: String = Constant.API_MY_INFO): Response<YiDaBaseResponse<MyInfo>>
 
     @POST
     suspend fun addChild(
         @Url url: String = Constant.API_ADD_CHILD,
         @Body payload: RequestBody
-    ): Response<ApiResult<Any>>
+    ): Response<YiDaBaseResponse<Any>>
 
     @GET
     suspend fun myTeam(
@@ -56,7 +56,7 @@ interface ApiService {
         @Query("pageNum") pageNum: Int,
         @Query("pageSize") pageSize: Int,
         @Query("userName") userName: String?
-    ): Response<ApiResult<MyTeam>>
+    ): Response<YiDaBaseResponse<MyTeam>>
 
     @GET
     suspend fun recordList(
@@ -70,13 +70,13 @@ interface ApiService {
     suspend fun removePrice(
         @Url url: String = Constant.API_REMOVE_PRICE,
         @Query("channelId") channelId: Int
-    ): Response<ApiResult<Any>>
+    ): Response<YiDaBaseResponse<Any>>
 
     @PUT
     suspend fun editPrice(
         @Url url: String = Constant.API_EDIT_PRICE,
         @Query("userId") userId: Int
-    ): Response<ApiResult<Any>>
+    ): Response<YiDaBaseResponse<Any>>
 
 //        val payload: Map<String, String> = mapOf(
 //            "addPrice" to addPrice,
@@ -93,7 +93,7 @@ interface ApiService {
     suspend fun addPrice(
         @Url url: String = Constant.API_ADD_PRICE,
         @Query("userId") userId: Int
-    ): Response<ApiResult<Any>>
+    ): Response<YiDaBaseResponse<Any>>
 
 //        val payload: Map<String, String> = mapOf(
 //            "addPrice" to addPrice,
@@ -109,7 +109,7 @@ interface ApiService {
     suspend fun clearAccount(
         @Url url: String = Constant.API_CLEAR_ACCOUNT,
         @Query("userId") userId: Int
-    ): Response<ApiResult<Any>>
+    ): Response<YiDaBaseResponse<Any>>
 
     @GET
     suspend fun transfer(
@@ -119,12 +119,12 @@ interface ApiService {
         @Query("remark") remark: String?,
         @Query("recordType") recordType: String,
         @Query("changeAmount") changeAmount: Float
-    ): Response<ApiResult<Any>>
+    ): Response<YiDaBaseResponse<Any>>
 
     @GET
     suspend fun getChannelConfigForAllUsers(
         @Url url: String
-    ): Response<ApiResult<List<ChannelConfig>>>
+    ): Response<YiDaBaseResponse<List<ChannelConfig>>>
 
     @GET
     @Headers(
@@ -139,35 +139,35 @@ interface ApiService {
     suspend fun getOrderCount(
         @Url url: String = Constant.API_ORDER_COUNT,
         @Query("userId") userId: Int
-    ): Response<ApiResult<OrderCount>>
+    ): Response<YiDaBaseResponse<OrderCount>>
 
     @GET
     suspend fun getCustomerChannel(
         @Url url: String = Constant.API_CUSTOMER_CHANNEL,
         @Query("customerType") customerType: String
-    ): Response<ApiResult<CustomerChannelResult>>
+    ): Response<YiDaBaseResponse<CustomerChannelResult>>
 
     @GET
     suspend fun getCustomerChannelDetail(
         @Url url: String
-    ): Response<ApiResult<List<ChannelDetail>>>
+    ): Response<YiDaBaseResponse<List<ChannelDetail>>>
 
     @POST
     suspend fun bindChannelToUser(
         @Url url: String = Constant.API_BIND_CHANNEL_TO_USER,
         @Body payload: RequestBody
-    ): Response<ApiResult<Any>>
+    ): Response<YiDaBaseResponse<Any>>
 
     @PUT
     suspend fun updateChildPrice(
         @Url url: String = Constant.API_UPDATE_CHILD_PRICE,
         @Body payload: RequestBody
-    ): Response<ApiResult<Any>>
+    ): Response<YiDaBaseResponse<Any>>
 
     @DELETE
     suspend fun deleteChildPrice(
         @Url url: String
-    ): Response<ApiResult<Any>>
+    ): Response<YiDaBaseResponse<Any>>
 
     @GET
     suspend fun checkUpdate(
@@ -177,7 +177,7 @@ interface ApiService {
     @GET
     suspend fun getAreaList(
         @Url url: String = Constant.API_GET_AREA
-    ): Response<ApiResult<List<Area>>>
+    ): Response<YiDaBaseResponse<List<Area>>>
 
     @POST
     suspend fun parseAddressByJd(
@@ -189,19 +189,19 @@ interface ApiService {
     suspend fun getPreOrderFee(
         @Url url: String = Constant.API_GET_PER_ORDER_FEE,
         @Body payload: RequestBody
-    ): Response<ApiResult<PreOrderFeeResult>>
+    ): Response<YiDaBaseResponse<PreOrderFeeResult>>
 
     @POST
     suspend fun submitOrder(
         @Url url: String = Constant.API_SUBMIT_ORDER,
         @Body payload: RequestBody
-    ): Response<ApiResult<String>>
+    ): Response<YiDaBaseResponse<String>>
 
     @POST
     suspend fun getCompareFee(
         @Url url: String = Constant.API_GET_COMPARE_FEE,
         @Body payload: RequestBody
-    ): Response<ApiResult<List<BookChannelDetail>>>
+    ): Response<YiDaBaseResponse<List<BookChannelDetail>>>
 
     @POST
     suspend fun parseAddressBySf(

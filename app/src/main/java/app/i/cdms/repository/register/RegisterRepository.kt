@@ -1,6 +1,6 @@
 package app.i.cdms.repository.register
 
-import app.i.cdms.data.model.ApiResult
+import app.i.cdms.data.model.YiDaBaseResponse
 import app.i.cdms.data.source.remote.register.RegisterDataSource
 import app.i.cdms.repository.BaseRepository
 import javax.inject.Inject
@@ -15,7 +15,7 @@ class RegisterRepository @Inject constructor(private val dataSource: RegisterDat
         username: String,
         password: String,
         phone: String
-    ): ApiResult<Any>? {
+    ): YiDaBaseResponse<Any>? {
         return executeResponse { dataSource.register(username, password, phone) }
     }
 }

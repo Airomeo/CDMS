@@ -1,8 +1,8 @@
 package app.i.cdms.data.source.remote.team
 
 import app.i.cdms.api.ApiService
-import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.MyTeam
+import app.i.cdms.data.model.YiDaBaseResponse
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -14,7 +14,7 @@ class TeamDataSource @Inject constructor(private val service: ApiService) {
         pageNum: Int,
         pageSize: Int,
         userName: String?
-    ): Response<ApiResult<MyTeam>> {
+    ): Response<YiDaBaseResponse<MyTeam>> {
         return service.myTeam(pageNum = pageNum, pageSize = pageSize, userName = userName)
     }
 }

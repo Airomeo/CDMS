@@ -1,7 +1,7 @@
 package app.i.cdms.data.source.remote.register
 
 import app.i.cdms.api.ApiService
-import app.i.cdms.data.model.ApiResult
+import app.i.cdms.data.model.YiDaBaseResponse
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
@@ -16,7 +16,7 @@ class RegisterDataSource @Inject constructor(private val service: ApiService) {
         username: String,
         password: String,
         phone: String
-    ): Response<ApiResult<Any>> {
+    ): Response<YiDaBaseResponse<Any>> {
         val payload = JSONObject()
             .put("nickName", username)
             .put("password", password)

@@ -1,8 +1,8 @@
 package app.i.cdms.repository.login
 
-import app.i.cdms.data.model.ApiResult
 import app.i.cdms.data.model.CaptchaData
 import app.i.cdms.data.model.Token
+import app.i.cdms.data.model.YiDaBaseResponse
 import app.i.cdms.data.source.remote.login.LoginDataSource
 import app.i.cdms.repository.BaseRepository
 import javax.inject.Inject
@@ -14,7 +14,7 @@ import javax.inject.Inject
 class LoginRepository @Inject constructor(private val dataSource: LoginDataSource) :
     BaseRepository() {
 
-    suspend fun getCaptcha(): ApiResult<CaptchaData>? {
+    suspend fun getCaptcha(): YiDaBaseResponse<CaptchaData>? {
         return executeResponse { dataSource.getCaptcha() }
     }
 
@@ -23,7 +23,7 @@ class LoginRepository @Inject constructor(private val dataSource: LoginDataSourc
         password: String,
         captcha: Int,
         uuid: String
-    ): ApiResult<Token>? {
+    ): YiDaBaseResponse<Token>? {
         // handle login
         return executeResponse { dataSource.login(username, password, captcha, uuid) }
     }
