@@ -51,9 +51,9 @@ class BookViewModel @Inject constructor(
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), CompareFeeBody())
 
     // 用户当前选择的快递类型
-    val deliveryTypeFlow = _bookBodyFlow.map {
-        it.deliveryType
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
+    val selectedChannel = _bookBodyFlow.map {
+        it.deliveryType to it.customerType
+    }
 
     // 下单结果
     private val _bookResultFlow = MutableSharedFlow<String?>()

@@ -347,11 +347,13 @@ class BookFragment : Fragment(R.layout.fragment_book) {
         // 用户手动选择渠道或当前最便宜渠道变更时会触发
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.deliveryTypeFlow.collectLatest { deliveryType ->
-                    deliveryType ?: return@collectLatest
-                    // 下单时，比如申通有多个渠道，系统只会返回一个最便宜的渠道，所以deliveryType只有一个
+                viewModel.selectedChannel.collectLatest {
+                    it.first ?: return@collectLatest
+                    it.second ?: return@collectLatest
+                    // 下单时，单个customerType比如个人版，申通有渠道A、渠道B，系统只会返回一个最便宜的渠道A，所以deliveryType只有一个。
+                    // 但如果同时有个人版和商家版，会返回两个用户类型的deliveryType，所以要加上customerType
                     val channel = viewModel.bookChannelDetailListFlow.value?.find { channel ->
-                        channel.deliveryType == deliveryType
+                        channel.deliveryType == it.first && channel.customerType == it.second
                     }
                     binding.price.text = getString(R.string.book_price, channel?.preOrderFee)
                     binding.priceTips.text =
