@@ -13,5 +13,7 @@ data class CustomerChannelResult(
     @Json(name = "STO-INT")
     val sto: List<CustomerChannel>?,
     @Json(name = "YTO")
-    val yto: List<CustomerChannel>?
+    val yto: List<CustomerChannel>?,
+    @Json(name = "JT")
+    val jt: List<CustomerChannel>?
 )

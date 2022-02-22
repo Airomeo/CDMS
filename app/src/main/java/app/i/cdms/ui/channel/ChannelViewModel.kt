@@ -51,6 +51,9 @@ class ChannelViewModel @Inject constructor(
                 result?.data?.dop?.forEach {
                     getChannelDetail(it)
                 }
+                result?.data?.jt?.forEach {
+                    getChannelDetail(it)
+                }
             }
             _channelDetailListFlow.value = channelDetailList
         }
