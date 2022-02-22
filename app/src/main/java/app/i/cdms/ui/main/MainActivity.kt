@@ -16,7 +16,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import app.i.cdms.R
-import app.i.cdms.data.model.Release
+import app.i.cdms.data.model.update.ReleaseInfo
 import app.i.cdms.databinding.ActivityMainBinding
 import app.i.cdms.utils.BaseEvent
 import app.i.cdms.utils.EventBus
@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity() {
                             ).show()
                         }
                         is BaseEvent.Update -> {
-                            showUpdateDialog(it.release)
+                            showUpdateDialog(it.releaseInfo)
                         }
                     }
                 }
@@ -109,14 +109,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun showUpdateDialog(release: Release) {
+    private fun showUpdateDialog(releaseInfo: ReleaseInfo) {
         MaterialAlertDialogBuilder(this)
             .setTitle(R.string.update_title)
-            .setMessage(getString(R.string.update_content, release.updateContent))
+            .setMessage(getString(R.string.update_content, releaseInfo.releaseNotes))
             .setPositiveButton(
                 R.string.update_go
             ) { dialog, which ->
-                val uri = Uri.parse(release.updateUrl)
+                val uri = Uri.parse(releaseInfo.downloadUrl)
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                 startActivity(intent)
             }

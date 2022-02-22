@@ -1,6 +1,11 @@
 package app.i.cdms.repository.main
 
-import app.i.cdms.data.model.*
+import app.i.cdms.data.model.ChannelDetail
+import app.i.cdms.data.model.CustomerChannelResult
+import app.i.cdms.data.model.Token
+import app.i.cdms.data.model.YiDaBaseResponse
+import app.i.cdms.data.model.update.Release
+import app.i.cdms.data.model.update.ReleaseInfo
 import app.i.cdms.data.source.local.UserPrefDataSource
 import app.i.cdms.data.source.remote.main.MainDataSource
 import app.i.cdms.repository.BaseRepository
@@ -28,8 +33,12 @@ class MainRepository @Inject constructor(
         return executeResponse { dataSource.getCustomerChannelDetail(customerId) }
     }
 
-    suspend fun checkUpdate(): Release? {
-        return executeResponse { dataSource.checkUpdate() }
+    suspend fun getReleases(): List<Release>? {
+        return executeResponse { dataSource.getReleases() }
+    }
+
+    suspend fun getReleaseInfo(id: Int): ReleaseInfo? {
+        return executeResponse { dataSource.getReleaseInfo(id) }
     }
 
     suspend fun getAndUpdateAreaList() {

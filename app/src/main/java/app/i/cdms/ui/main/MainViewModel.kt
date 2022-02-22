@@ -46,15 +46,20 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    /**
+     * 检查是否有更新，有的话获取新版本信息，并提示更新
+     *
+     * @return
+     */
     private fun checkUpdate() {
-        if (!BuildConfig.DEBUG) {
-            viewModelScope.launch {
-                val result = mainRepository.checkUpdate()
-                result ?: return@launch
-
-                if (result.versionCode > BuildConfig.VERSION_CODE) {
-                    EventBus.produceEvent(BaseEvent.Update(result))
-                }
+        if (BuildConfig.DEBUG) return
+        viewModelScope.launch {
+            val releases = mainRepository.getReleases()
+            releases ?: return@launch
+            if (releases.first().version.toInt() > BuildConfig.VERSION_CODE) {
+                val releaseInfo = mainRepository.getReleaseInfo(releases.first().id)
+                releaseInfo ?: return@launch
+                EventBus.produceEvent(BaseEvent.Update(releaseInfo))
             }
         }
     }

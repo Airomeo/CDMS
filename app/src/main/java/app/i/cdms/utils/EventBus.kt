@@ -2,7 +2,7 @@ package app.i.cdms.utils
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.i.cdms.data.model.Release
+import app.i.cdms.data.model.update.ReleaseInfo
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -27,7 +27,7 @@ sealed class BaseEvent {
     data class Error(val exception: Throwable) : BaseEvent() // 方法或请求执行出错/异常/失败，或有未处理的情况
     data class Failed(val data: Any) : BaseEvent() // 请求成功，空结果（可能是网络异常）或者其他结果
     data class Toast(val resId: Int) : BaseEvent()
-    data class Update(val release: Release) : BaseEvent()
+    data class Update(val releaseInfo: ReleaseInfo) : BaseEvent()
     object Loading : BaseEvent()
     object Nothing : BaseEvent()
     object NeedLogin : BaseEvent()
