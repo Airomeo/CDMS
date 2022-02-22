@@ -105,7 +105,11 @@ object NetworkModule {
         @Throws(IOException::class)
         override fun intercept(chain: Interceptor.Chain): Response {
             var request = chain.request()
-            if (request.url.toString() !in Constant.ignoreTokenList) {
+
+            val ignored = Constant.ignoreTokenList.any {
+                request.url.toString().contains(it)
+            }
+            if (!ignored) {
                 val token = runBlocking {
                     tokenFlow.first()
                 }
