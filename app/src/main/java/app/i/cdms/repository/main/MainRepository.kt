@@ -4,8 +4,6 @@ import app.i.cdms.data.model.ChannelDetail
 import app.i.cdms.data.model.CustomerChannelResult
 import app.i.cdms.data.model.Token
 import app.i.cdms.data.model.YiDaBaseResponse
-import app.i.cdms.data.model.update.Release
-import app.i.cdms.data.model.update.ReleaseInfo
 import app.i.cdms.data.source.local.UserPrefDataSource
 import app.i.cdms.data.source.remote.main.MainDataSource
 import app.i.cdms.repository.BaseRepository
@@ -31,14 +29,6 @@ class MainRepository @Inject constructor(
 
     suspend fun getCustomerChannelDetail(customerId: Int): YiDaBaseResponse<List<ChannelDetail>>? {
         return executeResponse { dataSource.getCustomerChannelDetail(customerId) }
-    }
-
-    suspend fun getReleases(): List<Release>? {
-        return executeResponse { dataSource.getReleases() }
-    }
-
-    suspend fun getReleaseInfo(id: Int): ReleaseInfo? {
-        return executeResponse { dataSource.getReleaseInfo(id) }
     }
 
     suspend fun getAndUpdateAreaList() {
