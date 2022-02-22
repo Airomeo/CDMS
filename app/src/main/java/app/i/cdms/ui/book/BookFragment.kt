@@ -12,7 +12,6 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -23,7 +22,6 @@ import app.i.cdms.data.model.BookChannelDetail
 import app.i.cdms.databinding.CatBottomsheetScrollableContentBinding
 import app.i.cdms.databinding.DialogFillAddressBinding
 import app.i.cdms.databinding.FragmentBookBinding
-import app.i.cdms.ui.main.MainViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,7 +35,6 @@ import java.time.format.DateTimeFormatter
 class BookFragment : Fragment(R.layout.fragment_book) {
 
     private val viewModel: BookViewModel by viewModels()
-    private val mainViewModel: MainViewModel by activityViewModels()
     private var _binding: FragmentBookBinding? = null
     private val binding get() = _binding!!
     private val listener = View.OnClickListener {

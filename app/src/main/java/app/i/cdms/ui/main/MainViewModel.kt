@@ -3,7 +3,6 @@ package app.i.cdms.ui.main
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.i.cdms.BuildConfig
 import app.i.cdms.data.model.Token
 import app.i.cdms.repository.main.MainRepository
 import app.i.cdms.utils.BaseEvent
@@ -20,7 +19,6 @@ class MainViewModel @Inject constructor(
 
     init {
         initToken()
-        checkUpdate()
     }
 
     private fun initToken() {
@@ -43,24 +41,6 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             mainRepository.updateToken(token)
             EventBus.produceEvent(BaseEvent.Refresh)
-        }
-    }
-
-    /**
-     * 检查是否有更新，有的话获取新版本信息，并提示更新
-     *
-     * @return
-     */
-    private fun checkUpdate() {
-        if (BuildConfig.DEBUG) return
-        viewModelScope.launch {
-            val releases = mainRepository.getReleases()
-            releases ?: return@launch
-            if (releases.first().version.toInt() > BuildConfig.VERSION_CODE) {
-                val releaseInfo = mainRepository.getReleaseInfo(releases.first().id)
-                releaseInfo ?: return@launch
-                EventBus.produceEvent(BaseEvent.Update(releaseInfo))
-            }
         }
     }
 }

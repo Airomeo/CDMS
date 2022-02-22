@@ -74,10 +74,6 @@ object Constant {
 
     private const val API_TCB_BASE =
         "https://i-7g9v864y639e8b0a-1256871713.ap-shanghai.app.tcloudbase.com/express"
-    const val API_GET_RELEASES =
-        "https://install.appcenter.ms/api/v0.1/apps/ill/cdms/distribution_groups/release/public_releases"
-    const val API_GET_RELEASE_INFO =
-        "https://install.appcenter.ms/api/v0.1/apps/ill/cdms/distribution_groups/release/releases"
     const val URL_DOC = "https://docs.qq.com/doc/DWmVtWWFJQ2R1cGVU?tdsourcetag=scan-qr"
 
     val ignoreTokenList = listOf(
@@ -85,8 +81,6 @@ object Constant {
         API_LOGIN,
         API_PARSE_ADDRESS_BY_SF,
         API_PARSE_ADDRESS_BY_JD,
-        API_GET_RELEASES,
-        API_GET_RELEASE_INFO,
         API_GET_AREA,
         API_NOTICE
     )

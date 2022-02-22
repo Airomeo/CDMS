@@ -188,4 +188,5 @@ dependencies {
     // Visual Studio App Center
     implementation "com.microsoft.appcenter:appcenter-analytics:$appCenterSdkVersion"
     implementation "com.microsoft.appcenter:appcenter-crashes:$appCenterSdkVersion"
+    implementation "com.microsoft.appcenter:appcenter-distribute:$appCenterSdkVersion"
 }

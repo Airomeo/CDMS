@@ -2,8 +2,6 @@ package app.i.cdms.api
 
 import app.i.cdms.Constant
 import app.i.cdms.data.model.*
-import app.i.cdms.data.model.update.Release
-import app.i.cdms.data.model.update.ReleaseInfo
 import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -170,17 +168,6 @@ interface ApiService {
     suspend fun deleteChildPrice(
         @Url url: String
     ): Response<YiDaBaseResponse<Any>>
-
-    @GET
-    suspend fun getReleases(
-        @Url url: String = Constant.API_GET_RELEASES,
-        @Query("scope") scope: String = "tester"
-    ): Response<List<Release>>
-
-    @GET
-    suspend fun getReleaseInfo(
-        @Url url: String
-    ): Response<ReleaseInfo>
 
     @GET
     suspend fun getAreaList(
