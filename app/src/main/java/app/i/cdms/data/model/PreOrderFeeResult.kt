@@ -23,7 +23,7 @@ data class PreOrderFeeResult(
     @Json(name = "perAdd")
     val perAdd: Any?,
     @Json(name = "preBjFee")
-    val preBjFee: Any?,
+    val preBjFee: String?, // 保价费
     @Json(name = "preOrderFee")
     val preOrderFee: String,
     @Json(name = "price")

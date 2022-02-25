@@ -24,10 +24,10 @@ class MainViewModel @Inject constructor(
     private fun initToken() {
         viewModelScope.launch {
             mainRepository.token.collectLatest {
-                if (it.token.isBlank()) {
+                if (it == null) {
                     EventBus.produceEvent(BaseEvent.NeedLogin)
                 }
-                Log.d("TAG", "MainViewModel init: token = " + it.token)
+                Log.d("TAG", "MainViewModel init: token = " + it?.token)
             }
         }
     }
@@ -37,7 +37,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun updateToken(token: Token) {
+    fun updateToken(token: Token?) {
         viewModelScope.launch {
             mainRepository.updateToken(token)
             EventBus.produceEvent(BaseEvent.Refresh)

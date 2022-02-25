@@ -31,15 +31,15 @@ class BookViewModel @Inject constructor(
 
 
     // 可用渠道列表
-    private val _bookChannelDetailListFlow = MutableStateFlow<List<BookChannelDetail>?>(null)
-    val bookChannelDetailListFlow = _bookChannelDetailListFlow.asStateFlow()
+    private val _bookChannelDetailList = MutableStateFlow<List<BookChannelDetail>?>(null)
+    val bookChannelDetailList = _bookChannelDetailList.asStateFlow()
 
     // 下单请求需要提交的参数
-    private val _bookBodyFlow = MutableStateFlow(BookBody())
-    val bookBodyFlow = _bookBodyFlow.asStateFlow()
+    private val _bookBody = MutableStateFlow(BookBody())
+    val bookBody = _bookBody.asStateFlow()
 
     // 比价请求需要提交的参数
-    val compareFeeBodyFlow = _bookBodyFlow.map {
+    val compareFeeBody = _bookBody.map {
         CompareFeeBody(
             it.customerType,
             it.receiveCity,
@@ -51,13 +51,13 @@ class BookViewModel @Inject constructor(
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), CompareFeeBody())
 
     // 用户当前选择的快递类型
-    val selectedChannel = _bookBodyFlow.map {
+    val selectedChannel = _bookBody.map {
         it.deliveryType to it.customerType
     }
 
     // 下单结果
-    private val _bookResultFlow = MutableSharedFlow<String?>()
-    val bookResultFlow = _bookResultFlow.asSharedFlow()
+    private val _bookResult = MutableSharedFlow<String?>()
+    val bookResultFlow = _bookResult.asSharedFlow()
     var areaList: List<Area>? = null
 
     init {
@@ -105,7 +105,7 @@ class BookViewModel @Inject constructor(
         viewModelScope.launch {
             val result = mutableListOf<BookChannelDetail>()
             val personalResult =
-                bookRepository.getCompareFee(bookBodyFlow.value.copy(customerType = "personal"))
+                bookRepository.getCompareFee(compareFeeBody.value.copy(customerType = "personal"))
             personalResult?.data?.let {
                 it.forEach { channel ->
                     channel.customerType = "personal"
@@ -113,14 +113,14 @@ class BookViewModel @Inject constructor(
                 }
             }
             val businessResult =
-                bookRepository.getCompareFee(bookBodyFlow.value.copy(customerType = "business"))
+                bookRepository.getCompareFee(compareFeeBody.value.copy(customerType = "business"))
             businessResult?.data?.let {
                 it.forEach { channel ->
                     channel.customerType = "business"
                     result.add(channel)
                 }
             }
-            _bookChannelDetailListFlow.value = result
+            _bookChannelDetailList.value = result
         }
     }
 
@@ -131,7 +131,7 @@ class BookViewModel @Inject constructor(
      */
     fun getPreOrderFee() {
         viewModelScope.launch {
-            val result = bookRepository.getPreOrderFee(bookBodyFlow.value)
+            val result = bookRepository.getPreOrderFee(bookBody.value)
             _preOrderFeeResult.emit(result?.data)
         }
     }
@@ -143,16 +143,16 @@ class BookViewModel @Inject constructor(
      */
     fun book() {
         viewModelScope.launch {
-            if (bookBodyFlow.value.deliveryType == "STO-INT") {
+            if (bookBody.value.deliveryType == "STO-INT") {
                 updateBookBodyFlow(
-                    bookBodyFlow.value.copy(
-                        qty = bookBodyFlow.value.packageCount,// qty暂时用packageCount这个替代
+                    bookBody.value.copy(
+                        qty = bookBody.value.packageCount,// qty暂时用packageCount这个替代
                         unitPrice = 2000 //申通无保价费,提供对应货值证明,最高赔付金额2000元,单价请勿超过2000元
                     )
                 )
             }
-            val result = bookRepository.submitOrder(bookBodyFlow.value)
-            _bookResultFlow.emit(result?.data)
+            val result = bookRepository.submitOrder(bookBody.value)
+            _bookResult.emit(result?.data)
         }
     }
 
@@ -161,6 +161,10 @@ class BookViewModel @Inject constructor(
     }
 
     fun updateBookBodyFlow(bookBody: BookBody) {
-        _bookBodyFlow.value = bookBody
+        _bookBody.value = bookBody
+    }
+
+    fun updateBookChannelDetailList(bookChannelDetailList: List<BookChannelDetail>?) {
+        _bookChannelDetailList.value = bookChannelDetailList
     }
 }

@@ -19,7 +19,7 @@ class MainRepository @Inject constructor(
     val token = userPrefDataSource.tokenFlow
     val areaListFlow = userPrefDataSource.areaListFlow
 
-    suspend fun updateToken(token: Token) {
+    suspend fun updateToken(token: Token?) {
         userPrefDataSource.updateToken(token)
     }
 

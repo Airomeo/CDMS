@@ -27,9 +27,7 @@ class BookChannelRecyclerViewAdapter(
                 parent,
                 false
             )
-        ).apply {
-            setIsRecyclable(false)
-        }
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

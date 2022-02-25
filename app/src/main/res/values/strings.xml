@@ -11,6 +11,7 @@
     <string name="title_agent">Agent</string>
     <string name="title_channel">Channel</string>
     <string name="title_book">Book</string>
+    <string name="title_fees">Fees</string>
     <!-- Strings related to login -->
     <string name="prompt_account">Account</string>
     <string name="prompt_password">Password</string>
@@ -152,9 +153,19 @@
     <string name="book_result_dialog_title">下单结果</string>
     <string name="book_result_dialog_positive_text">复制</string>
     <string name="book_goods_info">物品信息</string>
-    <string name="book_tips">注：\n带有* 标记的为选填项\n默认选择渠道价格最低的快递\n预约取件时间几乎不会准时\n京东、圆通、德邦快递保价费：500以下(包含500)1元，500–1000(包含1000)2元，1000以上是0.5%，不足1元的算1元\n申通无保价费，提供对应货值证明，最高赔付金额2000元，单价请勿超过2000元</string>
-
-
+    <string name="book_tips">注：\n带有* 标记的为选填项\n
+        包裹信息填写准确，便于匹配最优惠的渠道。\n
+        预约取件时间不保证准时\n
+        京东、圆通、德邦快递保价费：500以下(包含500)1元，500–1000(包含1000)2元，1000以上是0.5%，不足1元的算1元\n
+        申通、极兔不支持保价\n\n
+        来自官网的说明：\n
+        1.请注意查看各个快递的限重，超过限重将按照官网原价计费；各个快递限重请首页价格明细查看；\n
+        2.快递公司计费重量按照实际重量和体积重量两者最大值计费，体积重量计算方式：长*宽*高/抛比；各个快递抛比请首页价格明细查看；\n
+        3.下单需注意事项：\n
+        3.1.请告知客户，涉及重量差异、物流停滞等问题，不要投诉快递公司，请联系您处理，我司客服将为您处理售后问题；\n
+        3.2.请告知客户，发货前尽量的留存包裹照片，询问情况快递小哥产品重量，如后续涉及重量差异，以供我司向总部申诉使用；\n
+        3.3.如客户没有留存图片，请联系收件方，接收包裹时，不要拆包，将带有面单的包裹进行拍照留证，以便申诉使用；\n
+        4.重量申诉内容：需提供包裹带有面单的称重照片，包裹的长、宽、高尺寸，详见‘用户管理-调账审核管理’样例；</string>
     <string name="transfer_recharge">充值</string>
     <string name="transfer_recharge_type">CZ</string>
     <string name="transfer_refund">退款</string>
@@ -194,4 +205,9 @@
     <string name="channel_config_commission_default">默认值</string>
     <string name="api_wait">执行成功，请于2分钟后检查结果。</string>
     <string name="no_updates_available">未找到可用的更新</string>
+    <string name="fees">快速查价</string>
+    <string name="fees_from_address">寄件人地区</string>
+    <string name="fees_to_address">收件人地区</string>
+    <string name="fees_tips">填写收寄地址后，将会显示可用渠道信息</string>
+    <string name="fees_tips_no_available_channel">未找到可用渠道</string>
 </resources>

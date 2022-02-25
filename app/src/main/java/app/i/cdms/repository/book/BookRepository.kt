@@ -28,7 +28,7 @@ class BookRepository @Inject constructor(private val dataSource: BookDataSource)
         return executeResponse { dataSource.submitOrder(bookBody) }
     }
 
-    suspend fun getCompareFee(bookBody: BookBody): YiDaBaseResponse<List<BookChannelDetail>>? {
-        return executeResponse { dataSource.getCompareFee(bookBody) }
+    suspend fun getCompareFee(compareFeeBody: CompareFeeBody): YiDaBaseResponse<List<BookChannelDetail>>? {
+        return executeResponse { dataSource.getCompareFee(compareFeeBody) }
     }
 }

@@ -160,7 +160,6 @@
                 android:text="@string/book_goods_info"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 android:textColor="@color/material_on_surface_emphasis_high_type"
-                app:layout_constraintBottom_toTopOf="@id/textInputLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cvAddress" />

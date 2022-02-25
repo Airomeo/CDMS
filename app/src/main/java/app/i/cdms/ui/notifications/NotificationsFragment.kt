@@ -25,9 +25,9 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
         _binding = FragmentNotificationsBinding.bind(view)
 
         val textView: TextView = binding.textNotifications
-        notificationsViewModel.text.observe(viewLifecycleOwner, {
+        notificationsViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
-        })
+        }
 
         binding.button.setOnClickListener {
             findNavController().navigate(R.id.navigation_team)
@@ -35,6 +35,10 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
 
         binding.button2.setOnClickListener {
             findNavController().navigate(R.id.bookFragment)
+        }
+
+        binding.button3.setOnClickListener {
+            findNavController().navigate(R.id.feesFragment)
         }
     }
 

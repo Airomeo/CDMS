@@ -13,7 +13,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import app.i.cdms.R
 import app.i.cdms.data.model.MyInfo
-import app.i.cdms.data.model.Token
 import app.i.cdms.databinding.FragmentHomeBinding
 import app.i.cdms.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,7 +42,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
         binding.logout.setOnClickListener {
-            mainViewModel.updateToken(Token(System.currentTimeMillis().toString()))
+            mainViewModel.updateToken(null)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {

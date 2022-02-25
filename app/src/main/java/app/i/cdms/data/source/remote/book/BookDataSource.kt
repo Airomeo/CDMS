@@ -129,16 +129,14 @@ class BookDataSource @Inject constructor(private val service: ApiService) {
         return service.submitOrder(payload = payload)
     }
 
-    suspend fun getCompareFee(
-        bookBody: BookBody
-    ): Response<YiDaBaseResponse<List<BookChannelDetail>>> {
+    suspend fun getCompareFee(compareFeeBody: CompareFeeBody): Response<YiDaBaseResponse<List<BookChannelDetail>>> {
         val payload = JSONObject()
-            .put("receiveCityCode", bookBody.receiveValues?.get(1))
-            .put("receiveCity", bookBody.receiveCity)
-            .put("senderCityCode", bookBody.senderValues?.get(1))
-            .put("senderCity", bookBody.senderCity)
-            .put("weight", bookBody.weight)
-            .put("customerType", bookBody.customerType)
+            .put("receiveCityCode", compareFeeBody.receiveCityCode)
+            .put("receiveCity", compareFeeBody.receiveCity)
+            .put("senderCityCode", compareFeeBody.senderCityCode)
+            .put("senderCity", compareFeeBody.senderCity)
+            .put("weight", compareFeeBody.weight)
+            .put("customerType", compareFeeBody.customerType)
             .toString()
             .toRequestBody("application/json".toMediaType())
 

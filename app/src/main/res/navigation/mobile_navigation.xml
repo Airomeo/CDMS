@@ -45,6 +45,11 @@
         android:label="@string/title_book"
         tools:layout="@layout/fragment_book" />
 
+    <fragment
+        android:id="@+id/feesFragment"
+        android:name="app.i.cdms.ui.fees.FeesFragment"
+        android:label="@string/title_fees"
+        tools:layout="@layout/fragment_fees" />
     <navigation
         android:id="@+id/navigation_team"
         app:startDestination="@id/teamFragment">
