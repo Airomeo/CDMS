@@ -185,38 +185,12 @@ class FeesFragment : Fragment(R.layout.fragment_fees) {
             val popup = PopupMenu(requireContext(), view)
             for (a in it) {
                 if (a.children == null) {
-                    popup.menu.addSubMenu(Menu.NONE, a.value.toInt(), Menu.NONE, a.label)
+                    popup.menu.add(Menu.NONE, a.value.toInt(), Menu.NONE, a.label)
                 } else {
                     val aMenu =
                         popup.menu.addSubMenu(Menu.NONE, a.value.toInt(), Menu.NONE, a.label)
                     for (b in a.children) {
-                        if (b.children == null) {
-                            aMenu.add(Menu.NONE, b.value.toInt(), Menu.NONE, b.label)
-                        } else {
-                            val bMenu =
-                                aMenu.addSubMenu(Menu.NONE, b.value.toInt(), Menu.NONE, b.label)
-                            for (c in b.children) {
-                                if (c.children == null) {
-                                    bMenu.add(Menu.NONE, c.value.toInt(), Menu.NONE, c.label)
-                                } else {
-                                    val cMenu =
-                                        bMenu.addSubMenu(
-                                            Menu.NONE,
-                                            c.value.toInt(),
-                                            Menu.NONE,
-                                            c.label
-                                        )
-                                    for (d in c.children) {
-                                        cMenu.add(
-                                            Menu.NONE,
-                                            d.value.toInt(),
-                                            Menu.NONE,
-                                            d.label
-                                        )
-                                    }
-                                }
-                            }
-                        }
+                        aMenu.add(Menu.NONE, b.value.toInt(), Menu.NONE, b.label)
                     }
                 }
             }

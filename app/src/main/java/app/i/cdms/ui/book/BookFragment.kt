@@ -420,7 +420,7 @@ class BookFragment : Fragment(R.layout.fragment_book) {
             val popup = PopupMenu(requireContext(), view)
             for (a in it) {
                 if (a.children == null) {
-                    popup.menu.addSubMenu(Menu.NONE, a.value.toInt(), Menu.NONE, a.label)
+                    popup.menu.add(Menu.NONE, a.value.toInt(), Menu.NONE, a.label)
                 } else {
                     val aMenu =
                         popup.menu.addSubMenu(Menu.NONE, a.value.toInt(), Menu.NONE, a.label)
