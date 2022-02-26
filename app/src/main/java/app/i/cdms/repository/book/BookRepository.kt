@@ -24,11 +24,15 @@ class BookRepository @Inject constructor(private val dataSource: BookDataSource)
         return executeResponse { dataSource.getPreOrderFee(bookBody) }
     }
 
-    suspend fun submitOrder(bookBody: BookBody): YiDaBaseResponse<String>? {
+    suspend fun submitOrder(bookBody: BookBody): YiDaBaseResponse<BookResult>? {
         return executeResponse { dataSource.submitOrder(bookBody) }
     }
 
     suspend fun getCompareFee(compareFeeBody: CompareFeeBody): YiDaBaseResponse<List<BookChannelDetail>>? {
         return executeResponse { dataSource.getCompareFee(compareFeeBody) }
+    }
+
+    suspend fun getDeliveryId(orderNo: String, deliveryType: String): YiDaBaseResponse<String>? {
+        return executeResponse { dataSource.getDeliveryId(orderNo, deliveryType) }
     }
 }

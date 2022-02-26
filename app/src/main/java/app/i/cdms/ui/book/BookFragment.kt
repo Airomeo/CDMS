@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -19,6 +20,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.i.cdms.R
 import app.i.cdms.data.model.BookChannelDetail
+import app.i.cdms.data.model.BookResult
 import app.i.cdms.databinding.CatBottomsheetScrollableContentBinding
 import app.i.cdms.databinding.DialogFillAddressBinding
 import app.i.cdms.databinding.FragmentBookBinding
@@ -708,34 +710,55 @@ class BookFragment : Fragment(R.layout.fragment_book) {
     /**
      * 显示下单结果
      *
-     * @param number: 快递单号
+     * @param bookResult: 下单结果，包含快递单号等信息
      * @return
      */
-    private fun showBookResultDialog(number: String) {
-        val msg = "快递单号：${number}" +
-                "\n寄方姓名：${viewModel.bookBody.value.senderName}" +
-                "\n寄方电话：${viewModel.bookBody.value.senderMobile.orEmpty() + viewModel.bookBody.value.senderTel.orEmpty()}" +
-                "\n寄方地址：${binding.tvAddress.text}" +
-                "\n收方姓名：${viewModel.bookBody.value.receiveName}" +
-                "\n收方电话：${viewModel.bookBody.value.receiveMobile.orEmpty() + viewModel.bookBody.value.receiveTel.orEmpty()}" +
-                "\n收方地址：${binding.tvAddress2.text}" +
-                "\n下单物品：${viewModel.bookBody.value.goods}" +
-                "\n下单重量：${viewModel.bookBody.value.weight}"
-        MaterialAlertDialogBuilder(requireContext())
+    private fun showBookResultDialog(bookResult: BookResult) {
+        val deliveryIdStr = bookResult.deliveryId ?: getString(R.string.fees_tips_get_delivery_id)
+        val msg = "快递单号：${deliveryIdStr}\n" +
+                "寄方姓名：${viewModel.bookBody.value.senderName}\n" +
+                "寄方电话：${viewModel.bookBody.value.senderMobile.orEmpty() + viewModel.bookBody.value.senderTel.orEmpty()}\n" +
+                "寄方地址：${binding.tvAddress.text}\n" +
+                "收方姓名：${viewModel.bookBody.value.receiveName}\n" +
+                "收方电话：${viewModel.bookBody.value.receiveMobile.orEmpty() + viewModel.bookBody.value.receiveTel.orEmpty()}\n" +
+                "收方地址：${binding.tvAddress2.text}\n" +
+                "下单物品：${viewModel.bookBody.value.goods}\n" +
+                "下单重量：${viewModel.bookBody.value.weight}\n"
+        val dialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.book_result_dialog_title)
             .setMessage(msg)
-            .setPositiveButton(
-                R.string.book_result_dialog_positive_text
-            ) { dialog, which ->
+            .setPositiveButton(R.string.book_result_dialog_positive_text) { dialog, which ->
                 // copy
                 val clipboard =
                     requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val clip: ClipData = ClipData.newPlainText("simple text", msg)
                 // Set the clipboard's primary clip.
                 clipboard.setPrimaryClip(clip)
+                dialog.dismiss()
             }
-            .setNegativeButton(R.string.dialog_negative_text, null)
-            .show()
+            .create()
+        dialog.setOnShowListener {
+            if (bookResult.deliveryId == null) {
+                // 极兔需要手动刷新获取，添加刷新按钮
+                val neutralButton = dialog.getButton(AlertDialog.BUTTON_NEUTRAL)
+                neutralButton.setText(R.string.fees_tips_refresh)
+                neutralButton.setOnClickListener {
+                    viewModel.getDeliveryId(
+                        bookResult.orderNo,
+                        "JT"
+                    )
+                }
+                neutralButton.visibility = View.VISIBLE
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewModel.deliveryId.collectLatest {
+                        it ?: return@collectLatest
+                        dialog.setMessage(msg.replace(deliveryIdStr, it))
+                        neutralButton.visibility = View.GONE
+                    }
+                }
+            }
+        }
+        dialog.show()
     }
 
     private fun getTimeArray(): List<String> {

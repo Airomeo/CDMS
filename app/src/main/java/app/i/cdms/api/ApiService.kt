@@ -190,7 +190,7 @@ interface ApiService {
     suspend fun submitOrder(
         @Url url: String = Constant.API_SUBMIT_ORDER,
         @Body payload: RequestBody
-    ): Response<YiDaBaseResponse<String>>
+    ): Response<YiDaBaseResponse<BookResult>>
 
     @POST
     suspend fun getCompareFee(
@@ -206,5 +206,10 @@ interface ApiService {
         @Query("translate") translate: String = "sc",
         @Body payload: RequestBody
     ): Response<ShunFengBaseResponse<List<ParsedAddressBySf>>>
+
+    @GET
+    suspend fun getDeliveryId(
+        @Url url: String
+    ): Response<YiDaBaseResponse<String>>
 
 }

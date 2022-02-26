@@ -210,4 +210,6 @@
     <string name="fees_to_address">收件人地区</string>
     <string name="fees_tips">填写收寄地址后，将会显示可用渠道信息</string>
     <string name="fees_tips_no_available_channel">未找到可用渠道</string>
+    <string name="fees_tips_refresh">刷新</string>
+    <string name="fees_tips_get_delivery_id">请手动刷新获取</string>
 </resources>

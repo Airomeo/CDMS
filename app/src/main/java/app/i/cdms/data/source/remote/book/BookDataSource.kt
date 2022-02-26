@@ -1,5 +1,6 @@
 package app.i.cdms.data.source.remote.book
 
+import app.i.cdms.Constant
 import app.i.cdms.api.ApiService
 import app.i.cdms.data.model.*
 import okhttp3.MediaType.Companion.toMediaType
@@ -82,7 +83,7 @@ class BookDataSource @Inject constructor(private val service: ApiService) {
 
     suspend fun submitOrder(
         bookBody: BookBody
-    ): Response<YiDaBaseResponse<String>> {
+    ): Response<YiDaBaseResponse<BookResult>> {
         val payload = JSONObject()
             .put("senderAddress", bookBody.senderAddress)
             .put("senderMobile", bookBody.senderMobile)
@@ -141,5 +142,13 @@ class BookDataSource @Inject constructor(private val service: ApiService) {
             .toRequestBody("application/json".toMediaType())
 
         return service.getCompareFee(payload = payload)
+    }
+
+    suspend fun getDeliveryId(
+        orderNo: String,
+        deliveryType: String
+    ): Response<YiDaBaseResponse<String>> {
+        val url = Constant.API_GET_DELIVERY_ID + "/" + deliveryType + "/" + orderNo
+        return service.getDeliveryId(url = url)
     }
 }

@@ -29,6 +29,10 @@ class BookViewModel @Inject constructor(
     private val _preOrderFeeResult = MutableSharedFlow<PreOrderFeeResult?>()
     val preOrderFeeResult = _preOrderFeeResult.asSharedFlow()
 
+    // 订单号
+    private val _deliveryId = MutableSharedFlow<String?>()
+    val deliveryId = _deliveryId.asSharedFlow()
+
 
     // 可用渠道列表
     private val _bookChannelDetailList = MutableStateFlow<List<BookChannelDetail>?>(null)
@@ -56,7 +60,7 @@ class BookViewModel @Inject constructor(
     }
 
     // 下单结果
-    private val _bookResult = MutableSharedFlow<String?>()
+    private val _bookResult = MutableSharedFlow<BookResult?>()
     val bookResultFlow = _bookResult.asSharedFlow()
     var areaList: List<Area>? = null
 
@@ -166,5 +170,18 @@ class BookViewModel @Inject constructor(
 
     fun updateBookChannelDetailList(bookChannelDetailList: List<BookChannelDetail>?) {
         _bookChannelDetailList.value = bookChannelDetailList
+    }
+
+    /**
+     * 根据系统订单号查快递单号
+     *
+     * @param orderNo: 系统订单号
+     * @return deliveryId
+     */
+    fun getDeliveryId(orderNo: String, deliveryType: String) {
+        viewModelScope.launch {
+            val result = bookRepository.getDeliveryId(orderNo, deliveryType)
+            _deliveryId.emit(result?.data)
+        }
     }
 }
