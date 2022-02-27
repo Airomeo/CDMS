@@ -715,7 +715,7 @@ class BookFragment : Fragment(R.layout.fragment_book) {
      */
     private fun showBookResultDialog(bookResult: BookResult) {
         val deliveryIdStr = bookResult.deliveryId ?: getString(R.string.fees_tips_get_delivery_id)
-        val msg = "快递单号：${deliveryIdStr}\n" +
+        var msg = "快递单号：${deliveryIdStr}\n" +
                 "寄方姓名：${viewModel.bookBody.value.senderName}\n" +
                 "寄方电话：${viewModel.bookBody.value.senderMobile.orEmpty() + viewModel.bookBody.value.senderTel.orEmpty()}\n" +
                 "寄方地址：${binding.tvAddress.text}\n" +
@@ -752,7 +752,8 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                 viewLifecycleOwner.lifecycleScope.launch {
                     viewModel.deliveryId.collectLatest {
                         it ?: return@collectLatest
-                        dialog.setMessage(msg.replace(deliveryIdStr, it))
+                        msg = msg.replace(deliveryIdStr, it)
+                        dialog.setMessage(msg)
                         neutralButton.visibility = View.GONE
                     }
                 }
