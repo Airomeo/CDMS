@@ -21,7 +21,7 @@ data class Notice(
     @Json(name = "params")
     val params: Params,
     @Json(name = "remark")
-    val remark: String,
+    val remark: String?,
     @Json(name = "searchValue")
     val searchValue: Any?,
     @Json(name = "status")

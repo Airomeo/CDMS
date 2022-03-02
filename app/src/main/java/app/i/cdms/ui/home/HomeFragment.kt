@@ -53,7 +53,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
             }
         }
-        binding.notice.movementMethod = ScrollingMovementMethod()
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 homeViewModel.noticeList.collectLatest {
