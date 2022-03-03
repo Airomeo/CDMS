@@ -44,7 +44,7 @@ class HomeRepository @Inject constructor(
         return executeResponse { dataSource.getMyInfo() }
     }
 
-    suspend fun updateMyInfo(myInfo: MyInfo) {
+    suspend fun updateMyInfo(myInfo: MyInfo?) {
         userPrefDataSource.updateMyInfo(myInfo)
     }
 

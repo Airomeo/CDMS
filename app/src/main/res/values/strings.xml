@@ -39,6 +39,7 @@
     <string name="first_weight">首重</string>
     <string name="additional_weight">续重</string>
     <string name="agent_channel_count">渠道数\n%s</string>
+    <string name="agent_channel_superior">上级用户\n%s</string>
     <string name="agent_sub_user_count">子账户数\n%s</string>
     <string name="agent_dpk_order_count">德邦日单\n%s</string>
     <string name="agent_jd_order_count">京东日单\n%s</string>

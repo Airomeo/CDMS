@@ -70,10 +70,14 @@ class UserPrefDataSource @Inject constructor(private val dataStore: DataStore<Pr
         }
     }
 
-    suspend fun updateMyInfo(myInfo: MyInfo) {
+    suspend fun updateMyInfo(myInfo: MyInfo?) {
         dataStore.edit { preferences ->
-            preferences[PreferencesKeys.PREF_MY_INFO] =
-                MyInfoJsonAdapter(Moshi.Builder().build()).toJson(myInfo)
+            if (myInfo == null) {
+                preferences.remove(PreferencesKeys.PREF_MY_INFO)
+            } else {
+                preferences[PreferencesKeys.PREF_MY_INFO] =
+                    MyInfoJsonAdapter(Moshi.Builder().build()).toJson(myInfo)
+            }
         }
     }
 

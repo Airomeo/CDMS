@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -18,6 +19,7 @@ import app.i.cdms.R
 import app.i.cdms.data.model.Agent
 import app.i.cdms.databinding.DialogChannelConfigBinding
 import app.i.cdms.databinding.FragmentChannelBinding
+import app.i.cdms.ui.main.MainViewModel
 import app.i.cdms.utils.BaseEvent
 import app.i.cdms.utils.EventBus
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -33,6 +35,7 @@ class ChannelFragment : Fragment(R.layout.fragment_channel) {
     private var _binding: FragmentChannelBinding? = null
     private val binding get() = _binding!!
     private val channelViewModel: ChannelViewModel by viewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,16 +69,20 @@ class ChannelFragment : Fragment(R.layout.fragment_channel) {
         discountCommission: Float,
         perAddCommission: Float
     ) {
-        channelViewModel.getMyTeam(1, 9999, null)
+        channelViewModel.getMyTeam(1, 9999, null, null, null, null)
         viewLifecycleOwner.lifecycleScope.launch {
             channelViewModel.myTeam.collectLatest { myTeam ->
-                myTeam ?: return@collectLatest
-
-                val choicesTextArray = myTeam.records.map { agent ->
-                    agent.userName.padEnd(8) + "渠道数：" + agent.channelCount
+                myTeam?.rows ?: return@collectLatest
+                // 直系下级
+                val myDirectTeam = myTeam.rows.filter { agent ->
+                    agent.parentUserId == mainViewModel.myInfo?.userId
+                }
+                val choicesTextArray = myDirectTeam.map { agent ->
+                    agent.userName
                 }.toTypedArray()
-                val choicesCheckedArray =
-                    BooleanArray(myTeam.records.size) // all elements initialized to false.
+
+                // all elements initialized to false.
+                val choicesCheckedArray = BooleanArray(choicesTextArray.size)
 
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle(R.string.channel_update_config_dialog_title)
@@ -100,9 +107,9 @@ class ChannelFragment : Fragment(R.layout.fragment_channel) {
                                     return@setOnClickListener
                                 }
                                 val agents = mutableListOf<Agent>()
-                                for (i in myTeam.records.indices) {
+                                for (i in choicesCheckedArray.indices) {
                                     if (choicesCheckedArray[i]) {
-                                        agents.add(myTeam.records[i])
+                                        agents.add(myDirectTeam[i])
                                     }
                                 }
 

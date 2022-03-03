@@ -71,10 +71,16 @@ class ChannelViewModel @Inject constructor(
     }
 
     // 获取我的所有下级
-    fun getMyTeam(pageNum: Int, pageSize: Int, userName: String?) {
+    fun getMyTeam(
+        pageNum: Int, pageSize: Int, userName: String?,
+        parentUserId: Int?,
+        than: String?,
+        balance: String?,
+    ) {
         viewModelScope.launch {
-            val result = teamRepository.getMyTeam(pageNum, pageSize, userName)
-            _myTeam.value = result?.data
+            val result =
+                teamRepository.getMyTeam(pageNum, pageSize, userName, parentUserId, than, balance)
+            _myTeam.value = result
         }
     }
 

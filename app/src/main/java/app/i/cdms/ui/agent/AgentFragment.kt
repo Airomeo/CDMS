@@ -41,8 +41,8 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 teamViewModel.myTeam.collectLatest { myTeam ->
-                    myTeam ?: return@collectLatest
-                    agent = myTeam.records.find {
+                    myTeam?.rows ?: return@collectLatest
+                    agent = myTeam.rows.find {
                         it.userId == agent.userId
                     }!!
                     with(binding) {
@@ -50,11 +50,11 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
                         tvId.text = getString(R.string.my_info_id, agent.userId.toString())
                         tvBalance.text =
                             getString(R.string.my_info_balance, agent.accountBalance.toString())
-                        tvEarns.text = getString(R.string.my_info_earns, agent.earns.toString())
-                        tvChannelCount.text =
-                            getString(R.string.agent_channel_count, agent.channelCount.toString())
+                        tvEarns.text = getString(R.string.my_info_earns, agent.earns)
+                        tvChannelSuperior.text =
+                            getString(R.string.agent_channel_superior, agent.parentUserName)
                         tvSubUserCount.text =
-                            getString(R.string.agent_sub_user_count, agent.sonUserCount.toString())
+                            getString(R.string.agent_sub_user_count, agent.childrenCount.toString())
                     }
                 }
             }

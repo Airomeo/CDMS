@@ -26,7 +26,7 @@ class HomeViewModel @Inject constructor(
         getMyInfo()
     }
 
-    private fun getNotice() {
+    fun getNotice() {
         viewModelScope.launch {
             _noticeList.value = homeRepository.getNotice()
         }
@@ -36,15 +36,11 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             // can be launched in a separate asynchronous job
             val result = homeRepository.getMyInfo()
-            result?.let {
-                _myInfo.value = it.data
-                updateMyInfo(it.data!!)
-                getNotice()
-            }
+            _myInfo.value = result?.data
         }
     }
 
-    private fun updateMyInfo(myInfo: MyInfo) {
+    fun updateMyInfo(myInfo: MyInfo?) {
         viewModelScope.launch {
             homeRepository.updateMyInfo(myInfo)
         }

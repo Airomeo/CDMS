@@ -9,16 +9,18 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @JsonClass(generateAdapter = true)
 data class Agent(
-    @Json(name = "accountBalance")
-    val accountBalance: Float,
-    @Json(name = "channelCount")
-    val channelCount: Int?,
-    @Json(name = "earns")
-    val earns: Float,
     @Json(name = "userId")
     val userId: Int,
-    @Json(name = "sonUserCount")
-    val sonUserCount: Int?,
     @Json(name = "userName")
-    val userName: String
+    val userName: String,
+    @Json(name = "accountBalance")
+    val accountBalance: String,
+    @Json(name = "earns")
+    val earns: String,
+    @Json(name = "parentUserId")
+    val parentUserId: Int,
+    @Json(name = "parentUserName")
+    val parentUserName: String,
+    @Json(name = "childrenCount")
+    val childrenCount: Int,
 ) : Parcelable

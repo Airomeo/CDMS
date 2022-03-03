@@ -1,6 +1,7 @@
 package app.i.cdms.repository
 
 import app.i.cdms.R
+import app.i.cdms.data.model.MyTeam
 import app.i.cdms.data.model.ShunFengBaseResponse
 import app.i.cdms.data.model.YiDaBaseResponse
 import app.i.cdms.data.model.YunYangBaseResponse
@@ -32,6 +33,19 @@ open class BaseRepository {
             if (it.isSuccessful) {
                 when (val body = it.body()) {
                     is YiDaBaseResponse<*> -> {
+                        when (body.code) {
+                            200 -> {
+                                return body
+                            }
+                            401 -> {
+                                EventBus.produceEvent(BaseEvent.NeedLogin)
+                            }
+                            else -> {
+                                EventBus.produceEvent(BaseEvent.Failed(body.msg))
+                            }
+                        }
+                    }
+                    is MyTeam -> {
                         when (body.code) {
                             200 -> {
                                 return body

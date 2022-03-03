@@ -55,8 +55,11 @@ interface ApiService {
         @Url url: String = Constant.API_MY_TEAM,
         @Query("pageNum") pageNum: Int,
         @Query("pageSize") pageSize: Int,
-        @Query("userName") userName: String?
-    ): Response<YiDaBaseResponse<MyTeam>>
+        @Query("userName") userName: String?,
+        @Query("parentUserId") parentUserId: Int?,
+        @Query("than") than: String?,
+        @Query("balance") balance: String?,
+    ): Response<MyTeam>
 
     @GET
     suspend fun recordList(

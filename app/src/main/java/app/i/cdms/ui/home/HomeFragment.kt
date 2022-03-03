@@ -42,12 +42,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         binding.logout.setOnClickListener {
             mainViewModel.updateToken(null)
+            homeViewModel.updateMyInfo(null)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 homeViewModel.myInfo.collectLatest {
                     it ?: return@collectLatest
+                    homeViewModel.updateMyInfo(it)
+                    homeViewModel.getNotice()
                     updateUiWithUser(it)
                 }
             }

@@ -64,11 +64,13 @@ class TeamFragment : Fragment(R.layout.fragment_team) {
                     it ?: return@collectLatest
                     binding.tvAllUsers.text =
                         getString(R.string.my_team_all_users, it.total.toString())
-                    val activeUsers = it.records.filter { agent ->
-                        agent.accountBalance > 0
-                    }.size
-                    binding.tvPayingUsers.text =
-                        getString(R.string.my_team_paying_users, activeUsers.toString())
+                    it.rows?.let { list ->
+                        val activeUsers = list.filter { agent ->
+                            agent.accountBalance != "0.0"
+                        }.size
+                        binding.tvPayingUsers.text =
+                            getString(R.string.my_team_paying_users, activeUsers.toString())
+                    }
                 }
             }
         }
