@@ -83,8 +83,10 @@
     <string name="book_fill_address_province">省市区</string>
     <string name="book_fill_address_detail">详细地址</string>
     <string name="book_fill_address_detail_tips">街道门牌等信息</string>
-    <string name="book_fill_address_parse">地址解析</string>
-    <string name="book_fill_address_parse_tips">点击右上角按钮粘贴地址\n点击右下角按钮自动解析</string>
+    <string name="book_fill_address_paste_tooltip">粘贴/清除地址</string>
+    <string name="book_fill_address_parse">智能解析</string>
+    <string name="book_fill_address_parse_helper">点击左侧按钮解析，右侧按钮粘贴/清除</string>
+    <string name="book_fill_address_parse_lack_info">信息太少了，写详细点</string>
     <string name="book_fill_address_parse_failed">未能识别%s，请检查或手动填写</string>
     <string name="book_address_incomplete">%s不完整</string>
     <string name="book_goods_info_incomplete">物品信息不完整</string>

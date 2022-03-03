@@ -46,11 +46,68 @@
         app:layout_constraintStart_toEndOf="@id/title"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/auto"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="56dp"
+        android:hint="@string/book_fill_address_parse"
+        android:tooltipText=""
+        app:helperText="@string/book_fill_address_parse_helper"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:placeholderText="@string/book_fill_address_parse_helper">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/rawAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="80"
+            android:minHeight="128dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/pasteAndClear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="@string/book_fill_address_paste_tooltip"
+        android:padding="4dp"
+        android:src="@drawable/ic_baseline_content_paste_24"
+        android:tooltipText="@string/book_fill_address_paste_tooltip"
+        app:layout_constraintBottom_toBottomOf="@id/auto"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/auto" />
+
+    <ImageView
+        android:id="@+id/parse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="@string/book_fill_address_parse"
+        android:padding="4dp"
+        android:scaleType="center"
+        android:tooltipText="@string/book_fill_address_parse"
+        app:layout_constraintBottom_toBottomOf="@id/auto"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/auto"
+        app:srcCompat="@drawable/ic_baseline_auto_awesome_24" />
+
     <ImageView
         android:id="@+id/ivName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
+        android:contentDescription="@string/book_fill_address_name"
         android:src="@drawable/ic_baseline_account_circle_24"
         app:layout_constraintBottom_toBottomOf="@id/name"
         app:layout_constraintEnd_toStartOf="@id/name"
@@ -61,17 +118,18 @@
         android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="56dp"
         app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/ivName"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/auto">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/book_fill_address_name"
+            android:imeOptions="actionNext"
             android:inputType="textAutoComplete" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -80,7 +138,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:contentDescription="phone"
+        android:contentDescription="@string/book_fill_address_phone"
         android:src="@drawable/ic_baseline_phone_24"
         app:layout_constraintBottom_toBottomOf="@id/phone"
         app:layout_constraintEnd_toStartOf="@id/phone"
@@ -103,6 +161,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/book_fill_address_phone"
+            android:imeOptions="actionNext"
             android:inputType="number"
             android:maxLength="11" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -112,7 +171,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:contentDescription="province"
+        android:contentDescription="@string/book_fill_address_province"
         android:src="@drawable/ic_baseline_edit_location_24"
         app:layout_constraintBottom_toBottomOf="@id/province"
         app:layout_constraintEnd_toStartOf="@id/province"
@@ -121,6 +180,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/province"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -130,12 +190,14 @@
         app:layout_constraintStart_toEndOf="@id/ivProvince"
         app:layout_constraintTop_toBottomOf="@id/phone">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:cursorVisible="false"
             android:hint="@string/book_fill_address_province"
-            android:textIsSelectable="true" />
+            android:imeOptions="actionNext"
+            android:inputType="none"
+            android:textIsSelectable="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -154,61 +216,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/book_fill_address_detail"
+            android:imeOptions="actionDone"
             android:maxLength="50" />
     </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/auto"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        app:endIconMode="clear_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/address"
-        app:placeholderText="@string/book_fill_address_parse_tips">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/rawAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/book_fill_address_parse"
-            android:maxLength="80"
-            android:minHeight="160dp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <ImageView
-        android:id="@+id/paste"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="7dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:contentDescription="paste"
-        android:padding="5dp"
-        android:scaleType="center"
-        android:scaleX="0.833"
-        android:scaleY="0.833"
-        app:layout_constraintEnd_toEndOf="@id/auto"
-        app:layout_constraintTop_toTopOf="@id/auto"
-        app:srcCompat="@drawable/ic_baseline_content_paste_24" />
-
-    <ImageView
-        android:id="@+id/parse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="7dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:contentDescription="parse"
-        android:padding="5dp"
-        android:scaleType="center"
-        android:scaleX="0.833"
-        android:scaleY="0.833"
-        app:layout_constraintBottom_toBottomOf="@id/auto"
-        app:layout_constraintEnd_toEndOf="@id/auto"
-        app:srcCompat="@drawable/ic_baseline_auto_awesome_24" />
 </androidx.constraintlayout.widget.ConstraintLayout>

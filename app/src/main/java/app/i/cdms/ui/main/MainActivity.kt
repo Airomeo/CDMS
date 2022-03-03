@@ -17,9 +17,12 @@ import app.i.cdms.R
 import app.i.cdms.databinding.ActivityMainBinding
 import app.i.cdms.utils.BaseEvent
 import app.i.cdms.utils.EventBus
+import com.google.android.material.color.DynamicColors
+import com.google.android.material.elevation.SurfaceColors
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -29,7 +32,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        // Material You DynamicColors
+        DynamicColors.applyIfAvailable(this)
+        val color = SurfaceColors.SURFACE_2.getColor(this)
+        // Set color of system statusBar same as ActionBar
+        window.statusBarColor = color
+        // Set color of system navigationBar same as BottomNavigationView
+        window.navigationBarColor = color
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -42,8 +51,10 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id in topDestinations) {
                 binding.navView.visibility = View.VISIBLE
+                window.navigationBarColor = SurfaceColors.SURFACE_2.getColor(this)
             } else {
                 binding.navView.visibility = View.GONE
+                window.navigationBarColor = SurfaceColors.SURFACE_0.getColor(this)
             }
         }
 
@@ -60,7 +71,7 @@ class MainActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 EventBus.events.collectLatest {
                     Log.d("TAG", "EventBus.event: $it")
-                    binding.loading.visibility = View.GONE
+                    binding.loading.visibility = View.INVISIBLE
                     when (it) {
                         is BaseEvent.Error -> {
                             Toast.makeText(

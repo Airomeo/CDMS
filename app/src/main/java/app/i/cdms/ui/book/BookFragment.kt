@@ -24,8 +24,11 @@ import app.i.cdms.data.model.BookResult
 import app.i.cdms.databinding.CatBottomsheetScrollableContentBinding
 import app.i.cdms.databinding.DialogFillAddressBinding
 import app.i.cdms.databinding.FragmentBookBinding
+import app.i.cdms.utils.hideKeyboard
+import app.i.cdms.utils.syncNavigationBarColorWithPixel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.elevation.SurfaceColors
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -161,6 +164,9 @@ class BookFragment : Fragment(R.layout.fragment_book) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().window.navigationBarColor =
+            SurfaceColors.SURFACE_2.getColor(requireContext())
+
         _binding = FragmentBookBinding.bind(view)
         binding.apply {
             iv.setOnClickListener(listener)
@@ -176,7 +182,22 @@ class BookFragment : Fragment(R.layout.fragment_book) {
             clearTime.setOnClickListener(listener)
             priceTips.setOnClickListener(listener)
             book.setOnClickListener(listener)
-
+            nestedScrollView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                // 上下滑动时使导航栏背景颜色和底部工具条背景颜色相同。
+                // 下面两种方法都可以。第一种不太可靠，因为是取导航栏右上角一个像素的颜色。第二种代码更可靠，前提是需要知道颜色。
+                syncNavigationBarColorWithPixel()
+//                if (scrollY - oldScrollY > 0) {
+//                    if (!bottomAppBar.isScrolledDown) {
+//                        requireActivity().window.navigationBarColor =
+//                            SurfaceColors.SURFACE_0.getColor(requireContext())
+//                    }
+//                } else {
+//                    if (!bottomAppBar.isScrolledUp) {
+//                        requireActivity().window.navigationBarColor =
+//                            SurfaceColors.SURFACE_2.getColor(requireContext())
+//                    }
+//                }
+            }
             tv.setAdapter(
                 ArrayAdapter(
                     requireContext(),
@@ -605,26 +626,47 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                 dialog.dismiss()
             }
         }
+        b.parse.setOnClickListener {
+            val rawAddress = b.rawAddress.text.toString().trim()
+            if (rawAddress.length > 20) {
+                viewModel.parseAddress(rawAddress)
+                dialog.hideKeyboard()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    R.string.book_fill_address_parse_lack_info,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+        b.pasteAndClear.setOnClickListener {
+            it.animate().rotation(it.rotation + 360F)
+            if (b.auto.editText?.text.isNullOrBlank()) {
+                val clipboard =
+                    requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                clipboard.primaryClip?.let { clip ->
+                    b.auto.editText!!.setText(clip.getItemAt(0).text)
+                    b.parse.callOnClick()
+                }
+            } else {
+                b.auto.editText?.text = null
+            }
+        }
+        b.auto.editText?.doOnTextChanged { text, start, before, count ->
+            if (text.isNullOrBlank()) {
+                b.pasteAndClear.setImageResource(R.drawable.ic_baseline_content_paste_24)
+            } else {
+                b.pasteAndClear.setImageResource(R.drawable.ic_baseline_close_24)
+            }
+        }
         b.province.editText?.apply {
             showSoftInputOnFocus = false
             setOnClickListener { showMenu(it) }
             setOnFocusChangeListener { v, hasFocus ->
                 if (hasFocus) {
-                    showMenu(v)
+                    v.performClick()
+                    v.hideKeyboard()
                 }
-            }
-        }
-        b.paste.setOnClickListener {
-            val clipboard =
-                requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            clipboard.primaryClip?.let {
-                b.auto.editText!!.setText(it.getItemAt(0).text)
-            }
-        }
-        b.parse.setOnClickListener {
-            val rawAddress = b.rawAddress.text.toString().trim()
-            if (rawAddress.length > 20) {
-                viewModel.parseAddress(rawAddress)
             }
         }
 

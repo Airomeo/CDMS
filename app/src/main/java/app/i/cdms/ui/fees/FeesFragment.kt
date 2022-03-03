@@ -16,6 +16,7 @@ import app.i.cdms.R
 import app.i.cdms.data.model.BookChannelDetail
 import app.i.cdms.databinding.FragmentFeesBinding
 import app.i.cdms.ui.book.BookChannelRecyclerViewAdapter
+import app.i.cdms.utils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -68,7 +69,8 @@ class FeesFragment : Fragment(R.layout.fragment_fees) {
             setOnClickListener { showMenu(it) }
             setOnFocusChangeListener { v, hasFocus ->
                 if (hasFocus) {
-                    showMenu(v)
+                    v.performClick()
+                    v.hideKeyboard()
                 }
             }
             doOnTextChanged { text, start, before, count ->
@@ -98,7 +100,8 @@ class FeesFragment : Fragment(R.layout.fragment_fees) {
             setOnClickListener { showMenu(it) }
             setOnFocusChangeListener { v, hasFocus ->
                 if (hasFocus) {
-                    showMenu(v)
+                    v.performClick()
+                    v.hideKeyboard()
                 }
             }
             doOnTextChanged { text, start, before, count ->
