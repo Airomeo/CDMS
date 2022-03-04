@@ -53,6 +53,7 @@ class ChannelFragment : Fragment(R.layout.fragment_channel) {
         with(binding.list) {
             adapter = mAdapter
             layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)// Explanation of setHasFixedSize. https://stackoverflow.com/a/59033210/10276438
         }
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {

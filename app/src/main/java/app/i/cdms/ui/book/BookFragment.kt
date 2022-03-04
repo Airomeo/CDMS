@@ -745,7 +745,6 @@ class BookFragment : Fragment(R.layout.fragment_book) {
         mAdapter.submitList(list)
         b.recyclerView.adapter = mAdapter
         b.recyclerView.layoutManager = LinearLayoutManager(context)
-
         dialog.show()
     }
 

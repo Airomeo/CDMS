@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:text="¥2.5"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@id/view2"
+        app:layout_constraintBottom_toBottomOf="@id/firstPrice"
         app:layout_constraintEnd_toEndOf="@id/view2"
         app:layout_constraintStart_toStartOf="@id/view2" />
 
@@ -70,10 +70,19 @@
         android:layout_height="wrap_content"
         android:text="¥3.0"
         android:textAlignment="center"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/view3"
+        app:layout_constraintBottom_toBottomOf="@id/firstPrice"
         app:layout_constraintEnd_toEndOf="@id/view3"
         app:layout_constraintStart_toStartOf="@id/view3" />
+
+    <TextView
+        android:id="@+id/addPrice3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¥3.5"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@id/firstPrice"
+        app:layout_constraintEnd_toEndOf="@id/view4"
+        app:layout_constraintStart_toStartOf="@id/view4" />
 
     <TextView
         android:id="@+id/discount"
@@ -81,7 +90,6 @@
         android:layout_height="wrap_content"
         android:text="@string/config_discount"
         android:textAlignment="center"
-        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/view"
         app:layout_constraintEnd_toStartOf="@id/perAdd"
         app:layout_constraintStart_toStartOf="@+id/view" />
@@ -92,19 +100,17 @@
         android:layout_height="wrap_content"
         android:text="@string/config_per_add"
         android:textAlignment="center"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/view2"
-        app:layout_constraintEnd_toEndOf="@id/view3"
+        app:layout_constraintBottom_toBottomOf="@id/discount"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/discount" />
 
     <View
         android:id="@+id/view"
-        android:layout_width="60dp"
+        android:layout_width="0dp"
         android:layout_height="4dp"
         android:layout_marginTop="32dp"
         android:background="@android:color/holo_blue_light"
         app:layout_constraintEnd_toStartOf="@+id/view2"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/channelName" />
 
@@ -112,22 +118,34 @@
         android:id="@+id/view2"
         android:layout_width="0dp"
         android:layout_height="4dp"
+        android:layout_marginTop="32dp"
         android:background="@android:color/holo_green_light"
-        app:layout_constraintBottom_toBottomOf="@+id/view"
         app:layout_constraintEnd_toStartOf="@id/view3"
         app:layout_constraintStart_toEndOf="@+id/view"
-        app:layout_constraintTop_toTopOf="@+id/view" />
+        app:layout_constraintTop_toBottomOf="@+id/channelName"
+        app:layout_goneMarginTop="32dp" />
 
     <View
         android:id="@+id/view3"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="4dp"
-        android:background="@android:color/holo_red_light"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/view"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"
+        android:background="@android:color/holo_orange_light"
+        app:layout_constraintEnd_toStartOf="@id/view4"
         app:layout_constraintStart_toEndOf="@+id/view2"
-        app:layout_constraintTop_toTopOf="@+id/view" />
+        app:layout_constraintTop_toBottomOf="@+id/channelName"
+        app:layout_goneMarginTop="32dp" />
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:layout_marginTop="32dp"
+        android:background="@android:color/holo_red_light"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/view3"
+        app:layout_constraintTop_toBottomOf="@+id/channelName"
+        app:layout_goneMarginTop="32dp" />
 
     <TextView
         android:id="@+id/zero"
@@ -145,17 +163,25 @@
         android:text="1kg"
         app:layout_constraintEnd_toEndOf="@+id/view"
         app:layout_constraintStart_toStartOf="@id/view2"
-        app:layout_constraintTop_toBottomOf="@+id/view2" />
+        app:layout_constraintTop_toTopOf="@id/zero" />
 
     <TextView
-        android:id="@+id/hop"
+        android:id="@+id/hopWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2kg"
+        app:layout_constraintEnd_toEndOf="@+id/view2"
+        app:layout_constraintStart_toStartOf="@id/view3"
+        app:layout_constraintTop_toTopOf="@id/zero" />
+
+    <TextView
+        android:id="@+id/hopWeight2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="3kg"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/view2"
-        app:layout_constraintStart_toStartOf="@id/view3"
-        app:layout_constraintTop_toBottomOf="@+id/view2" />
+        app:layout_constraintEnd_toEndOf="@+id/view3"
+        app:layout_constraintStart_toStartOf="@id/view4"
+        app:layout_constraintTop_toTopOf="@id/zero" />
 
     <TextView
         android:id="@+id/limitWeight"
@@ -163,7 +189,7 @@
         android:layout_height="wrap_content"
         android:text="30kg"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view2" />
+        app:layout_constraintTop_toTopOf="@id/zero" />
 
     <TextView
         android:id="@+id/lightGoods"

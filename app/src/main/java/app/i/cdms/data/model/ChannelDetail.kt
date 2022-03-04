@@ -23,5 +23,5 @@ data class ChannelDetail(
     @Json(name = "srArea")
     val srArea: List<String>?,
     val customerChannel: CustomerChannel?,
-    val unfold: Boolean = false
+    var unfold: Boolean = false
 )

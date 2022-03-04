@@ -138,6 +138,7 @@ class FeesFragment : Fragment(R.layout.fragment_fees) {
         val mAdapter = BookChannelRecyclerViewAdapter(rootOnClickCallback)
         binding.recyclerView.adapter = mAdapter
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.recyclerView.setHasFixedSize(true)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
