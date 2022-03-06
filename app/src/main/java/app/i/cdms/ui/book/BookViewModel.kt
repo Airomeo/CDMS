@@ -148,12 +148,8 @@ class BookViewModel @Inject constructor(
     fun book() {
         viewModelScope.launch {
             if (bookBody.value.deliveryType == "STO-INT") {
-                updateBookBodyFlow(
-                    bookBody.value.copy(
-                        qty = bookBody.value.packageCount,// qty暂时用packageCount这个替代
-                        unitPrice = 2000 //申通无保价费,提供对应货值证明,最高赔付金额2000元,单价请勿超过2000元
-                    )
-                )
+                // qty暂时用packageCount这个替代
+                updateBookBodyFlow(bookBody.value.copy(qty = bookBody.value.packageCount))
             }
             val result = bookRepository.submitOrder(bookBody.value)
             _bookResult.emit(result?.data)

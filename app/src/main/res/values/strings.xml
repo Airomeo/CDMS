@@ -118,9 +118,8 @@
     <string name="goods_width">宽*</string>
     <string name="goods_height">高*</string>
     <string name="goods_insurance_amount">保价金额*</string>
-    <string name="goods_insurance_amount_holder_text">填写物品价值</string>
+    <string name="goods_price">物品价格</string>
     <array name="cat_goods_price" translatable="false">
-        <item>100</item>
         <item>500</item>
         <item>1000</item>
         <item>2000</item>
@@ -215,4 +214,5 @@
     <string name="fees_tips_no_available_channel">未找到可用渠道</string>
     <string name="fees_tips_refresh">刷新</string>
     <string name="fees_tips_get_delivery_id">请手动刷新获取</string>
+    <string name="message_detail">查看详情</string>
 </resources>

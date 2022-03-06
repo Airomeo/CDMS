@@ -18,7 +18,9 @@ import app.i.cdms.databinding.ActivityMainBinding
 import app.i.cdms.utils.BaseEvent
 import app.i.cdms.utils.EventBus
 import com.google.android.material.color.DynamicColors
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.elevation.SurfaceColors
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -74,11 +76,7 @@ class MainActivity : AppCompatActivity() {
                     binding.loading.visibility = View.INVISIBLE
                     when (it) {
                         is BaseEvent.Error -> {
-                            Toast.makeText(
-                                this@MainActivity,
-                                it.exception.message,
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            showMessage(it.exception.message.toString())
                         }
                         is BaseEvent.Loading -> {
                             binding.loading.visibility = View.VISIBLE
@@ -94,23 +92,31 @@ class MainActivity : AppCompatActivity() {
                             navController.navigate(id)
                         }
                         is BaseEvent.Failed -> {
-                            Toast.makeText(
-                                this@MainActivity,
-                                it.data.toString(),
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            showMessage(it.data.toString())
                         }
                         is BaseEvent.Toast -> {
-                            Toast.makeText(
-                                this@MainActivity,
-                                getString(it.resId),
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            showMessage(getString(it.resId))
                         }
                     }
                 }
             }
         }
+    }
+
+    private fun showMessage(text: String) {
+        if (text.length > 30) {
+            Snackbar.make(binding.root, text, Snackbar.LENGTH_LONG)
+                .setAction(R.string.message_detail) { showMessageDialog(text) }
+                .show()
+        } else {
+            Toast.makeText(this@MainActivity, text, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun showMessageDialog(text: String) {
+        MaterialAlertDialogBuilder(this)
+            .setMessage(text)
+            .show()
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -169,15 +169,15 @@
                 android:layout_marginHorizontal="16dp"
                 android:contentDescription="@string/book_goods_info"
                 android:src="@drawable/ic_baseline_description_24"
-                app:layout_constraintBottom_toBottomOf="@id/textInputLayout"
-                app:layout_constraintEnd_toStartOf="@id/textInputLayout"
+                app:layout_constraintBottom_toBottomOf="@id/goodsWeight"
+                app:layout_constraintEnd_toStartOf="@id/goodsWeight"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/textInputLayout" />
+                app:layout_constraintTop_toTopOf="@id/goodsWeight" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout"
+                android:id="@+id/goodsWeight"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -191,7 +191,7 @@
                 app:suffixText="kg">
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                    android:id="@+id/tv"
+                    android:id="@+id/tvGoodsWeight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
@@ -210,10 +210,10 @@
                 android:contentDescription="重量减1"
                 android:text="-1"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@id/textInputLayout"
+                app:layout_constraintBottom_toBottomOf="@id/goodsWeight"
                 app:layout_constraintEnd_toStartOf="@id/weightPlus"
-                app:layout_constraintStart_toEndOf="@id/textInputLayout"
-                app:layout_constraintTop_toTopOf="@id/textInputLayout" />
+                app:layout_constraintStart_toEndOf="@id/goodsWeight"
+                app:layout_constraintTop_toTopOf="@id/goodsWeight" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/weightPlus"
@@ -223,11 +223,11 @@
                 android:contentDescription="重量加1"
                 android:text="+1"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@id/textInputLayout"
+                app:layout_constraintBottom_toBottomOf="@id/goodsWeight"
                 app:layout_constraintEnd_toStartOf="@id/dropdown"
                 app:layout_constraintHorizontal_bias="1"
                 app:layout_constraintStart_toEndOf="@id/weightMinus"
-                app:layout_constraintTop_toTopOf="@id/textInputLayout" />
+                app:layout_constraintTop_toTopOf="@id/goodsWeight" />
 
             <ImageView
                 android:id="@+id/dropdown"
@@ -239,14 +239,14 @@
                 android:contentDescription="dropdown"
                 android:padding="4dp"
                 android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
-                app:layout_constraintBottom_toBottomOf="@id/textInputLayout"
+                app:layout_constraintBottom_toBottomOf="@id/goodsWeight"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1"
                 app:layout_constraintStart_toEndOf="@id/weightPlus"
-                app:layout_constraintTop_toTopOf="@id/textInputLayout" />
+                app:layout_constraintTop_toTopOf="@id/goodsWeight" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout2"
+                android:id="@+id/goodsName"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -254,12 +254,12 @@
                 android:layout_marginTop="16dp"
                 android:hint="@string/goods_type"
                 android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="@id/weightPlus"
-                app:layout_constraintStart_toStartOf="@id/textInputLayout"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+                app:layout_constraintEnd_toStartOf="@id/packageCount"
+                app:layout_constraintStart_toStartOf="@id/goodsWeight"
+                app:layout_constraintTop_toBottomOf="@+id/goodsWeight">
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                    android:id="@+id/tv2"
+                    android:id="@+id/tvGoodsName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
@@ -270,119 +270,21 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout3"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:hint="@string/goods_length"
-                android:visibility="gone"
-                app:layout_constraintEnd_toStartOf="@id/textInputLayout32"
-                app:layout_constraintStart_toStartOf="@id/textInputLayout"
-                app:layout_constraintTop_toBottomOf="@id/textInputLayout2"
-                app:suffixText="cm">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tv3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:maxLength="3"
-                    android:selectAllOnFocus="true" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout32"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginHorizontal="16dp"
-                android:hint="@string/goods_width"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@id/textInputLayout3"
-                app:layout_constraintEnd_toStartOf="@id/textInputLayout33"
-                app:layout_constraintStart_toEndOf="@id/textInputLayout3"
-                app:layout_constraintTop_toTopOf="@id/textInputLayout3"
-                app:suffixText="cm">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tv32"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:maxLength="3"
-                    android:selectAllOnFocus="true" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout33"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:hint="@string/goods_height"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@id/textInputLayout32"
-                app:layout_constraintEnd_toEndOf="@id/weightPlus"
-                app:layout_constraintStart_toEndOf="@id/textInputLayout32"
-                app:layout_constraintTop_toTopOf="@id/textInputLayout32"
-                app:suffixText="cm">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tv33"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:maxLength="3"
-                    android:selectAllOnFocus="true" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout4"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:hint="@string/goods_insurance_amount"
-                android:visibility="gone"
-                app:layout_constraintEnd_toStartOf="@id/textInputLayout5"
-                app:layout_constraintStart_toStartOf="@id/textInputLayout"
-                app:layout_constraintTop_toBottomOf="@id/textInputLayout3"
-                app:placeholderText="@string/goods_insurance_amount_holder_text"
-                app:prefixText="¥">
-
-                <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                    android:id="@+id/tv4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:maxLength="6"
-                    android:selectAllOnFocus="true" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout5"
+                android:id="@+id/packageCount"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginStart="16dp"
                 android:hint="@string/package_quantity"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@id/textInputLayout4"
+                app:layout_constraintBottom_toBottomOf="@id/goodsName"
                 app:layout_constraintEnd_toEndOf="@id/weightPlus"
-                app:layout_constraintStart_toEndOf="@id/textInputLayout4"
-                app:layout_constraintTop_toTopOf="@id/textInputLayout4">
+                app:layout_constraintStart_toEndOf="@id/goodsName"
+                app:layout_constraintTop_toTopOf="@id/goodsName">
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                    android:id="@+id/tv5"
+                    android:id="@+id/tvPackageCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
@@ -392,6 +294,129 @@
                     android:text="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/goodsLength"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:hint="@string/goods_length"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@id/goodsWidth"
+                app:layout_constraintStart_toStartOf="@id/goodsWeight"
+                app:layout_constraintTop_toBottomOf="@id/goodsName"
+                app:suffixText="cm">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tvGoodsLength"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:selectAllOnFocus="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/goodsWidth"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="16dp"
+                android:hint="@string/goods_width"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/goodsLength"
+                app:layout_constraintEnd_toStartOf="@id/goodsHeight"
+                app:layout_constraintStart_toEndOf="@id/goodsLength"
+                app:layout_constraintTop_toTopOf="@id/goodsLength"
+                app:suffixText="cm">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tvGoodsWidth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:selectAllOnFocus="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/goodsHeight"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:hint="@string/goods_height"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/goodsWidth"
+                app:layout_constraintEnd_toEndOf="@id/weightPlus"
+                app:layout_constraintStart_toEndOf="@id/goodsWidth"
+                app:layout_constraintTop_toTopOf="@id/goodsWidth"
+                app:suffixText="cm">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tvGoodsHeight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:selectAllOnFocus="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/guaranteeValueAmount"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:hint="@string/goods_insurance_amount"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@id/goodsPrice"
+                app:layout_constraintStart_toStartOf="@id/goodsWeight"
+                app:layout_constraintTop_toBottomOf="@id/goodsLength"
+                app:prefixText="¥">
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/tvGuaranteeValueAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="6"
+                    android:selectAllOnFocus="true"
+                    android:text="0" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/goodsPrice"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:hint="@string/goods_price"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@id/weightPlus"
+                app:layout_constraintStart_toEndOf="@id/guaranteeValueAmount"
+                app:layout_constraintTop_toBottomOf="@+id/goodsLength">
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/tvGoodsPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="textAutoComplete"
+                    android:maxLength="5"
+                    android:selectAllOnFocus="true"
+                    android:text="2000" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <ImageView
                 android:id="@+id/ivTime"
                 android:layout_width="wrap_content"
@@ -399,13 +424,13 @@
                 android:layout_marginHorizontal="16dp"
                 android:contentDescription="@string/book_time"
                 android:src="@drawable/ic_baseline_access_time_24"
-                app:layout_constraintBottom_toBottomOf="@id/textInputLayout6"
-                app:layout_constraintEnd_toStartOf="@id/textInputLayout6"
+                app:layout_constraintBottom_toBottomOf="@id/pickUpTime"
+                app:layout_constraintEnd_toStartOf="@id/pickUpTime"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/textInputLayout6" />
+                app:layout_constraintTop_toTopOf="@id/pickUpTime" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout6"
+                android:id="@+id/pickUpTime"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -414,10 +439,10 @@
                 android:hint="@string/book_time"
                 app:layout_constraintEnd_toEndOf="@id/weightPlus"
                 app:layout_constraintStart_toEndOf="@id/ivTime"
-                app:layout_constraintTop_toBottomOf="@id/textInputLayout5">
+                app:layout_constraintTop_toBottomOf="@id/guaranteeValueAmount">
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                    android:id="@+id/tv6"
+                    android:id="@+id/tvPickUpTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
@@ -437,10 +462,10 @@
                 android:padding="4dp"
                 android:src="@drawable/ic_baseline_close_24"
                 android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="@id/textInputLayout6"
+                app:layout_constraintBottom_toBottomOf="@id/pickUpTime"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/textInputLayout6"
-                app:layout_constraintTop_toTopOf="@id/textInputLayout6" />
+                app:layout_constraintStart_toEndOf="@id/pickUpTime"
+                app:layout_constraintTop_toTopOf="@id/pickUpTime" />
 
             <ImageView
                 android:id="@+id/ivNote"
@@ -449,13 +474,13 @@
                 android:layout_marginHorizontal="16dp"
                 android:contentDescription="@string/book_note"
                 android:src="@drawable/ic_baseline_message_24"
-                app:layout_constraintBottom_toBottomOf="@id/textInputLayout7"
-                app:layout_constraintEnd_toStartOf="@id/textInputLayout7"
+                app:layout_constraintBottom_toBottomOf="@id/note"
+                app:layout_constraintEnd_toStartOf="@id/note"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/textInputLayout7" />
+                app:layout_constraintTop_toTopOf="@id/note" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout7"
+                android:id="@+id/note"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -465,10 +490,10 @@
                 app:layout_constraintBottom_toTopOf="@id/tips"
                 app:layout_constraintEnd_toEndOf="@id/weightPlus"
                 app:layout_constraintStart_toEndOf="@id/ivNote"
-                app:layout_constraintTop_toBottomOf="@id/textInputLayout6">
+                app:layout_constraintTop_toBottomOf="@id/pickUpTime">
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                    android:id="@+id/tv7"
+                    android:id="@+id/tvNote"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionDone"
@@ -486,7 +511,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textInputLayout7" />
+                app:layout_constraintTop_toBottomOf="@id/note" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 

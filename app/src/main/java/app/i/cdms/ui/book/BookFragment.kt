@@ -25,7 +25,6 @@ import app.i.cdms.databinding.CatBottomsheetScrollableContentBinding
 import app.i.cdms.databinding.DialogFillAddressBinding
 import app.i.cdms.databinding.FragmentBookBinding
 import app.i.cdms.utils.hideKeyboard
-import app.i.cdms.utils.syncNavigationBarColorWithPixel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.elevation.SurfaceColors
@@ -84,29 +83,30 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                     } else {
                         View.VISIBLE
                     }
-                    textInputLayout2.visibility = visibility
-                    textInputLayout3.visibility = visibility
-                    textInputLayout32.visibility = visibility
-                    textInputLayout33.visibility = visibility
-                    textInputLayout4.visibility = visibility
-                    textInputLayout5.visibility = visibility
+                    goodsName.visibility = visibility
+                    goodsLength.visibility = visibility
+                    goodsWidth.visibility = visibility
+                    goodsHeight.visibility = visibility
+                    guaranteeValueAmount.visibility = visibility
+                    packageCount.visibility = visibility
+                    goodsPrice.visibility = visibility
                 }
                 weightMinus -> {
-                    var weight = tv.text.toString().toIntOrNull() ?: 1
+                    var weight = tvGoodsWeight.text.toString().toIntOrNull() ?: 1
                     weight -= 1
                     if (weight < 1) {
                         weight = 1
                     }
-                    tv.setText(weight.toString())
+                    tvGoodsWeight.setText(weight.toString())
                 }
                 weightPlus -> {
-                    var weight = tv.text.toString().toIntOrNull() ?: 1
+                    var weight = tvGoodsWeight.text.toString().toIntOrNull() ?: 1
                     weight += 1
-                    tv.setText(weight.toString())
+                    tvGoodsWeight.setText(weight.toString())
                 }
                 clearTime -> {
                     it.animate().rotation(it.rotation + 180F)
-                    tv6.text = null
+                    tvPickUpTime.text = null
                 }
                 priceTips -> {
                     showBookChannelListDialogs(viewModel.bookChannelDetailList.value)
@@ -183,58 +183,61 @@ class BookFragment : Fragment(R.layout.fragment_book) {
             priceTips.setOnClickListener(listener)
             book.setOnClickListener(listener)
             nestedScrollView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-                // 上下滑动时使导航栏背景颜色和底部工具条背景颜色相同。
-                // 下面两种方法都可以。第一种不太可靠，因为是取导航栏右上角一个像素的颜色。第二种代码更可靠，前提是需要知道颜色。
-                syncNavigationBarColorWithPixel()
-//                if (scrollY - oldScrollY > 0) {
-//                    if (!bottomAppBar.isScrolledDown) {
-//                        requireActivity().window.navigationBarColor =
-//                            SurfaceColors.SURFACE_0.getColor(requireContext())
-//                    }
-//                } else {
-//                    if (!bottomAppBar.isScrolledUp) {
-//                        requireActivity().window.navigationBarColor =
-//                            SurfaceColors.SURFACE_2.getColor(requireContext())
-//                    }
-//                }
+                if (scrollY - oldScrollY > 0) {
+                    if (!bottomAppBar.isScrolledDown) {
+                        requireActivity().window.navigationBarColor =
+                            SurfaceColors.SURFACE_0.getColor(requireContext())
+                    }
+                } else {
+                    if (!bottomAppBar.isScrolledUp) {
+                        requireActivity().window.navigationBarColor =
+                            SurfaceColors.SURFACE_2.getColor(requireContext())
+                    }
+                }
             }
-            tv.setAdapter(
+            tvGoodsWeight.setAdapter(
                 ArrayAdapter(
                     requireContext(),
                     R.layout.cat_exposed_dropdown_popup_item,
                     resources.getIntArray(R.array.cat_goods_weight).toTypedArray()
                 )
             )
-            tv2.setAdapter(
+            tvGoodsName.setAdapter(
                 ArrayAdapter(
                     requireContext(),
                     R.layout.cat_exposed_dropdown_popup_item,
                     resources.getStringArray(R.array.cat_goods_type)
                 )
             )
-            tv4.setAdapter(
-                ArrayAdapter(
-                    requireContext(),
-                    R.layout.cat_exposed_dropdown_popup_item,
-                    resources.getIntArray(R.array.cat_goods_price).toTypedArray()
-                )
-            )
-            tv5.setAdapter(
+            tvPackageCount.setAdapter(
                 ArrayAdapter(
                     requireContext(),
                     R.layout.cat_exposed_dropdown_popup_item,
                     resources.getIntArray(R.array.cat_package_quantity).toTypedArray()
                 )
             )
-
-            tv6.setAdapter(
+            tvGuaranteeValueAmount.setAdapter(
+                ArrayAdapter(
+                    requireContext(),
+                    R.layout.cat_exposed_dropdown_popup_item,
+                    resources.getIntArray(R.array.cat_goods_price).toTypedArray()
+                )
+            )
+            tvGoodsPrice.setAdapter(
+                ArrayAdapter(
+                    requireContext(),
+                    R.layout.cat_exposed_dropdown_popup_item,
+                    resources.getIntArray(R.array.cat_goods_price).toTypedArray()
+                )
+            )
+            tvPickUpTime.setAdapter(
                 ArrayAdapter(
                     requireContext(),
                     R.layout.cat_exposed_dropdown_popup_item,
                     getTimeArray()
                 )
             )
-            tv7.setAdapter(
+            tvNote.setAdapter(
                 ArrayAdapter(
                     requireContext(),
                     R.layout.cat_exposed_dropdown_popup_item,
@@ -242,44 +245,49 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                 )
             )
 
-            tv.doOnTextChanged { text, start, before, count ->
+            tvGoodsWeight.doOnTextChanged { text, start, before, count ->
                 viewModel.updateBookBodyFlow(
                     viewModel.bookBody.value.copy(weight = text.toString().toIntOrNull())
                 )
             }
-            tv2.doOnTextChanged { text, start, before, count ->
+            tvGoodsName.doOnTextChanged { text, start, before, count ->
                 viewModel.updateBookBodyFlow(
                     viewModel.bookBody.value.copy(goods = text.toString())
                 )
             }
-            tv3.doOnTextChanged { text, start, before, count ->
+            tvGoodsLength.doOnTextChanged { text, start, before, count ->
                 viewModel.updateBookBodyFlow(
                     viewModel.bookBody.value.copy(vloumLong = text.toString().toIntOrNull())
                 )
             }
-            tv32.doOnTextChanged { text, start, before, count ->
+            tvGoodsWidth.doOnTextChanged { text, start, before, count ->
                 viewModel.updateBookBodyFlow(
                     viewModel.bookBody.value.copy(vloumWidth = text.toString().toIntOrNull())
                 )
             }
-            tv33.doOnTextChanged { text, start, before, count ->
+            tvGoodsHeight.doOnTextChanged { text, start, before, count ->
                 viewModel.updateBookBodyFlow(
                     viewModel.bookBody.value.copy(vloumHeight = text.toString().toIntOrNull())
                 )
             }
-            tv4.doOnTextChanged { text, start, before, count ->
+            tvGuaranteeValueAmount.doOnTextChanged { text, start, before, count ->
                 viewModel.updateBookBodyFlow(
                     viewModel.bookBody.value.copy(
                         guaranteeValueAmount = text.toString().toIntOrNull()
                     )
                 )
             }
-            tv5.doOnTextChanged { text, start, before, count ->
+            tvGoodsPrice.doOnTextChanged { text, start, before, count ->
+                viewModel.updateBookBodyFlow(
+                    viewModel.bookBody.value.copy(unitPrice = text.toString().toIntOrNull())
+                )
+            }
+            tvPackageCount.doOnTextChanged { text, start, before, count ->
                 viewModel.updateBookBodyFlow(
                     viewModel.bookBody.value.copy(packageCount = text.toString().toIntOrNull())
                 )
             }
-            tv6.doOnTextChanged { text, start, before, count ->
+            tvPickUpTime.doOnTextChanged { text, start, before, count ->
                 if (text.isNullOrBlank()) {
                     clearTime.visibility = View.INVISIBLE
                     return@doOnTextChanged
@@ -297,28 +305,31 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                 )
             }
 
-            tv7.doOnTextChanged { text, start, before, count ->
+            tvNote.doOnTextChanged { text, start, before, count ->
                 viewModel.updateBookBodyFlow(
                     viewModel.bookBody.value.copy(remark = text.toString())
                 )
             }
 
+            // 初始化数据
             viewModel.updateBookBodyFlow(
                 viewModel.bookBody.value.copy(
-                    weight = textInputLayout.editText?.text.toString().toIntOrNull(),
-                    goods = textInputLayout2.editText?.text.toString(),
-                    vloumLong = textInputLayout3.editText?.text.toString().toIntOrNull(),
-                    vloumWidth = textInputLayout32.editText?.text.toString().toIntOrNull(),
-                    vloumHeight = textInputLayout33.editText?.text.toString().toIntOrNull(),
-                    guaranteeValueAmount = textInputLayout4.editText?.text.toString().toIntOrNull(),
-                    packageCount = textInputLayout5.editText?.text.toString().toIntOrNull(),
-                    dateTime = textInputLayout6.editText?.text.toString(),
-                    pickUpStartTime = textInputLayout6.editText?.text.toString(),
-                    pickUpEndTime = textInputLayout6.editText?.text.toString(),
-                    remark = textInputLayout7.editText?.text.toString()
+                    weight = tvGoodsWeight.text.toString().toIntOrNull(),
+                    goods = tvGoodsName.text.toString(),
+                    packageCount = tvPackageCount.text.toString().toIntOrNull(),
+                    vloumLong = tvGoodsLength.text.toString().toIntOrNull(),
+                    vloumWidth = tvGoodsWidth.text.toString().toIntOrNull(),
+                    vloumHeight = tvGoodsHeight.text.toString().toIntOrNull(),
+                    guaranteeValueAmount = tvGuaranteeValueAmount.text.toString().toIntOrNull(),
+                    unitPrice = tvGoodsPrice.text.toString().toIntOrNull(),
+                    dateTime = tvPickUpTime.text.toString(),
+                    pickUpStartTime = tvPickUpTime.text.toString(),
+                    pickUpEndTime = tvPickUpTime.text.toString(),
+                    remark = tvNote.text.toString()
                 )
             )
         }
+        // 显示下单结果
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.bookResultFlow.collectLatest {

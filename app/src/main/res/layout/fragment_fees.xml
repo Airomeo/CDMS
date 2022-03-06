@@ -97,15 +97,15 @@
             android:layout_marginHorizontal="16dp"
             android:contentDescription="@string/goods_weight"
             android:src="@drawable/ic_baseline_description_24"
-            app:layout_constraintBottom_toBottomOf="@id/textInputLayout"
-            app:layout_constraintEnd_toStartOf="@id/textInputLayout"
+            app:layout_constraintBottom_toBottomOf="@id/goodsWeight"
+            app:layout_constraintEnd_toStartOf="@id/goodsWeight"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/textInputLayout" />
+            app:layout_constraintTop_toTopOf="@id/goodsWeight" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout"
+            android:id="@+id/goodsWeight"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -119,7 +119,7 @@
             app:suffixText="kg">
 
             <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                android:id="@+id/tv"
+                android:id="@+id/tvGoodsWeight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionDone"
@@ -138,10 +138,10 @@
             android:contentDescription="重量减1"
             android:text="-1"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/textInputLayout"
+            app:layout_constraintBottom_toBottomOf="@id/goodsWeight"
             app:layout_constraintEnd_toStartOf="@id/weightPlus"
-            app:layout_constraintStart_toEndOf="@id/textInputLayout"
-            app:layout_constraintTop_toTopOf="@id/textInputLayout" />
+            app:layout_constraintStart_toEndOf="@id/goodsWeight"
+            app:layout_constraintTop_toTopOf="@id/goodsWeight" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/weightPlus"
@@ -152,11 +152,11 @@
             android:contentDescription="重量加1"
             android:text="+1"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/textInputLayout"
+            app:layout_constraintBottom_toBottomOf="@id/goodsWeight"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1"
             app:layout_constraintStart_toEndOf="@id/weightMinus"
-            app:layout_constraintTop_toTopOf="@id/textInputLayout" />
+            app:layout_constraintTop_toTopOf="@id/goodsWeight" />
 
         <TextView
             android:id="@+id/tips"
@@ -165,13 +165,13 @@
             android:text="@string/fees_tips"
             android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textInputLayout" />
+            app:layout_constraintTop_toBottomOf="@id/goodsWeight" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textInputLayout" />
+            app:layout_constraintTop_toBottomOf="@id/goodsWeight" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

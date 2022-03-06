@@ -41,17 +41,17 @@ class FeesFragment : Fragment(R.layout.fragment_fees) {
                     to.editText?.text = text
                 }
                 weightMinus -> {
-                    var weight = tv.text.toString().toIntOrNull() ?: 1
+                    var weight = tvGoodsWeight.text.toString().toIntOrNull() ?: 1
                     weight -= 1
                     if (weight < 1) {
                         weight = 1
                     }
-                    tv.setText(weight.toString())
+                    tvGoodsWeight.setText(weight.toString())
                 }
                 weightPlus -> {
-                    var weight = tv.text.toString().toIntOrNull() ?: 1
+                    var weight = tvGoodsWeight.text.toString().toIntOrNull() ?: 1
                     weight += 1
-                    tv.setText(weight.toString())
+                    tvGoodsWeight.setText(weight.toString())
                 }
             }
         }
@@ -126,7 +126,7 @@ class FeesFragment : Fragment(R.layout.fragment_fees) {
                 )
             }
         }
-        binding.textInputLayout.editText?.apply {
+        binding.goodsWeight.editText?.apply {
             doOnTextChanged { text, start, before, count ->
                 feesViewModel.updateCompareFeeBody(
                     feesViewModel.compareFeeBody.value.copy(weight = text.toString().toIntOrNull())

@@ -42,7 +42,7 @@ data class BookBody(
     val vloumHeight: Int?,
     val vloumLong: Int?,
     val vloumWidth: Int?,
-    val unitPrice: Int?, // 托寄物价格，申通专属参数
+    val unitPrice: Int?, // 托寄物价格，申通专属参数。申通无保价费,提供对应货值证明,最高赔付金额2000元,单价请勿超过2000元
     val weight: Int?
 ) {
     constructor() : this(
