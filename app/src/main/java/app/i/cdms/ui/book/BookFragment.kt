@@ -578,10 +578,10 @@ class BookFragment : Fragment(R.layout.fragment_book) {
             } else {
                 var mobile: String? = null
                 var tel: String? = null
-                if (phone.startsWith("0")) {
+                if (phone.startsWith("0") || phone.contains("-")) {
                     tel = phone
                 } else {
-                    mobile = phone.replace("-", "")
+                    mobile = phone
                 }
 
                 val pairedAreaList = provinceTag as List<Pair<String, String>>
