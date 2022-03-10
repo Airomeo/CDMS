@@ -73,11 +73,5 @@
             android:tag="@string/transfer_refund_type"
             android:text="@string/transfer_refund" />
 
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.Material3.Chip.Suggestion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:tag="@string/transfer_deduction_type"
-            android:text="@string/transfer_deduction" />
     </com.google.android.material.chip.ChipGroup>
 </androidx.constraintlayout.widget.ConstraintLayout>

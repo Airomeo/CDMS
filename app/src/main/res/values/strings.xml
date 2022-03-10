@@ -172,8 +172,6 @@
     <string name="transfer_recharge_type">CZ</string>
     <string name="transfer_refund">退款</string>
     <string name="transfer_refund_type">TK</string>
-    <string name="transfer_deduction">扣款</string>
-    <string name="transfer_deduction_type">KK</string>
 
     <string name="action_settings">设置</string>
     <string name="action_sort">排序</string>

@@ -114,7 +114,7 @@ interface ApiService {
         @Query("userId") userId: Int
     ): Response<YiDaBaseResponse<Any>>
 
-    @GET
+    @PUT
     suspend fun transfer(
         @Url url: String = Constant.API_TRANSFER,
         @Query("toUserId") toUserId: Int,
