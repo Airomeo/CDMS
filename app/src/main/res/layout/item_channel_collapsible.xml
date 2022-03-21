@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
+    android:background="?attr/selectableItemBackground"
+    android:padding="16dp">
+
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/motionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutDescription="@xml/item_channel_collapsible_scene"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/channelName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="圆通京津冀、江浙沪皖、同省互发"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            app:layout_constraintEnd_toStartOf="@id/customerType"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/customerType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="personal"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            app:layout_constraintBottom_toBottomOf="@id/channelName"
+            app:layout_constraintEnd_toStartOf="@id/actionDown"
+            app:layout_constraintStart_toEndOf="@id/channelName"
+            app:layout_constraintTop_toTopOf="@+id/channelName" />
+
+        <ImageView
+            android:id="@+id/actionDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-4dp"
+            android:layout_marginEnd="-4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:padding="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_keyboard_arrow_down_24" />
+
+        <TextView
+            android:id="@+id/firstPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¥10.0"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/view"
+            app:layout_constraintEnd_toEndOf="@+id/view"
+            app:layout_constraintStart_toStartOf="@+id/view" />
+
+        <TextView
+            android:id="@+id/addPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¥2.5"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@id/firstPrice"
+            app:layout_constraintEnd_toEndOf="@id/view2"
+            app:layout_constraintStart_toStartOf="@id/view2" />
+
+        <TextView
+            android:id="@+id/addPrice2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¥3.0"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@id/firstPrice"
+            app:layout_constraintEnd_toEndOf="@id/view3"
+            app:layout_constraintStart_toStartOf="@id/view3" />
+
+        <TextView
+            android:id="@+id/addPrice3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¥3.5"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@id/firstPrice"
+            app:layout_constraintEnd_toEndOf="@id/view4"
+            app:layout_constraintStart_toStartOf="@id/view4" />
+
+        <TextView
+            android:id="@+id/discount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/config_discount"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/view"
+            app:layout_constraintEnd_toStartOf="@id/perAdd"
+            app:layout_constraintStart_toStartOf="@+id/view" />
+
+        <TextView
+            android:id="@+id/perAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/config_per_add"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@id/discount"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/discount" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="32dp"
+            android:background="@android:color/holo_blue_light"
+            app:layout_constraintEnd_toStartOf="@+id/view2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/channelName" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="32dp"
+            android:background="@android:color/holo_green_light"
+            app:layout_constraintEnd_toStartOf="@id/view3"
+            app:layout_constraintStart_toEndOf="@+id/view"
+            app:layout_constraintTop_toBottomOf="@+id/channelName"
+            app:layout_goneMarginTop="32dp" />
+
+        <View
+            android:id="@+id/view3"
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="32dp"
+            android:background="@android:color/holo_orange_light"
+            app:layout_constraintEnd_toStartOf="@id/view4"
+            app:layout_constraintStart_toEndOf="@+id/view2"
+            app:layout_constraintTop_toBottomOf="@+id/channelName"
+            app:layout_goneMarginTop="32dp" />
+
+        <View
+            android:id="@+id/view4"
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="32dp"
+            android:background="@android:color/holo_red_light"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/view3"
+            app:layout_constraintTop_toBottomOf="@+id/channelName"
+            app:layout_goneMarginTop="32dp" />
+
+        <TextView
+            android:id="@+id/zero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0kg"
+            app:layout_constraintBottom_toTopOf="@id/lightGoods"
+            app:layout_constraintStart_toStartOf="@+id/view"
+            app:layout_constraintTop_toBottomOf="@+id/view" />
+
+        <TextView
+            android:id="@+id/firstWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1kg"
+            app:layout_constraintEnd_toEndOf="@+id/view"
+            app:layout_constraintStart_toStartOf="@id/view2"
+            app:layout_constraintTop_toTopOf="@id/zero" />
+
+        <TextView
+            android:id="@+id/hopWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2kg"
+            app:layout_constraintEnd_toEndOf="@+id/view2"
+            app:layout_constraintStart_toStartOf="@id/view3"
+            app:layout_constraintTop_toTopOf="@id/zero" />
+
+        <TextView
+            android:id="@+id/hopWeight2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3kg"
+            app:layout_constraintEnd_toEndOf="@+id/view3"
+            app:layout_constraintStart_toStartOf="@id/view4"
+            app:layout_constraintTop_toTopOf="@id/zero" />
+
+        <TextView
+            android:id="@+id/limitWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="30kg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/zero" />
+
+        <TextView
+            android:id="@+id/lightGoods"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="抛比：6000.0"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@+id/priority"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/zero" />
+
+        <TextView
+            android:id="@+id/priority"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="优先级：2"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/lightGoods"
+            app:layout_constraintTop_toTopOf="@id/lightGoods" />
+
+        <TextView
+            android:id="@+id/backFeeType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="逆向费用类型：全额"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@id/areaType"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lightGoods" />
+
+        <TextView
+            android:id="@+id/areaType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="寄收地维度：省"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/backFeeType"
+            app:layout_constraintTop_toBottomOf="@+id/priority" />
+
+    </androidx.constraintlayout.motion.widget.MotionLayout>
+</FrameLayout>

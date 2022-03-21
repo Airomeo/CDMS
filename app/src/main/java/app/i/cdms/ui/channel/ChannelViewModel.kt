@@ -60,12 +60,14 @@ class ChannelViewModel @Inject constructor(
     }
 
     // 获取渠道详细信息
-    private suspend fun getChannelDetail(customerChannel: CustomerChannel) {
-        val result = mainRepository.getCustomerChannelDetail(customerChannel.id)
-        result?.data?.let {
-            for (item in it) {
-                val copy = item.copy(customerChannel = customerChannel)
-                channelDetailList.add(copy)
+    private fun getChannelDetail(customerChannel: CustomerChannel) {
+        viewModelScope.launch {
+            val result = mainRepository.getCustomerChannelDetail(customerChannel.id)
+            result?.data?.let {
+                for (item in it) {
+                    val copy = item.copy(customerChannel = customerChannel)
+                    channelDetailList.add(copy)
+                }
             }
         }
     }
@@ -92,49 +94,51 @@ class ChannelViewModel @Inject constructor(
         perAddCommission: Float,
         agents: List<Agent>
     ) {
-        EventBus.produceEvent(BaseEvent.Toast(R.string.channel_update_config_waiting))
         viewModelScope.launch {
+            EventBus.produceEvent(BaseEvent.Toast(R.string.channel_update_config_waiting))
             for (item in channelDetailList) {
-                val result = agentRepository.getChannelConfigForAllUsers(item.channelId)
-                result?.data ?: return@launch
-                val channelConfigList = result.data
+                launch {
+                    val result = agentRepository.getChannelConfigForAllUsers(item.channelId)
+                    result?.data ?: return@launch
+                    val channelConfigList = result.data
 
-                val updateList = mutableListOf<Int>() // 原先存在，需要更新配置的用户
-                val bindList = mutableListOf<Int>() // 原先没有，需要绑定配置的用户
-                for (agent in agents) {
-                    val channelConfig = channelConfigList.find {
-                        it.userId == agent.userId && it.calcFeeType != null
+                    val updateList = mutableListOf<Int>() // 原先存在，需要更新配置的用户
+                    val bindList = mutableListOf<Int>() // 原先没有，需要绑定配置的用户
+                    for (agent in agents) {
+                        val channelConfig = channelConfigList.find {
+                            it.userId == agent.userId && it.calcFeeType != null
+                        }
+                        if (channelConfig == null) {
+                            bindList.add(agent.userId)
+                        } else {
+                            updateList.add(agent.userId)
+                        }
                     }
-                    if (channelConfig == null) {
-                        bindList.add(agent.userId)
-                    } else {
-                        updateList.add(agent.userId)
-                    }
-                }
 
-                val discount = item.discountPercent?.toFloat()?.plus(discountCommission)
-                val perAdd = item.perAdd?.toFloat()?.plus(perAddCommission)
-                if (updateList.size > 0) { // 更新配置
-                    agentRepository.updateChildPrice(
-                        firstCommission,
-                        addCommission,
-                        item.channelId,
-                        item.customerChannel!!.id,
-                        discount,
-                        perAdd,
-                        updateList
-                    )
-                }
-                if (bindList.size > 0) { // 绑定配置
-                    agentRepository.bindChannelToUser(
-                        firstCommission,
-                        addCommission,
-                        item.channelId,
-                        item.customerChannel!!.id,
-                        discount,
-                        perAdd,
-                        bindList
-                    )
+                    val discount = item.discountPercent?.toFloat()?.plus(discountCommission)
+                    val perAdd = item.perAdd?.toFloat()?.plus(perAddCommission)
+                    if (updateList.size > 0) { // 更新配置
+                        agentRepository.updateChildPrice(
+                            firstCommission,
+                            addCommission,
+                            item.channelId,
+                            item.customerChannel!!.id,
+                            discount,
+                            perAdd,
+                            updateList
+                        )
+                    }
+                    if (bindList.size > 0) { // 绑定配置
+                        agentRepository.bindChannelToUser(
+                            firstCommission,
+                            addCommission,
+                            item.channelId,
+                            item.customerChannel!!.id,
+                            discount,
+                            perAdd,
+                            bindList
+                        )
+                    }
                 }
             }
             EventBus.produceEvent(BaseEvent.Toast(R.string.channel_update_config_finished))

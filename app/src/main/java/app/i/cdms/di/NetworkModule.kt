@@ -74,8 +74,11 @@ object NetworkModule {
         val tokenFlowInterceptor = Interceptor { chain ->
             var request = chain.request()
 
+//            val ignored = Constant.ignoreTokenList.any {
+//                request.url.toString().contains(it)
+//            }
             val ignored = Constant.ignoreTokenList.any {
-                request.url.toString().contains(it)
+                request.url.toString().substringBefore("?") == it
             }
             val token = runBlocking {
                 userPrefDataSource.tokenFlow.first()

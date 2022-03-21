@@ -7,7 +7,6 @@ import app.i.cdms.data.model.NoticeList
 import app.i.cdms.repository.home.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,7 +17,7 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _myInfo = MutableStateFlow<MyInfo?>(null)
-    val myInfo = _myInfo.asSharedFlow()
+    val myInfo = _myInfo.asStateFlow()
     private val _noticeList = MutableStateFlow<NoticeList?>(null)
     val noticeList = _noticeList.asStateFlow()
 

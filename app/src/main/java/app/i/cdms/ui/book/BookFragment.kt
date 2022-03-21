@@ -795,9 +795,11 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                 val neutralButton = dialog.getButton(AlertDialog.BUTTON_NEUTRAL)
                 neutralButton.setText(R.string.fees_tips_refresh)
                 neutralButton.setOnClickListener {
+                    val deliverType =
+                        if (bookResult.orderNo.startsWith("YT")) "YTO" else "JT"
                     viewModel.getDeliveryId(
                         bookResult.orderNo,
-                        "JT"
+                        deliverType
                     )
                 }
                 neutralButton.visibility = View.VISIBLE
