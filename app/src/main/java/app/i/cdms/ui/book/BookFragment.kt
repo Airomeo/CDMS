@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.i.cdms.R
+import app.i.cdms.data.model.BookBody
 import app.i.cdms.data.model.BookResult
 import app.i.cdms.data.model.Channel
 import app.i.cdms.databinding.CatBottomsheetScrollableContentBinding
@@ -45,7 +46,7 @@ class BookFragment : Fragment(R.layout.fragment_book) {
     private var _binding: FragmentBookBinding? = null
     private val binding get() = _binding!!
     private val listener = View.OnClickListener {
-        binding.apply {
+        with(binding) {
             when (it) {
                 iv, tvName, tvAddress -> {
                     showFillAddressDialog(true)
@@ -78,6 +79,9 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                             receiveValues = body.senderValues
                         )
                     )
+                }
+                clearAll -> {
+                    initData()
                 }
                 dropdown -> {
                     it.animate().rotation(it.rotation + 180F)
@@ -173,7 +177,7 @@ class BookFragment : Fragment(R.layout.fragment_book) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentBookBinding.bind(view)
-        binding.apply {
+        with(binding) {
             iv.setOnClickListener(listener)
             tvName.setOnClickListener(listener)
             tvAddress.setOnClickListener(listener)
@@ -181,6 +185,7 @@ class BookFragment : Fragment(R.layout.fragment_book) {
             tvName2.setOnClickListener(listener)
             tvAddress2.setOnClickListener(listener)
             switcher.setOnClickListener(listener)
+            clearAll.setOnClickListener(listener)
             dropdown.setOnClickListener(listener)
             weightMinus.setOnClickListener(listener)
             weightPlus.setOnClickListener(listener)
@@ -315,24 +320,6 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                     viewModel.bookBody.value.copy(remark = text.toString())
                 )
             }
-
-            // 初始化数据
-            viewModel.updateBookBodyFlow(
-                viewModel.bookBody.value.copy(
-                    weight = tvGoodsWeight.text.toString().toIntOrNull(),
-                    goods = tvGoodsName.text.toString(),
-                    packageCount = tvPackageCount.text.toString().toIntOrNull(),
-                    vloumLong = tvGoodsLength.text.toString().toIntOrNull(),
-                    vloumWidth = tvGoodsWidth.text.toString().toIntOrNull(),
-                    vloumHeight = tvGoodsHeight.text.toString().toIntOrNull(),
-                    guaranteeValueAmount = tvGuaranteeValueAmount.text.toString().toIntOrNull(),
-                    unitPrice = tvGoodsPrice.text.toString().toIntOrNull(),
-                    dateTime = tvPickUpTime.text.toString(),
-                    pickUpStartTime = tvPickUpTime.text.toString(),
-                    pickUpEndTime = tvPickUpTime.text.toString(),
-                    remark = tvNote.text.toString()
-                )
-            )
         }
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -437,6 +424,28 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                     }
                 }
             }
+        }
+        initData()
+    }
+
+    private fun initData() {
+        with(binding) {
+            viewModel._channelFees.value = emptyList()
+            viewModel._bookBody.value = BookBody()
+            tvName.setText(R.string.book_info_from)
+            tvAddress.setText(R.string.book_address_tips)
+            tvName2.setText(R.string.book_info_to)
+            tvAddress2.setText(R.string.book_address_tips)
+            tvGoodsWeight.setText("1")
+            tvGoodsName.setText(resources.getStringArray(R.array.cat_goods_type)[0])
+            tvPackageCount.setText("1")
+            tvGoodsLength.text = null
+            tvGoodsWidth.text = null
+            tvGoodsHeight.text = null
+            tvGuaranteeValueAmount.setText("0")
+            tvGoodsPrice.setText(resources.getStringArray(R.array.cat_goods_price)[0])
+            tvPickUpTime.text = null
+            tvNote.text = null
         }
     }
 

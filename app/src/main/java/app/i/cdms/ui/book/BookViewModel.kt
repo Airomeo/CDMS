@@ -63,7 +63,7 @@ class BookViewModel @Inject constructor(
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     // 下单请求需要提交的参数
-    private val _bookBody = MutableStateFlow(BookBody())
+    val _bookBody = MutableStateFlow(BookBody())
     val bookBody = _bookBody.asStateFlow()
 
     // 比价请求需要提交的参数

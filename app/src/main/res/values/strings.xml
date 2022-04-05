@@ -155,6 +155,7 @@
     <string name="book_result_dialog_title">下单结果</string>
     <string name="book_result_dialog_positive_text">复制</string>
     <string name="book_goods_info">物品信息</string>
+    <string name="book_goods_info_clear">Clear all</string>
     <string name="book_tips">注：\n带有* 标记的为选填项\n
         包裹信息填写准确，便于匹配最优惠的渠道。\n
         预约取件时间不保证准时\n
