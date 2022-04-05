@@ -114,8 +114,9 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                 priceTips -> {
                     // 因为channelsFlow是SharingStarted.WhileSubscribed()，
                     // 为了节省资源，只在用户点击查看了快递列表时订阅获取
-                    runBlocking {
-                        showBookChannelListDialogs(viewModel.channelsFlow.first())
+                    val list = runBlocking { viewModel.channelsFlow.first() }
+                    if (list.isNotEmpty()) {
+                        showBookChannelListDialogs(list)
                     }
                 }
                 book -> {
@@ -170,8 +171,6 @@ class BookFragment : Fragment(R.layout.fragment_book) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().window.navigationBarColor =
-            SurfaceColors.SURFACE_2.getColor(requireContext())
 
         _binding = FragmentBookBinding.bind(view)
         binding.apply {
@@ -834,5 +833,17 @@ class BookFragment : Fragment(R.layout.fragment_book) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onPause() {
+        super.onPause()
+        requireActivity().window.navigationBarColor =
+            SurfaceColors.SURFACE_0.getColor(requireContext())
+    }
+
+    override fun onResume() {
+        super.onResume()
+        requireActivity().window.navigationBarColor =
+            SurfaceColors.SURFACE_2.getColor(requireContext())
     }
 }

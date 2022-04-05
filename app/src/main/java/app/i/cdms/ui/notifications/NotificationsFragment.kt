@@ -2,14 +2,17 @@ package app.i.cdms.ui.notifications
 
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import app.i.cdms.R
 import app.i.cdms.databinding.FragmentNotificationsBinding
+import app.i.cdms.ui.book.BookFragment
+import app.i.cdms.ui.fees.FeesFragment
+import app.i.cdms.ui.home.HomeFragment
 import app.i.cdms.ui.main.MainViewModel
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,22 +26,21 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentNotificationsBinding.bind(view)
+        with(binding) {
+            val fragments = listOf(
+                Pair(R.string.title_book, BookFragment()),
+                Pair(R.string.title_fees, FeesFragment()),
+                Pair(R.string.title_home, HomeFragment()),
+            )
+            pager.adapter =
+                object : FragmentStateAdapter(childFragmentManager, viewLifecycleOwner.lifecycle) {
+                    override fun getItemCount() = fragments.size
 
-        val textView: TextView = binding.textNotifications
-        notificationsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-
-        binding.button.setOnClickListener {
-            findNavController().navigate(R.id.navigation_team)
-        }
-
-        binding.button2.setOnClickListener {
-            findNavController().navigate(R.id.bookFragment)
-        }
-
-        binding.button3.setOnClickListener {
-            findNavController().navigate(R.id.feesFragment)
+                    override fun createFragment(position: Int) = fragments[position].second
+                }
+            TabLayoutMediator(tabLayouts, pager) { tab, position ->
+                tab.text = getString(fragments[position].first)
+            }.attach()
         }
     }
 

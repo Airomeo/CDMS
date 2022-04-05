@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">聚快递</string>
+    <string name="app_name_debug">聚快递 Debug</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">我</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_login">登录</string>
+    <string name="title_register">注册</string>
+    <string name="title_team">团队</string>
+    <string name="title_agent">代理</string>
+    <string name="title_channel">渠道</string>
+    <string name="title_book">下单</string>
+    <string name="title_fees">资费</string>
+    <!-- Strings related to login -->
+    <string name="prompt_account">账号</string>
+    <string name="prompt_password">密码</string>
+    <string name="prompt_captcha">验证码</string>
+    <string name="prompt_phone">手机号</string>
+    <string name="action_sign_in">登录</string>
+    <string name="action_sign_in_short">登录</string>
+    <string name="action_register">开户</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">用户名不合法</string>
+    <string name="invalid_password">密码长度必须大于5个字符</string>
+    <string name="invalid_captcha">验证码不能空</string>
+    <string name="invalid_phone">手机号无效</string>
+    <string name="login_failed">登录失败</string>
+    <string name="my_info_id">ID：%s</string>
+    <string name="my_info_balance">余额：%s</string>
+    <string name="my_info_earns">佣金：%s</string>
+    <string name="my_team">全部用户</string>
+    <string name="my_team_all_users">全部用户：%s位</string>
+    <string name="my_team_paying_users">充值用户：%s位</string>
+    <string name="my_team_agent_balance">余额：%s</string>
+    <string name="my_team_batch_update_channel_message">将会根据每个用户的“配置信息”，批量配置所有用户的所有渠道！！！适合在官方渠道变更时使用，免去一个个设置的麻烦。\n可在每个下级信息页面单独修改“配置信息”，修改后将会保存到云端。\n若未配置，将使用默认配置（首重+ ¥0.5续重+ ¥0.2）。\n此过程耗时较长，请于1分钟后查看结果。是否确认执行？</string>
+    <string name="first_commission">首重抽佣\n+%s</string>
+    <string name="additional_commission">续重抽佣\n+%s</string>
+    <string name="first_weight">首重</string>
+    <string name="additional_weight">续重</string>
+    <string name="agent_channel_count">渠道数\n%s</string>
+    <string name="agent_channel_superior">上级用户\n%s</string>
+    <string name="agent_sub_user_count">子账户数\n%s</string>
+    <string name="agent_dpk_order_count">德邦日单\n%s</string>
+    <string name="agent_jd_order_count">京东日单\n%s</string>
+    <string name="agent_sto_order_count">申通日单\n%s</string>
+    <string name="agent_yto_order_count">圆通日单\n%s</string>
+    <string name="dialog_title_warning">警告</string>
+    <string name="dialog_positive_text">确认</string>
+    <string name="dialog_negative_text">取消</string>
+    <string name="dialog_next">下一步</string>
+    <string name="agent_dialog_transfer">转账</string>
+    <string name="agent_transfer">转账</string>
+    <array name="cat_transfer_amount" translatable="false">
+        <item>50</item>
+        <item>100</item>
+        <item>200</item>
+        <item>300</item>
+    </array>
+    <string name="agent_transfer_success">转账成功</string>
+    <string name="agent_dialog_update_channel_message">批量调整下级抽佣，将会根据下面的“配置信息”，为所选用户添加新渠道/更新旧渠道。</string>
+    <string name="agent_dialog_withdraw">清账</string>
+    <string name="agent_dialog_withdraw_message">是否确认清零账户：%s？\n余额将退回您的账户！</string>
+    <string name="agent_withdraw">清账</string>
+    <array name="cat_transfer_record_type">
+        <item>充值</item>
+        <item>退款</item>
+        <item>扣款</item>
+    </array>
+    <string name="agent_withdraw_success">清账成功</string>
+    <string name="agent_update_channel">配置渠道信息</string>
+    <string name="agent_channel_detail">渠道明细</string>
+    <string name="register_and_set_channel">开户并配置渠道</string>
+    <string name="agent_channel_config">该用户当前的渠道配置信息</string>
+    <string name="transfer_label_amount">金额</string>
+    <string name="transfer_label_amount_prefix">¥</string>
+    <string name="transfer_label_remark">备注</string>
+    <string name="book_info_from">寄件人信息</string>
+    <string name="book_info_to">收件人信息</string>
+    <string name="book_address_tips">点击填写信息</string>
+    <string name="book_fill_address_name">姓名</string>
+    <string name="book_fill_address_phone">电话</string>
+    <string name="book_fill_address_phone_tips">11位手机号或座机号</string>
+    <string name="book_fill_address_province">省市区</string>
+    <string name="book_fill_address_detail">详细地址</string>
+    <string name="book_fill_address_detail_tips">街道门牌等信息</string>
+    <string name="book_fill_address_paste_tooltip">粘贴/清除地址</string>
+    <string name="book_fill_address_parse">智能解析</string>
+    <string name="book_fill_address_parse_helper">点击左侧按钮解析，右侧按钮粘贴/清除</string>
+    <string name="book_fill_address_parse_lack_info">信息太少了，写详细点</string>
+    <string name="book_fill_address_parse_failed">未能识别%s，请检查或手动填写</string>
+    <string name="book_address_incomplete">%s不完整</string>
+    <string name="book_goods_info_incomplete">物品信息不完整</string>
+    <string name="goods_type">物品类型</string>
+    <string name="goods_type_1">日用百货</string>
+    <string name="goods_type_2">电子产品</string>
+    <string name="goods_type_3">食品药品</string>
+    <string name="goods_type_4">贵重饰品</string>
+    <string name="goods_type_5">易碎品</string>
+    <string name="goods_type_6">其他</string>
+    <array name="cat_goods_type">
+        <item>@string/goods_type_1</item>
+        <item>@string/goods_type_2</item>
+        <item>@string/goods_type_3</item>
+        <item>@string/goods_type_4</item>
+        <item>@string/goods_type_5</item>
+        <item>@string/goods_type_6</item>
+    </array>
+    <string name="goods_weight">物品重量</string>
+    <array name="cat_goods_weight" translatable="false">
+        <item>1</item>
+        <item>5</item>
+        <item>10</item>
+        <item>20</item>
+    </array>
+    <string name="goods_volume">物品体积</string>
+    <string name="goods_length">长*</string>
+    <string name="goods_width">宽*</string>
+    <string name="goods_height">高*</string>
+    <string name="goods_insurance_amount">保价金额*</string>
+    <string name="goods_price">物品价格</string>
+    <array name="cat_goods_price" translatable="false">
+        <item>500</item>
+        <item>1000</item>
+        <item>2000</item>
+    </array>
+    <string name="goods_insurance">需要保价</string>
+    <string name="package_quantity">包裹数量</string>
+    <array name="cat_package_quantity" translatable="false">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </array>
+    <string name="book_time">预约取件时间*</string>
+    <string name="book_note">备注*</string>
+    <string name="goods_note_1">上门前联系</string>
+    <string name="goods_note_2">需要文件袋</string>
+    <string name="goods_note_3">需要纸箱</string>
+    <string name="goods_note_4">需要胶带</string>
+    <string name="goods_note_5">需要爬楼</string>
+    <string name="goods_note_6">物品较重/大</string>
+    <array name="cat_book_note">
+        <item>@string/goods_note_1</item>
+        <item>@string/goods_note_2</item>
+        <item>@string/goods_note_3</item>
+        <item>@string/goods_note_4</item>
+        <item>@string/goods_note_5</item>
+        <item>@string/goods_note_6</item>
+    </array>
+    <string name="book_price">¥ %s</string>
+    <string name="book_price_tips">%s\n点击选择其他快递</string>
+    <string name="book_price_tips_no_available_channel">未找到可用渠道</string>
+    <string name="book_price_tips_not_filled">完整填写快递信息后\n将显示所有可用渠道</string>
+    <string name="book">下单</string>
+    <string name="book_result_dialog_title">下单结果</string>
+    <string name="book_result_dialog_positive_text">复制</string>
+    <string name="book_goods_info">物品信息</string>
+    <string name="book_tips">注：\n带有* 标记的为选填项\n
+        包裹信息填写准确，便于匹配最优惠的渠道。\n
+        预约取件时间不保证准时\n
+        京东、圆通、德邦快递保价费：500以下(包含500)1元，500–1000(包含1000)2元，1000以上是0.5%，不足1元的算1元\n
+        申通、极兔不支持保价\n\n
+        来自官网的说明：\n
+        1.请注意查看各个快递的限重，超过限重将按照官网原价计费；各个快递限重请首页价格明细查看；\n
+        2.快递公司计费重量按照实际重量和体积重量两者最大值计费，体积重量计算方式：长*宽*高/抛比；各个快递抛比请首页价格明细查看；\n
+        3.下单需注意事项：\n
+        3.1.请告知客户，涉及重量差异、物流停滞等问题，不要投诉快递公司，请联系您处理，我司客服将为您处理售后问题；\n
+        3.2.请告知客户，发货前尽量的留存包裹照片，询问情况快递小哥产品重量，如后续涉及重量差异，以供我司向总部申诉使用；\n
+        3.3.如客户没有留存图片，请联系收件方，接收包裹时，不要拆包，将带有面单的包裹进行拍照留证，以便申诉使用；\n
+        4.重量申诉内容：需提供包裹带有面单的称重照片，包裹的长、宽、高尺寸，详见‘用户管理-调账审核管理’样例；</string>
+    <string name="transfer_recharge">充值</string>
+    <string name="transfer_recharge_type">CZ</string>
+    <string name="transfer_refund">退款</string>
+    <string name="transfer_refund_type">TK</string>
+
+    <string name="action_settings">设置</string>
+    <string name="action_sort">排序</string>
+    <string name="action_sort_by_deadline">时间先后</string>
+    <string name="action_sort_by_priority">优先级高低</string>
+    <string name="action_show_completed">显示完成项</string>
+    <string name="action_delete_all_completed">删除完成项</string>
+    <string name="action_search">搜索</string>
+    <string name="action_batch_update_channel">配置渠道至用户</string>
+    <string name="price">¥%s</string>
+    <string name="weight">%skg</string>
+    <string name="channel_light_weight">抛比：%s</string>
+    <string name="channel_back_fee_type">逆向费用类型：%s</string>
+    <string name="channel_priority">优先级：%s</string>
+    <string name="channel_area_type">寄收地维度：%s</string>
+    <string name="config_first_weight">首重定义：%skg</string>
+    <string name="config_first_commission">首重抽佣：+ ¥%s</string>
+    <string name="config_add_commission">续重抽佣：+ ¥%s</string>
+    <string name="config_limit_first_commission">超过限重后的首重抽佣：+ ¥%s</string>
+    <string name="config_limit_add_commission">超过限重后的续重抽佣：+ ¥%s</string>
+    <string name="config_discount">折扣：%s%%</string>
+    <string name="config_discount_commission">"折扣"抽佣：+ %s%%</string>
+    <string name="config_per_add">单笔加收：¥%s</string>
+    <string name="config_per_add_commission">"单笔加收"抽佣：+ ¥%s</string>
+    <string name="channel_update_config_no_user_selected">未选择用户！</string>
+    <string name="channel_update_config_waiting">正在配置，请等待进度条消失。</string>
+    <string name="channel_update_config_finished">配置完毕。</string>
+    <string name="channel_update_config_dialog_title">选择用户</string>
+    <string name="channel_update_config_dialog_select_user">反选</string>
+    <string name="channel_config_commission_title">配置抽佣</string>
+    <string name="channel_config_commission_default">默认值</string>
+    <string name="api_wait">执行成功，请于2分钟后检查结果。</string>
+    <string name="no_updates_available">未找到可用的更新</string>
+    <string name="fees">快速查价</string>
+    <string name="fees_from_address">寄件人地区</string>
+    <string name="fees_to_address">收件人地区</string>
+    <string name="fees_tips">填写收寄地址后，将会显示可用渠道信息</string>
+    <string name="fees_tips_no_available_channel">未找到可用渠道</string>
+    <string name="fees_tips_refresh">刷新</string>
+    <string name="fees_tips_get_delivery_id">请手动刷新获取</string>
+    <string name="message_detail">查看详情</string>
+</resources>

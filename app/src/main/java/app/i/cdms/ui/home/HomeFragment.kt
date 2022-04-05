@@ -40,9 +40,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             findNavController().navigate(R.id.channelFragment)
         }
 
-        binding.logout.setOnClickListener {
-            mainViewModel.updateToken(null)
-            homeViewModel.updateMyInfo(null)
+//        binding.logout.setOnClickListener {
+//            mainViewModel.updateToken(null)
+//            homeViewModel.updateMyInfo(null)
+//        }
+
+        binding.team.setOnClickListener {
+            findNavController().navigate(R.id.navigation_team)
+        }
+        binding.intro.setOnClickListener {
+            findNavController().navigate(R.id.dashboardFragment)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {

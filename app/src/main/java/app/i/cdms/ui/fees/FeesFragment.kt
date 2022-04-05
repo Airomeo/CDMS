@@ -217,4 +217,9 @@ class FeesFragment : Fragment(R.layout.fragment_fees) {
             popup.show()
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

@@ -12,7 +12,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import app.i.cdms.R
 import app.i.cdms.databinding.ActivityMainBinding
 import app.i.cdms.utils.BaseEvent
@@ -36,35 +35,30 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         // Material You DynamicColors
         DynamicColors.applyIfAvailable(this)
-        val color = SurfaceColors.SURFACE_2.getColor(this)
-        // Set color of system statusBar same as ActionBar
-        window.statusBarColor = color
-        // Set color of system navigationBar same as BottomNavigationView
-        window.navigationBarColor = color
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         val navController = navHostFragment.navController
-        val topDestinations = setOf(
-            R.id.homeFragment, R.id.dashboardFragment, R.id.notificationsFragment
+        val hideActionBarDestinations = setOf(
+            R.id.notificationsFragment
         )
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id in topDestinations) {
-                binding.navView.visibility = View.VISIBLE
-                window.navigationBarColor = SurfaceColors.SURFACE_2.getColor(this)
+            if (destination.id in hideActionBarDestinations) {
+                supportActionBar?.hide()
+                // Set color of system statusBar same as ActionBar
+                window.statusBarColor = SurfaceColors.SURFACE_0.getColor(this)
             } else {
-                binding.navView.visibility = View.GONE
-                window.navigationBarColor = SurfaceColors.SURFACE_0.getColor(this)
+                supportActionBar?.show()
+                window.statusBarColor = SurfaceColors.SURFACE_2.getColor(this)
             }
         }
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(topDestinations)
+        val appBarConfiguration = AppBarConfiguration(hideActionBarDestinations)
         setupActionBarWithNavController(navController, appBarConfiguration)
-        binding.navView.setupWithNavController(navController)
 
         // 这里call mainViewModel 执行init方法
         mainViewModel
