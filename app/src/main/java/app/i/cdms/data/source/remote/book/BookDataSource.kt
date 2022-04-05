@@ -32,9 +32,9 @@ class BookDataSource @Inject constructor(private val service: ApiService) {
         return service.parseAddressBySf(payload = payload)
     }
 
-    suspend fun getPreOrderFee(
+    suspend fun fetchPreOrderFee(
         bookBody: BookBody
-    ): Response<YiDaBaseResponse<PreOrderFeeResult>> {
+    ): Response<YiDaBaseResponse<ChannelFees>> {
         val payload = JSONObject()
             .put("senderAddress", bookBody.senderAddress)
             .put("senderMobile", bookBody.senderMobile)
@@ -78,7 +78,7 @@ class BookDataSource @Inject constructor(private val service: ApiService) {
             .toString()
             .toRequestBody("application/json".toMediaType())
 
-        return service.getPreOrderFee(payload = payload)
+        return service.fetchPreOrderFee(payload = payload)
     }
 
     suspend fun submitOrder(
@@ -130,7 +130,7 @@ class BookDataSource @Inject constructor(private val service: ApiService) {
         return service.submitOrder(payload = payload)
     }
 
-    suspend fun getCompareFee(compareFeeBody: CompareFeeBody): Response<YiDaBaseResponse<List<BookChannelDetail>>> {
+    suspend fun fetchCompareFee(compareFeeBody: CompareFeeBody): Response<YiDaBaseResponse<List<ChannelFees>>> {
         val payload = JSONObject()
             .put("receiveCityCode", compareFeeBody.receiveCityCode)
             .put("receiveCity", compareFeeBody.receiveCity)
@@ -141,7 +141,7 @@ class BookDataSource @Inject constructor(private val service: ApiService) {
             .toString()
             .toRequestBody("application/json".toMediaType())
 
-        return service.getCompareFee(payload = payload)
+        return service.fetchCompareFee(payload = payload)
     }
 
     suspend fun getDeliveryId(

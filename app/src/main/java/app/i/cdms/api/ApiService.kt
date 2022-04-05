@@ -145,15 +145,15 @@ interface ApiService {
     ): Response<YiDaBaseResponse<OrderCount>>
 
     @GET
-    suspend fun getCustomerChannel(
+    suspend fun fetchCustomerChannels(
         @Url url: String = Constant.API_CUSTOMER_CHANNEL,
         @Query("customerType") customerType: String
-    ): Response<YiDaBaseResponse<CustomerChannelResult>>
+    ): Response<YiDaBaseResponse<CustomerChannels>>
 
     @GET
     suspend fun getCustomerChannelDetail(
         @Url url: String
-    ): Response<YiDaBaseResponse<List<ChannelDetail>>>
+    ): Response<YiDaBaseResponse<List<CustomerChannelZone>>>
 
     @POST
     suspend fun bindChannelToUser(
@@ -184,10 +184,10 @@ interface ApiService {
     ): Response<YunYangBaseResponse<ParsedAddressByJd>>
 
     @POST
-    suspend fun getPreOrderFee(
+    suspend fun fetchPreOrderFee(
         @Url url: String = Constant.API_GET_PER_ORDER_FEE,
         @Body payload: RequestBody
-    ): Response<YiDaBaseResponse<PreOrderFeeResult>>
+    ): Response<YiDaBaseResponse<ChannelFees>>
 
     @POST
     suspend fun submitOrder(
@@ -196,10 +196,10 @@ interface ApiService {
     ): Response<YiDaBaseResponse<BookResult>>
 
     @POST
-    suspend fun getCompareFee(
+    suspend fun fetchCompareFee(
         @Url url: String = Constant.API_GET_COMPARE_FEE,
         @Body payload: RequestBody
-    ): Response<YiDaBaseResponse<List<BookChannelDetail>>>
+    ): Response<YiDaBaseResponse<List<ChannelFees>>>
 
     @POST
     suspend fun parseAddressBySf(

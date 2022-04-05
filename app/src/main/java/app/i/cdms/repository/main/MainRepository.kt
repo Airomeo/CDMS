@@ -1,7 +1,6 @@
 package app.i.cdms.repository.main
 
-import app.i.cdms.data.model.ChannelDetail
-import app.i.cdms.data.model.CustomerChannelResult
+import app.i.cdms.data.model.CustomerChannelZone
 import app.i.cdms.data.model.Token
 import app.i.cdms.data.model.YiDaBaseResponse
 import app.i.cdms.data.source.local.UserPrefDataSource
@@ -24,11 +23,10 @@ class MainRepository @Inject constructor(
         userPrefDataSource.updateToken(token)
     }
 
-    suspend fun getCustomerChannel(customerType: String): YiDaBaseResponse<CustomerChannelResult>? {
-        return executeResponse { dataSource.getCustomerChannel(customerType) }
-    }
+    suspend fun fetchCustomerChannels(customerType: String) =
+        executeResponse { dataSource.fetchCustomerChannels(customerType) }
 
-    suspend fun getCustomerChannelDetail(customerId: Int): YiDaBaseResponse<List<ChannelDetail>>? {
+    suspend fun getCustomerChannelDetail(customerId: Int): YiDaBaseResponse<List<CustomerChannelZone>>? {
         return executeResponse { dataSource.getCustomerChannelDetail(customerId) }
     }
 

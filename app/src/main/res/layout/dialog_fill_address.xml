@@ -193,6 +193,7 @@
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/provinceMenu"
             android:cursorVisible="false"
             android:hint="@string/book_fill_address_province"
             android:imeOptions="actionNext"

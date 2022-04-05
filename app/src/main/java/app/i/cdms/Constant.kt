@@ -55,9 +55,8 @@ object Constant {
     const val API_TRANSFER = "$API/wl/userAccount/transfer"
     const val API_NOTICE = "$API/system/notice/list" // no need token
     const val API_ORDER_COUNT = "$API/wl/home/getUserOrderCount"
-    const val API_CUSTOMER_CHANNEL = "$API/wl/home/selfCustomer"
-    const val API_CUSTOMER_CHANNEL_DETAIL = "$API/wl/home/selfCustomerDetail"
-    const val API_GET_CUSTOMER_CHANNELS = "$API/wl/home/getCustomerChannels"
+    const val API_CUSTOMER_CHANNEL = "$API/price/self"
+    const val API_CUSTOMER_CHANNEL_DETAIL = "$API/price/selfDetail"
     const val API_GET_CHILDREN_PRICE_BY_CHANNEL =
         "$API/logistics/userChannelPrice/getChildrenPriceByChannel"
     const val API_BIND_CHANNEL_TO_USER = "$API/logistics/userChannelPrice/bindChannel2Users"

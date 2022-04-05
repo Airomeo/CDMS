@@ -2,146 +2,100 @@ package app.i.cdms.ui.channel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.i.cdms.R
-import app.i.cdms.data.model.Agent
-import app.i.cdms.data.model.ChannelDetail
+import app.i.cdms.data.model.Channel
 import app.i.cdms.data.model.CustomerChannel
+import app.i.cdms.data.model.CustomerChannels
 import app.i.cdms.data.model.MyTeam
-import app.i.cdms.repository.agent.AgentRepository
 import app.i.cdms.repository.main.MainRepository
-import app.i.cdms.repository.team.TeamRepository
-import app.i.cdms.utils.BaseEvent
-import app.i.cdms.utils.EventBus
+import app.i.cdms.utils.ChannelUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 
 @HiltViewModel
-class ChannelViewModel @Inject constructor(
-    private val mainRepository: MainRepository,
-    private val agentRepository: AgentRepository,
-    private val teamRepository: TeamRepository
-) : ViewModel() {
+class ChannelViewModel @Inject constructor(private val mainRepository: MainRepository) :
+    ViewModel() {
 
-    private val channelDetailList = mutableListOf<ChannelDetail>()
-    private val _channelDetailListFlow = MutableStateFlow<List<ChannelDetail>>(listOf())
-    val channelDetailListFlow = _channelDetailListFlow.asStateFlow()
+    private val _customerChannels = MutableStateFlow<List<CustomerChannels>>(emptyList())
+    val channelsFlow = _customerChannels.mapLatest { value ->
+        val channels = Collections.synchronizedList(arrayListOf<Channel>())
+        value.forEach {
+            it.mapNotNull().forEach { list ->
+                list.forEach { customerChannel ->
+                    channels.addAll(parseToChannels(customerChannel))
+                }
+            }
+        }
+        channels
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     private val _myTeam = MutableStateFlow<MyTeam?>(null)
     val myTeam = _myTeam.asStateFlow()
 
+    init {
+        fetchCustomerChannels()
+    }
+
     // 获取所有渠道详细信息
-    fun getAllChannelDetail() {
+    private fun fetchCustomerChannels() {
         viewModelScope.launch {
+            val list = mutableListOf<CustomerChannels>()
             val customerType = listOf("personal", "business", "poizon")
             for (customer in customerType) {
-                val result = mainRepository.getCustomerChannel(customer)
-                result?.data?.sto?.forEach {
-                    getChannelDetail(it)
-                }
-                result?.data?.yto?.forEach {
-                    getChannelDetail(it)
-                }
-                result?.data?.jd?.forEach {
-                    getChannelDetail(it)
-                }
-                result?.data?.dop?.forEach {
-                    getChannelDetail(it)
-                }
-                result?.data?.jt?.forEach {
-                    getChannelDetail(it)
-                }
+                val result = mainRepository.fetchCustomerChannels(customer)
+                result?.data?.let { list.add(it) }
             }
-            _channelDetailListFlow.value = channelDetailList
+            _customerChannels.value = list
+        }
+    }
+
+    private fun parseToChannels(customerChannel: CustomerChannel): List<Channel> {
+        return if (customerChannel.channelPrices.contains("折扣")) {
+            ChannelUtil.parseToDiscountZone(customerChannel.channelPrices).map { zone ->
+                Channel(
+                    "discount",
+                    customerChannel.customerName + zone.zone,
+                    customerChannel.deliveryType,
+                    customerChannel.limitWeight,
+                    zone,
+                    customerChannel.areaType,
+                    customerChannel.priority,
+                    customerChannel.backFeeType,
+                    customerChannel.lightGoods,
+                    customerChannel.customerType,
+                )
+            }
+        } else {
+            ChannelUtil.parseToProfitZone(customerChannel.channelPrices).map { zone ->
+                Channel(
+                    "profit",
+                    customerChannel.customerName + zone.zone,
+                    customerChannel.deliveryType,
+                    customerChannel.limitWeight,
+                    zone.blocks,
+                    customerChannel.areaType,
+                    customerChannel.priority,
+                    customerChannel.backFeeType,
+                    customerChannel.lightGoods,
+                    customerChannel.customerType,
+                )
+            }
         }
     }
 
     // 获取渠道详细信息
     private fun getChannelDetail(customerChannel: CustomerChannel) {
         viewModelScope.launch {
-            val result = mainRepository.getCustomerChannelDetail(customerChannel.id)
-            result?.data?.let {
-                for (item in it) {
-                    val copy = item.copy(customerChannel = customerChannel)
-                    channelDetailList.add(copy)
-                }
-            }
-        }
-    }
-
-    // 获取我的所有下级
-    fun getMyTeam(
-        pageNum: Int, pageSize: Int, userName: String?,
-        parentUserId: Int?,
-        than: String?,
-        balance: String?,
-    ) {
-        viewModelScope.launch {
-            val result =
-                teamRepository.getMyTeam(pageNum, pageSize, userName, parentUserId, than, balance)
-            _myTeam.value = result
-        }
-    }
-
-    // 更新/绑定渠道至用户
-    fun updateChannel(
-        firstCommission: Float,
-        addCommission: Float,
-        discountCommission: Float,
-        perAddCommission: Float,
-        agents: List<Agent>
-    ) {
-        viewModelScope.launch {
-            EventBus.produceEvent(BaseEvent.Toast(R.string.channel_update_config_waiting))
-            for (item in channelDetailList) {
-                launch {
-                    val result = agentRepository.getChannelConfigForAllUsers(item.channelId)
-                    result?.data ?: return@launch
-                    val channelConfigList = result.data
-
-                    val updateList = mutableListOf<Int>() // 原先存在，需要更新配置的用户
-                    val bindList = mutableListOf<Int>() // 原先没有，需要绑定配置的用户
-                    for (agent in agents) {
-                        val channelConfig = channelConfigList.find {
-                            it.userId == agent.userId && it.calcFeeType != null
-                        }
-                        if (channelConfig == null) {
-                            bindList.add(agent.userId)
-                        } else {
-                            updateList.add(agent.userId)
-                        }
-                    }
-
-                    val discount = item.discountPercent?.toFloat()?.plus(discountCommission)
-                    val perAdd = item.perAdd?.toFloat()?.plus(perAddCommission)
-                    if (updateList.size > 0) { // 更新配置
-                        agentRepository.updateChildPrice(
-                            firstCommission,
-                            addCommission,
-                            item.channelId,
-                            item.customerChannel!!.id,
-                            discount,
-                            perAdd,
-                            updateList
-                        )
-                    }
-                    if (bindList.size > 0) { // 绑定配置
-                        agentRepository.bindChannelToUser(
-                            firstCommission,
-                            addCommission,
-                            item.channelId,
-                            item.customerChannel!!.id,
-                            discount,
-                            perAdd,
-                            bindList
-                        )
-                    }
-                }
-            }
-            EventBus.produceEvent(BaseEvent.Toast(R.string.channel_update_config_finished))
+//            val result = mainRepository.getCustomerChannelDetail(customerChannel.id)
+//            result?.data?.let {
+//                for (item in it) {
+//                    val copy = item.copy(customerChannel = customerChannel)
+//                    channelDetailList.add(copy)
+//                }
+//            }
         }
     }
 }

@@ -19,18 +19,21 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.i.cdms.R
-import app.i.cdms.data.model.BookChannelDetail
 import app.i.cdms.data.model.BookResult
+import app.i.cdms.data.model.Channel
 import app.i.cdms.databinding.CatBottomsheetScrollableContentBinding
 import app.i.cdms.databinding.DialogFillAddressBinding
 import app.i.cdms.databinding.FragmentBookBinding
+import app.i.cdms.ui.channel.ChannelRecyclerViewAdapter
 import app.i.cdms.utils.hideKeyboard
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.elevation.SurfaceColors
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -109,53 +112,56 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                     tvPickUpTime.text = null
                 }
                 priceTips -> {
-                    showBookChannelListDialogs(viewModel.bookChannelDetailList.value)
+                    // 因为channelsFlow是SharingStarted.WhileSubscribed()，
+                    // 为了节省资源，只在用户点击查看了快递列表时订阅获取
+                    runBlocking {
+                        showBookChannelListDialogs(viewModel.channelsFlow.first())
+                    }
                 }
                 book -> {
-                    if (viewModel.bookBody.value.senderName == null ||
-                        viewModel.bookBody.value.senderProvince == null ||
-                        viewModel.bookBody.value.senderProvinceCode == null ||
-                        viewModel.bookBody.value.senderCity == null ||
-                        viewModel.bookBody.value.senderDistrict == null ||
-                        viewModel.bookBody.value.senderAddress == null ||
-                        viewModel.bookBody.value.senderValues == null ||
-                        (viewModel.bookBody.value.senderTel == null && viewModel.bookBody.value.senderMobile == null)
-                    ) {
-                        val str = getString(
-                            R.string.book_address_incomplete,
-                            getString(R.string.book_info_from)
-                        )
-                        Toast.makeText(requireContext(), str, Toast.LENGTH_SHORT).show()
-                        return@OnClickListener
+                    with(viewModel.bookBody.value) {
+                        if (senderName == null ||
+                            senderProvince == null ||
+                            senderProvinceCode == null ||
+                            senderCity == null ||
+                            senderDistrict == null ||
+                            senderAddress == null ||
+                            senderValues == null ||
+                            (senderTel == null && senderMobile == null)
+                        ) {
+                            val str = getString(
+                                R.string.book_address_incomplete,
+                                getString(R.string.book_info_from)
+                            )
+                            Toast.makeText(requireContext(), str, Toast.LENGTH_SHORT).show()
+                            return@OnClickListener
+                        }
+                        if (receiveName == null ||
+                            receiveProvince == null ||
+                            receiveProvinceCode == null ||
+                            receiveCity == null ||
+                            receiveDistrict == null ||
+                            receiveAddress == null ||
+                            receiveValues == null ||
+                            (receiveTel == null && receiveMobile == null)
+                        ) {
+                            val str = getString(
+                                R.string.book_address_incomplete,
+                                getString(R.string.book_info_to)
+                            )
+                            Toast.makeText(requireContext(), str, Toast.LENGTH_SHORT).show()
+                            return@OnClickListener
+                        }
+                        if (weight == null || goods == null || packageCount == null) {
+                            Toast.makeText(
+                                requireContext(),
+                                R.string.book_goods_info_incomplete,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            return@OnClickListener
+                        }
                     }
-                    if (viewModel.bookBody.value.receiveName == null ||
-                        viewModel.bookBody.value.receiveProvince == null ||
-                        viewModel.bookBody.value.receiveProvinceCode == null ||
-                        viewModel.bookBody.value.receiveCity == null ||
-                        viewModel.bookBody.value.receiveDistrict == null ||
-                        viewModel.bookBody.value.receiveAddress == null ||
-                        viewModel.bookBody.value.receiveValues == null ||
-                        (viewModel.bookBody.value.receiveTel == null && viewModel.bookBody.value.receiveMobile == null)
-                    ) {
-                        val str = getString(
-                            R.string.book_address_incomplete,
-                            getString(R.string.book_info_to)
-                        )
-                        Toast.makeText(requireContext(), str, Toast.LENGTH_SHORT).show()
-                        return@OnClickListener
-                    }
-                    if (viewModel.bookBody.value.weight == null ||
-                        viewModel.bookBody.value.goods == null ||
-                        viewModel.bookBody.value.packageCount == null
-                    ) {
-                        Toast.makeText(
-                            requireContext(),
-                            R.string.book_goods_info_incomplete,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        return@OnClickListener
-                    }
-//                    viewModel.getPreOrderFee()
+//                    viewModel.fetchPreOrderFee()
                     viewModel.book()
                 }
             }
@@ -329,23 +335,18 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                 )
             )
         }
-        // 显示下单结果
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.bookResultFlow.collectLatest {
-                    it ?: return@collectLatest
-                    showBookResultDialog(it)
+                launch {
+                    // 显示下单结果
+                    viewModel.bookResultFlow.collectLatest {
+                        it ?: return@collectLatest
+                        showBookResultDialog(it)
+                    }
                 }
-            }
-        }
-        // 列出用户所有可用渠道
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.bookChannelDetailList.collectLatest {
-                    if (it == null) {
-                        binding.price.text = getString(R.string.book_price, "-")
-                        binding.priceTips.text = getString(R.string.book_price_tips_not_filled)
-                    } else {
+                launch {
+                    // 列出用户所有可用渠道
+                    viewModel.channelFees.collectLatest {
                         if (it.isEmpty()) {
                             viewModel.updateBookBodyFlow(
                                 viewModel.bookBody.value.copy(
@@ -355,7 +356,11 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                             )
                             binding.price.text = getString(R.string.book_price, "-")
                             binding.priceTips.text =
-                                getString(R.string.book_price_tips_no_available_channel)
+                                if (viewModel.compareFeeBody.value.isFulfilled()) {
+                                    getString(R.string.book_price_tips_no_available_channel)
+                                } else {
+                                    getString(R.string.book_price_tips_not_filled)
+                                }
                             return@collectLatest
                         }
                         // 找最便宜的渠道
@@ -378,65 +383,58 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                             getString(R.string.book_price_tips, cheapestChannel.channelName)
                     }
                 }
-            }
-        }
-        // 用户手动选择渠道或当前最便宜渠道变更时会触发
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.selectedChannel.collectLatest {
-                    it.first ?: return@collectLatest
-                    it.second ?: return@collectLatest
-                    // 下单时，单个customerType比如个人版，申通有渠道A、渠道B，系统只会返回一个最便宜的渠道A，所以deliveryType只有一个。
-                    // 但如果同时有个人版和商家版，会返回两个用户类型的deliveryType，所以要加上customerType
-                    val channel = viewModel.bookChannelDetailList.value?.find { channel ->
-                        channel.deliveryType == it.first && channel.customerType == it.second
-                    }
-                    binding.price.text = getString(R.string.book_price, channel?.preOrderFee)
-                    binding.priceTips.text =
-                        getString(R.string.book_price_tips, channel?.channelName)
-                }
-            }
-        }
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.compareFeeBody.collectLatest {
-                    if (it.receiveCity != null && it.receiveCityCode != null &&
-                        it.senderCity != null && it.senderCityCode != null && it.weight != null
-                    ) {
-                        // 获取所有快递价格
-                        viewModel.getCompareFee()
-                    } else {
-                        viewModel.updateBookChannelDetailList(null)
+                launch {
+                    // 用户手动选择渠道或当前最便宜渠道变更时会触发
+                    viewModel.selectedChannel.collectLatest {
+                        it.first ?: return@collectLatest
+                        it.second ?: return@collectLatest
+                        // 下单时，单个customerType比如个人版，申通有渠道A、渠道B，系统只会返回一个最便宜的渠道A，所以deliveryType只有一个。
+                        // 但如果同时有个人版和商家版，会返回两个用户类型的deliveryType，所以要加上customerType
+                        val channel = viewModel.channelFees.value.find { channel ->
+                            channel.deliveryType == it.first && channel.customerType == it.second
+                        }
+                        binding.price.text = getString(R.string.book_price, channel?.preOrderFee)
+                        binding.priceTips.text =
+                            getString(R.string.book_price_tips, channel?.channelName)
                     }
                 }
-            }
-        }
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.bookBody.collectLatest {
-                    if (it.senderName != null) {
-                        if (it.senderMobile != null) {
-                            binding.tvName.text = it.senderName + "," + it.senderMobile
-                        }
-                        if (it.senderTel != null) {
-                            binding.tvName.text = it.senderName + "," + it.senderTel
+                launch {
+                    viewModel.compareFeeBody.collectLatest {
+                        if (it.isFulfilled()) {
+                            // 获取所有快递价格
+                            viewModel.fetchCompareFee()
+                        } else {
+                            // 提示信息不完整
+                            viewModel._channelFees.value = emptyList()
                         }
                     }
-                    if (it.senderProvince != null && it.senderCity != null && it.senderDistrict != null && it.senderAddress != null) {
-                        binding.tvAddress.text =
-                            it.senderProvince + it.senderCity + it.senderDistrict + it.senderAddress
-                    }
-                    if (it.receiveName != null) {
-                        if (it.receiveMobile != null) {
-                            binding.tvName2.text = it.receiveName + "," + it.receiveMobile
+                }
+                launch {
+                    viewModel.bookBody.collectLatest {
+                        if (it.senderName != null) {
+                            if (it.senderMobile != null) {
+                                binding.tvName.text = it.senderName + "," + it.senderMobile
+                            }
+                            if (it.senderTel != null) {
+                                binding.tvName.text = it.senderName + "," + it.senderTel
+                            }
                         }
-                        if (it.receiveTel != null) {
-                            binding.tvName2.text = it.receiveName + "," + it.receiveTel
+                        if (it.senderProvince != null && it.senderCity != null && it.senderDistrict != null && it.senderAddress != null) {
+                            binding.tvAddress.text =
+                                it.senderProvince + it.senderCity + it.senderDistrict + it.senderAddress
                         }
-                    }
-                    if (it.receiveProvince != null && it.receiveCity != null && it.receiveDistrict != null && it.receiveAddress != null) {
-                        binding.tvAddress2.text =
-                            it.receiveProvince + it.receiveCity + it.receiveDistrict + it.receiveAddress
+                        if (it.receiveName != null) {
+                            if (it.receiveMobile != null) {
+                                binding.tvName2.text = it.receiveName + "," + it.receiveMobile
+                            }
+                            if (it.receiveTel != null) {
+                                binding.tvName2.text = it.receiveName + "," + it.receiveTel
+                            }
+                        }
+                        if (it.receiveProvince != null && it.receiveCity != null && it.receiveDistrict != null && it.receiveAddress != null) {
+                            binding.tvAddress2.text =
+                                it.receiveProvince + it.receiveCity + it.receiveDistrict + it.receiveAddress
+                        }
                     }
                 }
             }
@@ -537,8 +535,8 @@ class BookFragment : Fragment(R.layout.fragment_book) {
             val countyName = viewModel.bookBody.value.senderDistrict
             val values = viewModel.bookBody.value.senderValues
             if (provinceName != null && cityName != null && countyName != null && values != null) {
-                b.province.editText?.setText(provinceName + cityName + countyName)
-                b.province.editText?.tag = listOf(
+                b.provinceMenu.setText(provinceName + cityName + countyName)
+                b.provinceMenu.tag = listOf(
                     Pair(provinceName, values[0]),
                     Pair(cityName, values[1]),
                     Pair(countyName, values[2])
@@ -563,8 +561,8 @@ class BookFragment : Fragment(R.layout.fragment_book) {
             val countyName = viewModel.bookBody.value.receiveDistrict
             val values = viewModel.bookBody.value.receiveValues
             if (provinceName != null && cityName != null && countyName != null && values != null) {
-                b.province.editText?.setText(provinceName + cityName + countyName)
-                b.province.editText?.tag = listOf(
+                b.provinceMenu.setText(provinceName + cityName + countyName)
+                b.provinceMenu.tag = listOf(
                     Pair(provinceName, values[0]),
                     Pair(cityName, values[1]),
                     Pair(countyName, values[2])
@@ -579,8 +577,8 @@ class BookFragment : Fragment(R.layout.fragment_book) {
         b.done.setOnClickListener {
             val name = b.name.editText?.text.toString()
             val phone = b.phone.editText?.text.toString()
-            val province = b.province.editText?.text.toString()
-            val provinceTag = b.province.editText?.tag
+            val province = b.provinceMenu.text.toString()
+            val provinceTag = b.provinceMenu.tag
             val address = b.address.editText?.text.toString()
 
             if (name.isBlank() || phone.isBlank() || province.isBlank() || provinceTag == null || address.isBlank()) {
@@ -670,7 +668,7 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                 b.pasteAndClear.setImageResource(R.drawable.ic_baseline_close_24)
             }
         }
-        b.province.editText?.apply {
+        b.provinceMenu.apply {
             showSoftInputOnFocus = false
             setOnClickListener { showMenu(it) }
             setOnFocusChangeListener { v, hasFocus ->
@@ -715,8 +713,8 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                             val provinceCode = originDestRegions[2].code.substring(1, 3) + "0000"
                             val cityCode = originDestRegions[2].code.substring(1, 5) + "00"
                             val countyCode = originDestRegions[2].code.substring(1, 7)
-                            b.province.editText?.setText(provinceName + cityName + countyName)
-                            b.province.editText?.tag = listOf(
+                            b.provinceMenu.setText(provinceName + cityName + countyName)
+                            b.provinceMenu.tag = listOf(
                                 Pair(provinceName, provinceCode),
                                 Pair(cityName, cityCode),
                                 Pair(countyName, countyCode)
@@ -736,14 +734,13 @@ class BookFragment : Fragment(R.layout.fragment_book) {
      * @param list: 渠道信息列表
      * @return
      */
-    private fun showBookChannelListDialogs(list: List<BookChannelDetail>?) {
-        list ?: return
+    private fun showBookChannelListDialogs(list: List<Channel>) {
         val b = CatBottomsheetScrollableContentBinding.inflate(layoutInflater, null, false)
         val dialog = BottomSheetDialog(requireContext())
         dialog.setContentView(b.root)
         dialog.dismissWithAnimation = true
 
-        val rootOnClickCallback: (channel: BookChannelDetail) -> Unit = { channel ->
+        val rootOnClickCallback: (channel: Channel) -> Unit = { channel ->
             viewModel.updateBookBodyFlow(
                 viewModel.bookBody.value.copy(
                     deliveryType = channel.deliveryType,
@@ -752,7 +749,7 @@ class BookFragment : Fragment(R.layout.fragment_book) {
             )
             dialog.dismiss()
         }
-        val mAdapter = BookChannelRecyclerViewAdapter(rootOnClickCallback)
+        val mAdapter = ChannelRecyclerViewAdapter(rootOnClickCallback)
         mAdapter.submitList(list)
         b.recyclerView.adapter = mAdapter
         b.recyclerView.layoutManager = LinearLayoutManager(context)
@@ -791,7 +788,7 @@ class BookFragment : Fragment(R.layout.fragment_book) {
             .create()
         dialog.setOnShowListener {
             if (bookResult.deliveryId == null) {
-                // 极兔需要手动刷新获取，添加刷新按钮
+                // 极兔和部分圆通需要手动刷新获取，添加刷新按钮
                 val neutralButton = dialog.getButton(AlertDialog.BUTTON_NEUTRAL)
                 neutralButton.setText(R.string.fees_tips_refresh)
                 neutralButton.setOnClickListener {

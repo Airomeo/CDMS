@@ -11,4 +11,8 @@ data class CompareFeeBody(
     val senderCity: String? = null,
     val senderCityCode: String? = null,
     val weight: Int? = null
-)
+) {
+    fun isFulfilled(): Boolean {
+        return receiveCity != null && receiveCityCode != null && senderCity != null && senderCityCode != null && weight != null
+    }
+}

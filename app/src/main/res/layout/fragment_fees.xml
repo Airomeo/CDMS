@@ -37,6 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:cursorVisible="false"
+                android:id="@+id/fromMenu"
                 android:hint="@string/fees_from_address"
                 android:imeOptions="actionNext"
                 android:inputType="none"
@@ -84,6 +85,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:cursorVisible="false"
+                android:id="@+id/toMenu"
                 android:hint="@string/fees_to_address"
                 android:imeOptions="actionNext"
                 android:inputType="none"
@@ -170,8 +172,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@id/goodsWeight" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

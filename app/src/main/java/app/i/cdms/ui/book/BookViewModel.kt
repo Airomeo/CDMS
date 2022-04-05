@@ -5,9 +5,14 @@ import androidx.lifecycle.viewModelScope
 import app.i.cdms.data.model.*
 import app.i.cdms.repository.book.BookRepository
 import app.i.cdms.repository.main.MainRepository
+import app.i.cdms.utils.ChannelUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,19 +29,38 @@ class BookViewModel @Inject constructor(
     val parsedAddressBySf = _parsedAddressBySf.asStateFlow()
 
     // 预下单结果
-    // private val _preOrderFeeResult = MutableStateFlow<PreOrderFeeResult?>(null)
+    // private val _preOrderFeeResult = MutableStateFlow<ChannelFees?>(null)
     // val preOrderFeeResult = _preOrderFeeResult.asStateFlow()
-    private val _preOrderFeeResult = MutableSharedFlow<PreOrderFeeResult?>()
+    private val _preOrderFeeResult = MutableSharedFlow<ChannelFees?>()
     val preOrderFeeResult = _preOrderFeeResult.asSharedFlow()
 
     // 订单号
     private val _deliveryId = MutableSharedFlow<String?>()
     val deliveryId = _deliveryId.asSharedFlow()
 
-
     // 可用渠道列表
-    private val _bookChannelDetailList = MutableStateFlow<List<BookChannelDetail>?>(null)
-    val bookChannelDetailList = _bookChannelDetailList.asStateFlow()
+    val _channelFees = MutableStateFlow<List<ChannelFees>>(emptyList())
+    val channelFees = _channelFees.asStateFlow()
+    val channelsFlow = _channelFees.mapLatest { value ->
+        value.map {
+            Channel(
+                it.calcFeeType,
+                "¥" + it.preOrderFee + " " + it.channelName,
+                it.deliveryType,
+                it.limitWeight,
+                if (it.calcFeeType == "profit") {
+                    ChannelUtil.parsePrice(it.price)
+                } else {
+                    ChannelUtil.parseToDiscountZone(it.price)[0]
+                },
+                null,
+                null,
+                null,
+                it.lightGoods,
+                it.customerType
+            )
+        }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     // 下单请求需要提交的参数
     private val _bookBody = MutableStateFlow(BookBody())
@@ -105,26 +129,32 @@ class BookViewModel @Inject constructor(
      *
      * @return
      */
-    fun getCompareFee() {
-        viewModelScope.launch {
-            val result = mutableListOf<BookChannelDetail>()
-            val personalResult =
-                bookRepository.getCompareFee(compareFeeBody.value.copy(customerType = "personal"))
-            personalResult?.data?.let {
-                it.forEach { channel ->
-                    channel.customerType = "personal"
-                    result.add(channel)
+    fun fetchCompareFee() {
+        val result = Collections.synchronizedList(arrayListOf<ChannelFees>())
+        viewModelScope.launch(Dispatchers.IO) {
+            awaitAll(
+                async {
+                    val personalResult =
+                        bookRepository.fetchCompareFee(compareFeeBody.value.copy(customerType = "personal"))
+                    personalResult?.data?.let { list ->
+                        list.forEach { channel ->
+                            channel.customerType = "personal"
+                            result.add(channel)
+                        }
+                    }
+                },
+                async {
+                    val businessResult =
+                        bookRepository.fetchCompareFee(compareFeeBody.value.copy(customerType = "business"))
+                    businessResult?.data?.let { list ->
+                        list.forEach { channel ->
+                            channel.customerType = "business"
+                            result.add(channel)
+                        }
+                    }
                 }
-            }
-            val businessResult =
-                bookRepository.getCompareFee(compareFeeBody.value.copy(customerType = "business"))
-            businessResult?.data?.let {
-                it.forEach { channel ->
-                    channel.customerType = "business"
-                    result.add(channel)
-                }
-            }
-            _bookChannelDetailList.value = result
+            )
+            _channelFees.value = result
         }
     }
 
@@ -133,9 +163,9 @@ class BookViewModel @Inject constructor(
      *
      * @return
      */
-    fun getPreOrderFee() {
+    fun fetchPreOrderFee() {
         viewModelScope.launch {
-            val result = bookRepository.getPreOrderFee(bookBody.value)
+            val result = bookRepository.fetchPreOrderFee(bookBody.value)
             _preOrderFeeResult.emit(result?.data)
         }
     }
@@ -162,10 +192,6 @@ class BookViewModel @Inject constructor(
 
     fun updateBookBodyFlow(bookBody: BookBody) {
         _bookBody.value = bookBody
-    }
-
-    fun updateBookChannelDetailList(bookChannelDetailList: List<BookChannelDetail>?) {
-        _bookChannelDetailList.value = bookChannelDetailList
     }
 
     /**

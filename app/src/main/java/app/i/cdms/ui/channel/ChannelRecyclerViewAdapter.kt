@@ -7,15 +7,19 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import app.i.cdms.R
-import app.i.cdms.data.model.ChannelDetail
+import app.i.cdms.data.model.Channel
+import app.i.cdms.data.model.DiscountZone
+import app.i.cdms.data.model.ProfitBlock
 import app.i.cdms.databinding.ItemChannelBinding
+import kotlin.math.roundToInt
 
 
 /**
- * [ListAdapter] that can display a [ChannelDetail].
+ * [ListAdapter] that can display a [Channel].
  */
-class ChannelRecyclerViewAdapter :
-    ListAdapter<ChannelDetail, ChannelRecyclerViewAdapter.ViewHolder>(DIFF_CALLBACK) {
+class ChannelRecyclerViewAdapter(
+    private val rootOnClickCallback: (channel: Channel) -> Unit
+) : ListAdapter<Channel, ChannelRecyclerViewAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -30,7 +34,9 @@ class ChannelRecyclerViewAdapter :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val channel = getItem(position)
         with(holder.binding) {
-            root.setOnClickListener { }
+            root.setOnClickListener {
+                rootOnClickCallback.invoke(channel)
+            }
             actionDown.setOnClickListener {
                 it.animate().rotation(it.rotation + 180F)
                 if (it.rotation % 360F > 0) {
@@ -48,7 +54,7 @@ class ChannelRecyclerViewAdapter :
                 }
             }
             channelName.text = channel.channelName
-            customerType.text = when (channel.customerChannel?.customerType) {
+            customerType.text = when (channel.customerType) {
                 "personal" -> "个人"
                 "business" -> "商家"
                 "poizon" -> "得物"
@@ -69,139 +75,235 @@ class ChannelRecyclerViewAdapter :
             }
             when (channel.calcFeeType) {
                 "profit" -> {
+                    val blocks = channel.tariffZone as List<ProfitBlock>
                     discount.text = null
                     perAdd.text = null
-                    firstPrice.text =
-                        root.context.getString(R.string.price, channel.price!!.first)
-                    addPrice.text =
-                        root.context.getString(R.string.price, channel.price.blocks[0].add)
-                    view2.visibility = View.VISIBLE
-                    firstWeight.text =
-                        root.context.getString(R.string.weight, channel.price.blocks[0].start)
-                    val blocks = channel.price.blocks
                     when (blocks.size) {
                         1 -> {
-                            /*1个重量计费区间 0-1 1-30
-                            {
-                                "start": "1.0",
-                                "end": "60.0",
-                                "add": "2.1"
-                            }*/
-                            addPrice2.text = null
-                            addPrice3.text = null
-                            view3.visibility = View.GONE
-                            view4.visibility = View.GONE
-                            hopWeight.text = null
-                            hopWeight2.text = null
+                            // 1个重量计费区间 0-1
+                            price.text = root.context.getString(
+                                R.string.price,
+                                String.format("%.2f", blocks[0].price)
+                            )
+                            price1.text = null
+                            price2.text = null
+                            price3.text = null
+                            price4.text = null
+                            block1.visibility = View.GONE
+                            block2.visibility = View.GONE
+                            block3.visibility = View.GONE
+                            block4.visibility = View.GONE
+                            weight1.text = null
+                            weight2.text = null
+                            weight3.text = null
+                            weight4.text = null
                         }
                         2 -> {
-                            /*2个重量计费区间 0-1 1-3 3-30
-                            {
-                                "start": "1.0",
-                                "end": "3.0",
-                                "add": "1.5"
-                            },
-                            {
-                                "start": "4.0",
-                                "end": "30.0",
-                                "add": "2.0"
-                            }*/
-                            addPrice2.text = root.context.getString(R.string.price, blocks[1].add)
-                            addPrice3.text = null
-                            view3.visibility = View.VISIBLE
-                            view4.visibility = View.GONE
-                            hopWeight.text = root.context.getString(R.string.weight, blocks[0].end)
-                            hopWeight2.text = null
+                            // 2个重量计费区间 0-1-30
+                            price.text = root.context.getString(
+                                R.string.price,
+                                String.format("%.2f", blocks[0].price)
+                            )
+                            price1.text = root.context.getString(
+                                R.string.price,
+                                String.format("%.2f", blocks[1].price)
+                            )
+                            price2.text = null
+                            price3.text = null
+                            price4.text = null
+                            block1.visibility = View.VISIBLE
+                            block2.visibility = View.GONE
+                            block3.visibility = View.GONE
+                            block4.visibility = View.GONE
+                            weight1.text =
+                                root.context.getString(R.string.weight, blocks[0].weight.toString())
+                            weight2.text = null
+                            weight3.text = null
+                            weight4.text = null
+                        }
+                        3 -> {
+                            // 3个重量计费区间 0-1-3-30
+                            price.text = root.context.getString(
+                                R.string.price,
+                                String.format("%.2f", blocks[0].price)
+                            )
+                            price1.text = root.context.getString(
+                                R.string.price,
+                                String.format("%.2f", blocks[1].price)
+                            )
+                            price2.text = root.context.getString(
+                                R.string.price,
+                                String.format("%.2f", blocks[2].price)
+                            )
+                            price3.text = null
+                            price4.text = null
+                            block1.visibility = View.VISIBLE
+                            block2.visibility = View.VISIBLE
+                            block3.visibility = View.GONE
+                            block4.visibility = View.GONE
+                            weight1.text =
+                                root.context.getString(R.string.weight, blocks[0].weight.toString())
+                            weight2.text =
+                                root.context.getString(R.string.weight, blocks[1].weight.toString())
+                            weight3.text = null
+                            weight4.text = null
+                        }
+                        4 -> {
+                            // 4个重量计费区间 0-1-2-3-30
+                            price.text = root.context.getString(
+                                R.string.price,
+                                String.format("%.2f", blocks[0].price)
+                            )
+                            price1.text = root.context.getString(
+                                R.string.price,
+                                String.format("%.2f", blocks[1].price)
+                            )
+                            price2.text = root.context.getString(
+                                R.string.price,
+                                String.format("%.2f", blocks[2].price)
+                            )
+                            price3.text = root.context.getString(
+                                R.string.price,
+                                String.format("%.2f", blocks[3].price)
+                            )
+                            price4.text = null
+                            block1.visibility = View.VISIBLE
+                            block2.visibility = View.VISIBLE
+                            block3.visibility = View.VISIBLE
+                            block4.visibility = View.GONE
+                            weight1.text =
+                                root.context.getString(R.string.weight, blocks[0].weight.toString())
+                            weight2.text =
+                                root.context.getString(R.string.weight, blocks[1].weight.toString())
+                            weight3.text =
+                                root.context.getString(R.string.weight, blocks[2].weight.toString())
+                            weight4.text = null
+                        }
+                        5 -> {
+                            // 5个重量计费区间 0-1-2-3-4-50
+                            // 极兔22P艾悦-外部渠道2区",:"1-1公斤,价格6.4续0;\n2-3公斤,价格8.9续0;\n4-50公斤,价格11.3续2.5;"
+                            price.text = root.context.getString(
+                                R.string.price,
+                                String.format("%.2f", blocks[0].price)
+                            )
+                            price1.text = root.context.getString(
+                                R.string.price,
+                                String.format("%.2f", blocks[1].price)
+                            )
+                            price2.text = root.context.getString(
+                                R.string.price,
+                                String.format("%.2f", blocks[2].price)
+                            )
+                            price3.text = root.context.getString(
+                                R.string.price,
+                                String.format("%.2f", blocks[3].price)
+                            )
+                            price4.text = root.context.getString(
+                                R.string.price,
+                                String.format("%.2f", blocks[4].price)
+                            )
+                            block1.visibility = View.VISIBLE
+                            block2.visibility = View.VISIBLE
+                            block3.visibility = View.VISIBLE
+                            block4.visibility = View.VISIBLE
+                            weight1.text =
+                                root.context.getString(R.string.weight, blocks[0].weight.toString())
+                            weight2.text =
+                                root.context.getString(R.string.weight, blocks[1].weight.toString())
+                            weight3.text =
+                                root.context.getString(R.string.weight, blocks[2].weight.toString())
+                            weight4.text =
+                                root.context.getString(R.string.weight, blocks[3].weight.toString())
                         }
                         else -> {
-                            /*3个重量计费区间 0-1 1-2 2-3 3-30
-                            {
-                                "start": "1.0",
-                                "end": "2.0",
-                                "add": "1.7"
-                            },
-                            {
-                                "start": "3.0",
-                                "end": "3.0",
-                                "add": "0.0"
-                            },
-                            {
-                                "start": "4.0",
-                                "end": "30.0",
-                                "add": "1.8"
-                            }*/
-                            addPrice2.text = root.context.getString(R.string.price, blocks[1].add)
-                            addPrice3.text = root.context.getString(R.string.price, blocks[2].add)
-                            view3.visibility = View.VISIBLE
-                            view4.visibility = View.VISIBLE
-                            hopWeight.text = root.context.getString(R.string.weight, blocks[0].end)
-                            hopWeight2.text = root.context.getString(R.string.weight, blocks[1].end)
+                            // else个重量计费区间 else<0 or else>6. 暂时按5个显示页面
+                            price.text = root.context.getString(
+                                R.string.price,
+                                String.format("%.2f", blocks[0].price)
+                            )
+                            price1.text = root.context.getString(
+                                R.string.price,
+                                String.format("%.2f", blocks[1].price)
+                            )
+                            price2.text = root.context.getString(
+                                R.string.price,
+                                String.format("%.2f", blocks[2].price)
+                            )
+                            price3.text = root.context.getString(
+                                R.string.price,
+                                String.format("%.2f", blocks[3].price)
+                            )
+                            price4.text = root.context.getString(
+                                R.string.price,
+                                String.format("%.2f", blocks[4].price)
+                            )
+                            block1.visibility = View.VISIBLE
+                            block2.visibility = View.VISIBLE
+                            block3.visibility = View.VISIBLE
+                            block4.visibility = View.VISIBLE
+                            weight1.text =
+                                root.context.getString(R.string.weight, blocks[0].weight.toString())
+                            weight2.text =
+                                root.context.getString(R.string.weight, blocks[1].weight.toString())
+                            weight3.text =
+                                root.context.getString(R.string.weight, blocks[2].weight.toString())
+                            weight4.text =
+                                root.context.getString(R.string.weight, blocks[3].weight.toString())
                         }
                     }
                 }
                 "discount" -> {
-                    val percent = channel.discountPercent?.toFloat()?.times(100).toString()
+                    val block = channel.tariffZone as DiscountZone
+                    val percent = block.discount.times(100).roundToInt().toString()
                     discount.text = root.context.getString(R.string.config_discount, percent)
-                    perAdd.text = root.context.getString(R.string.config_per_add, channel.perAdd)
-                    firstPrice.text = null
-                    addPrice.text = null
-                    addPrice2.text = null
-                    addPrice3.text = null
-                    view2.visibility = View.GONE
-                    view3.visibility = View.GONE
-                    view4.visibility = View.GONE
-                    firstWeight.text = null
-                    hopWeight.text = null
-                    hopWeight2.text = null
+                    perAdd.text = root.context.getString(
+                        R.string.config_per_add, String.format("%.2f", block.add)
+                    )
+                    price.text = null
+                    price1.text = null
+                    price2.text = null
+                    price3.text = null
+                    price4.text = null
+                    block1.visibility = View.GONE
+                    block2.visibility = View.GONE
+                    block3.visibility = View.GONE
+                    block4.visibility = View.GONE
+                    weight1.text = null
+                    weight2.text = null
+                    weight3.text = null
+                    weight4.text = null
                 }
             }
-            limitWeight.text =
-                root.context.getString(R.string.weight, channel.customerChannel?.limitWeight)
-            lightGoods.text = root.context.getString(
-                R.string.channel_light_weight,
-                channel.customerChannel?.lightGoods
+            weight5.text = root.context.getString(
+                R.string.weight,
+                channel.limitWeight.toFloat().roundToInt().toString()
             )
-            val backFeeStr = when (channel.customerChannel?.backFeeType) {
+            lightGoods.text =
+                root.context.getString(R.string.channel_light_weight, channel.lightGoods)
+            val backFeeStr = when (channel.backFeeType) {
                 "whole" -> "全额"
                 "half" -> "半价"
-                else -> channel.customerChannel?.backFeeType
+                else -> channel.backFeeType
             }
-            backFeeType.text = root.context.getString(
-                R.string.channel_back_fee_type,
-                backFeeStr
-            )
-            priority.text = root.context.getString(
-                R.string.channel_priority,
-                channel.customerChannel?.priority.toString()
-            )
-            val areaStr = when (channel.customerChannel?.areaType) {
-                "P" -> {
-                    "省"
-                }
-                "C" -> {
-                    "城"
-                }
-                else -> {
-                    channel.customerChannel?.areaType
-                }
+            backFeeType.text = root.context.getString(R.string.channel_back_fee_type, backFeeStr)
+            priority.text =
+                root.context.getString(R.string.channel_priority, channel.priority.toString())
+            val areaStr = when (channel.areaType) {
+                "P" -> "省"
+                "C" -> "城"
+                else -> channel.areaType
             }
-            areaType.text = root.context.getString(
-                R.string.channel_area_type,
-                areaStr
-            )
+            areaType.text = root.context.getString(R.string.channel_area_type, areaStr)
         }
     }
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ChannelDetail>() {
-            override fun areItemsTheSame(oldItem: ChannelDetail, newItem: ChannelDetail): Boolean {
-                return oldItem.channelId == newItem.channelId
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Channel>() {
+            override fun areItemsTheSame(oldItem: Channel, newItem: Channel): Boolean {
+                return oldItem.channelName == newItem.channelName
             }
 
-            override fun areContentsTheSame(
-                oldItem: ChannelDetail,
-                newItem: ChannelDetail
-            ): Boolean {
+            override fun areContentsTheSame(oldItem: Channel, newItem: Channel): Boolean {
                 return oldItem == newItem
             }
         }

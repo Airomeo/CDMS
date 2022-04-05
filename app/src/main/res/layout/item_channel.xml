@@ -45,44 +45,54 @@
         app:srcCompat="@drawable/ic_baseline_keyboard_arrow_down_24" />
 
     <TextView
-        android:id="@+id/firstPrice"
+        android:id="@+id/price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="¥10.0"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/view"
-        app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintStart_toStartOf="@+id/view" />
+        app:layout_constraintBottom_toTopOf="@+id/block"
+        app:layout_constraintEnd_toEndOf="@+id/block"
+        app:layout_constraintStart_toStartOf="@+id/block" />
 
     <TextView
-        android:id="@+id/addPrice"
+        android:id="@+id/price1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="¥2.5"
         android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@id/firstPrice"
-        app:layout_constraintEnd_toEndOf="@id/view2"
-        app:layout_constraintStart_toStartOf="@id/view2" />
+        app:layout_constraintBottom_toBottomOf="@id/price"
+        app:layout_constraintEnd_toEndOf="@id/block1"
+        app:layout_constraintStart_toStartOf="@id/block1" />
 
     <TextView
-        android:id="@+id/addPrice2"
+        android:id="@+id/price2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="¥3.0"
         android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@id/firstPrice"
-        app:layout_constraintEnd_toEndOf="@id/view3"
-        app:layout_constraintStart_toStartOf="@id/view3" />
+        app:layout_constraintBottom_toBottomOf="@id/price"
+        app:layout_constraintEnd_toEndOf="@id/block2"
+        app:layout_constraintStart_toStartOf="@id/block2" />
 
     <TextView
-        android:id="@+id/addPrice3"
+        android:id="@+id/price3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="¥3.5"
         android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@id/firstPrice"
-        app:layout_constraintEnd_toEndOf="@id/view4"
-        app:layout_constraintStart_toStartOf="@id/view4" />
+        app:layout_constraintBottom_toBottomOf="@id/price"
+        app:layout_constraintEnd_toEndOf="@id/block3"
+        app:layout_constraintStart_toStartOf="@id/block3" />
+
+    <TextView
+        android:id="@+id/price4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¥4.0"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@id/price"
+        app:layout_constraintEnd_toEndOf="@id/block4"
+        app:layout_constraintStart_toStartOf="@id/block4" />
 
     <TextView
         android:id="@+id/discount"
@@ -90,9 +100,9 @@
         android:layout_height="wrap_content"
         android:text="@string/config_discount"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintBottom_toTopOf="@+id/block"
         app:layout_constraintEnd_toStartOf="@id/perAdd"
-        app:layout_constraintStart_toStartOf="@+id/view" />
+        app:layout_constraintStart_toStartOf="@+id/block" />
 
     <TextView
         android:id="@+id/perAdd"
@@ -105,91 +115,111 @@
         app:layout_constraintStart_toEndOf="@id/discount" />
 
     <View
-        android:id="@+id/view"
+        android:id="@+id/block"
         android:layout_width="0dp"
         android:layout_height="4dp"
         android:layout_marginTop="32dp"
-        android:background="@android:color/holo_blue_light"
-        app:layout_constraintEnd_toStartOf="@+id/view2"
+        android:background="@android:color/holo_purple"
+        app:layout_constraintEnd_toStartOf="@+id/block1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/channelName" />
 
     <View
-        android:id="@+id/view2"
+        android:id="@+id/block1"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:layout_marginTop="32dp"
+        android:background="@android:color/holo_blue_light"
+        app:layout_constraintEnd_toStartOf="@id/block2"
+        app:layout_constraintStart_toEndOf="@+id/block"
+        app:layout_constraintTop_toBottomOf="@+id/channelName"
+        app:layout_goneMarginTop="32dp" />
+
+    <View
+        android:id="@+id/block2"
         android:layout_width="0dp"
         android:layout_height="4dp"
         android:layout_marginTop="32dp"
         android:background="@android:color/holo_green_light"
-        app:layout_constraintEnd_toStartOf="@id/view3"
-        app:layout_constraintStart_toEndOf="@+id/view"
+        app:layout_constraintEnd_toStartOf="@id/block3"
+        app:layout_constraintStart_toEndOf="@+id/block1"
         app:layout_constraintTop_toBottomOf="@+id/channelName"
         app:layout_goneMarginTop="32dp" />
 
     <View
-        android:id="@+id/view3"
+        android:id="@+id/block3"
         android:layout_width="0dp"
         android:layout_height="4dp"
         android:layout_marginTop="32dp"
         android:background="@android:color/holo_orange_light"
-        app:layout_constraintEnd_toStartOf="@id/view4"
-        app:layout_constraintStart_toEndOf="@+id/view2"
+        app:layout_constraintEnd_toStartOf="@id/block4"
+        app:layout_constraintStart_toEndOf="@+id/block2"
         app:layout_constraintTop_toBottomOf="@+id/channelName"
         app:layout_goneMarginTop="32dp" />
 
     <View
-        android:id="@+id/view4"
+        android:id="@+id/block4"
         android:layout_width="0dp"
         android:layout_height="4dp"
         android:layout_marginTop="32dp"
         android:background="@android:color/holo_red_light"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/view3"
+        app:layout_constraintStart_toEndOf="@+id/block3"
         app:layout_constraintTop_toBottomOf="@+id/channelName"
         app:layout_goneMarginTop="32dp" />
 
     <TextView
-        android:id="@+id/zero"
+        android:id="@+id/weight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0kg"
         app:layout_constraintBottom_toTopOf="@id/lightGoods"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
+        app:layout_constraintStart_toStartOf="@+id/block"
+        app:layout_constraintTop_toBottomOf="@+id/block" />
 
     <TextView
-        android:id="@+id/firstWeight"
+        android:id="@+id/weight1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="1kg"
-        app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintStart_toStartOf="@id/view2"
-        app:layout_constraintTop_toTopOf="@id/zero" />
+        app:layout_constraintEnd_toEndOf="@+id/block"
+        app:layout_constraintStart_toStartOf="@id/block1"
+        app:layout_constraintTop_toTopOf="@id/weight" />
 
     <TextView
-        android:id="@+id/hopWeight"
+        android:id="@+id/weight2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="2kg"
-        app:layout_constraintEnd_toEndOf="@+id/view2"
-        app:layout_constraintStart_toStartOf="@id/view3"
-        app:layout_constraintTop_toTopOf="@id/zero" />
+        app:layout_constraintEnd_toEndOf="@+id/block1"
+        app:layout_constraintStart_toStartOf="@id/block2"
+        app:layout_constraintTop_toTopOf="@id/weight" />
 
     <TextView
-        android:id="@+id/hopWeight2"
+        android:id="@+id/weight3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="3kg"
-        app:layout_constraintEnd_toEndOf="@+id/view3"
-        app:layout_constraintStart_toStartOf="@id/view4"
-        app:layout_constraintTop_toTopOf="@id/zero" />
+        app:layout_constraintEnd_toEndOf="@+id/block2"
+        app:layout_constraintStart_toStartOf="@id/block3"
+        app:layout_constraintTop_toTopOf="@id/weight" />
 
     <TextView
-        android:id="@+id/limitWeight"
+        android:id="@+id/weight4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="4kg"
+        app:layout_constraintEnd_toEndOf="@+id/block3"
+        app:layout_constraintStart_toStartOf="@id/block4"
+        app:layout_constraintTop_toTopOf="@id/weight" />
+
+    <TextView
+        android:id="@+id/weight5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="30kg"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/zero" />
+        app:layout_constraintTop_toTopOf="@id/weight" />
 
     <TextView
         android:id="@+id/lightGoods"
@@ -200,7 +230,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/priority"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/zero" />
+        app:layout_constraintTop_toBottomOf="@+id/weight" />
 
     <TextView
         android:id="@+id/backFeeType"
