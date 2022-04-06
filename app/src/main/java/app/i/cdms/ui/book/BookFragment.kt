@@ -437,13 +437,13 @@ class BookFragment : Fragment(R.layout.fragment_book) {
             tvName2.setText(R.string.book_info_to)
             tvAddress2.setText(R.string.book_address_tips)
             tvGoodsWeight.setText("1")
-            tvGoodsName.setText(resources.getStringArray(R.array.cat_goods_type)[0])
+            tvGoodsName.setText(resources.getStringArray(R.array.cat_goods_type).first())
             tvPackageCount.setText("1")
             tvGoodsLength.text = null
             tvGoodsWidth.text = null
             tvGoodsHeight.text = null
             tvGuaranteeValueAmount.setText("0")
-            tvGoodsPrice.setText(resources.getStringArray(R.array.cat_goods_price)[0])
+            tvGoodsPrice.setText(resources.getIntArray(R.array.cat_goods_price).last().toString())
             tvPickUpTime.text = null
             tvNote.text = null
         }
