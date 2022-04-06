@@ -26,13 +26,25 @@
             android:maxLength="4" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/payment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/charge_payment"
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+        android:textColor="?attr/colorOnSurface"
+        app:layout_constraintBottom_toBottomOf="@id/chargeGroups"
+        app:layout_constraintStart_toStartOf="@id/textInputLayout6"
+        app:layout_constraintTop_toTopOf="@id/chargeGroups" />
+
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chargeGroups"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textInputLayout6"
+        app:layout_constraintStart_toEndOf="@id/payment"
         app:layout_constraintTop_toBottomOf="@id/textInputLayout6"
         app:selectionRequired="true"
         app:singleSelection="true">
@@ -64,4 +76,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chargeGroups" />
+
+    <TextView
+        android:id="@+id/pay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/qrCode" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -134,12 +134,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         viewLifecycleOwner.lifecycleScope.launch {
             job1 = launch {
                 amountFlow.debounce(500).collectLatest {
-                    val amount = if (it.isBlank()) {
-                        0
+                    if (it.isBlank()) {
+                        homeViewModel.fetchChargeQrCode(0)
+                        b.pay.text = null
                     } else {
-                        it.toFloat().times(100.6).roundToInt()
+                        val amount = it.toFloat().times(100.6).roundToInt()
+                        homeViewModel.fetchChargeQrCode(amount)
+                        val pay = amount.div(100F)
+                        b.pay.text = getString(R.string.price, pay.toString())
                     }
-                    homeViewModel.fetchChargeQrCode(amount)
                 }
             }
             job2 = launch {
