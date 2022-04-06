@@ -69,45 +69,6 @@ interface ApiService {
         @Query("recordType") recordType: Int
     ): Response<RecordListResult>
 
-    @DELETE
-    suspend fun removePrice(
-        @Url url: String = Constant.API_REMOVE_PRICE,
-        @Query("channelId") channelId: Int
-    ): Response<YiDaBaseResponse<Any>>
-
-    @PUT
-    suspend fun editPrice(
-        @Url url: String = Constant.API_EDIT_PRICE,
-        @Query("userId") userId: Int
-    ): Response<YiDaBaseResponse<Any>>
-
-//        val payload: Map<String, String> = mapOf(
-//            "addPrice" to addPrice,
-//            "channelId" to channelId,
-//            "firstPrice" to firstPrice,
-//            "firstWeight" to firstWeight,
-//            "id" to id,
-//            "limitAddPrice" to limitAddPrice,
-//            "limitFirstPrice" to limitFirstPrice,
-//            "userId" to userId
-//        )
-
-    @POST
-    suspend fun addPrice(
-        @Url url: String = Constant.API_ADD_PRICE,
-        @Query("userId") userId: Int
-    ): Response<YiDaBaseResponse<Any>>
-
-//        val payload: Map<String, String> = mapOf(
-//            "addPrice" to addPrice,
-//            "channelId" to channelId,
-//            "firstPrice" to firstPrice,
-//            "firstWeight" to firstWeight,
-//            "limitAddPrice" to limitAddPrice,
-//            "limitFirstPrice" to limitFirstPrice,
-//            "userId" to userId
-//        )
-
     @GET
     suspend fun clearAccount(
         @Url url: String = Constant.API_CLEAR_ACCOUNT,
@@ -215,4 +176,16 @@ interface ApiService {
         @Url url: String
     ): Response<YiDaBaseResponse<String>>
 
+    @GET
+    suspend fun fetchAgentLevel(
+        @Url url: String = Constant.API_FETCH_POST_CODE
+    ): Response<YiDaBaseResponse<List<AgentLevel>>>
+
+    @PUT
+    suspend fun fetchInviteCode(@Url url: String): Response<YiDaBaseResponse<String>>
+
+    @GET
+    suspend fun fetchRouters(
+        @Url url: String = Constant.API_FETCH_ROUTERS
+    ): Response<YiDaBaseResponse<List<Router>>>
 }

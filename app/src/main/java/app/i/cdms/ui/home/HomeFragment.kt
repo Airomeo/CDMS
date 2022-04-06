@@ -54,26 +54,36 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                homeViewModel.myInfo.collectLatest {
-                    it ?: return@collectLatest
-                    homeViewModel.updateMyInfo(it)
-                    homeViewModel.getNotice()
-                    updateUiWithUser(it)
-                }
-            }
-        }
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                homeViewModel.noticeList.collectLatest {
-                    it ?: return@collectLatest
-                    var text = ""
-                    for (notice in it.notices) {
-                        text = text + notice.updateTime + Html.fromHtml(
-                            notice.noticeContent,
-                            Html.FROM_HTML_MODE_LEGACY
-                        )
+                launch {
+                    mainViewModel.routers.collectLatest {
+                        if (it.isEmpty()) return@collectLatest
+                        val accountRouter = it.find { router -> router.name == "Account" }
+                        val myTeamRouter =
+                            accountRouter?.children?.find { router -> router.name == "My_team" }
+                        binding.team.visibility =
+                            if (myTeamRouter == null) View.GONE else View.VISIBLE
                     }
-                    binding.notice.text = text
+                }
+                launch {
+                    homeViewModel.myInfo.collectLatest {
+                        it ?: return@collectLatest
+                        homeViewModel.updateMyInfo(it)
+                        homeViewModel.getNotice()
+                        updateUiWithUser(it)
+                    }
+                }
+                launch {
+                    homeViewModel.noticeList.collectLatest {
+                        it ?: return@collectLatest
+                        var text = ""
+                        for (notice in it.notices) {
+                            text = text + notice.updateTime + Html.fromHtml(
+                                notice.noticeContent,
+                                Html.FROM_HTML_MODE_LEGACY
+                            )
+                        }
+                        binding.notice.text = text
+                    }
                 }
             }
         }

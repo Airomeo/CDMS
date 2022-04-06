@@ -20,8 +20,8 @@
     <string name="prompt_phone">手机号</string>
     <string name="action_sign_in">登录</string>
     <string name="action_sign_in_short">登录</string>
-    <string name="action_register">开户</string>
-    <string name="welcome">"Welcome!"</string>
+    <string name="action_invite">邀请开户</string>
+    <string name="welcome">"欢迎!"</string>
     <string name="invalid_username">用户名不合法</string>
     <string name="invalid_password">密码长度必须大于5个字符</string>
     <string name="invalid_captcha">验证码不能空</string>
@@ -154,7 +154,6 @@
     <string name="book_price_tips_not_filled">完整填写快递信息后\n将显示所有可用渠道</string>
     <string name="book">下单</string>
     <string name="book_result_dialog_title">下单结果</string>
-    <string name="book_result_dialog_positive_text">复制</string>
     <string name="book_goods_info">物品信息</string>
     <string name="book_tips">注：\n带有* 标记的为选填项\n
         包裹信息填写准确，便于匹配最优惠的渠道。\n
@@ -215,4 +214,7 @@
     <string name="fees_tips_get_delivery_id">请手动刷新获取</string>
     <string name="message_detail">查看详情</string>
     <string name="book_goods_info_clear">全部清除</string>
+    <string name="common_copy">复制</string>
+    <string name="invite_choice_dialog_title">选择代理等级</string>
+    <string name="common_result">结果</string>
 </resources>

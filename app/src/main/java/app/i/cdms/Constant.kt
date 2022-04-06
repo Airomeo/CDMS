@@ -49,9 +49,6 @@ object Constant {
     const val API_MY_TEAM = "$API/wl/myTeam/list"
     const val API_CLEAR_ACCOUNT = "$API/wl/home/clearAccount"
     const val API_RECORD_LIST = "$API/wl/home/recordList"
-    const val API_ADD_PRICE = "$API/wl/home/addPrice"
-    const val API_EDIT_PRICE = "$API/wl/home/editPrice"
-    const val API_REMOVE_PRICE = "$API/wl/home/removePrice"
     const val API_TRANSFER = "$API/wl/userAccount/transfer"
     const val API_NOTICE = "$API/system/notice/list" // no need token
     const val API_ORDER_COUNT = "$API/wl/home/getUserOrderCount"
@@ -67,6 +64,9 @@ object Constant {
     const val API_SUBMIT_ORDER = "$API/commonOrder/submitOrder"
     const val API_GET_COMPARE_FEE = "$API/commonOrder/getCompareFee"
     const val API_GET_DELIVERY_ID = "$API/commonOrder/getDeliveryId"
+    const val API_FETCH_POST_CODE = "$API/getPostCode"
+    const val API_FETCH_INVITE_CODE = "$API/getInviteCode"
+    const val API_FETCH_ROUTERS = "$API/getRouters"
 
     const val API_PARSE_ADDRESS_BY_SF =
         "https://www.sf-express.com/sf-service-owf-web/service/order/batch/orderAddressSplit"

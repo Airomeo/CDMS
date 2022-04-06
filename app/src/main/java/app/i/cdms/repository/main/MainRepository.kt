@@ -36,4 +36,6 @@ class MainRepository @Inject constructor(
             userPrefDataSource.updateAreaList(it)
         }
     }
+
+    suspend fun fetchRouters() = executeResponse { dataSource.fetchRouters() }
 }

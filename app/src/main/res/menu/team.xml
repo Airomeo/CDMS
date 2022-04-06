@@ -37,8 +37,8 @@
     <!--        android:title="@string/action_batch_update_channel"-->
     <!--        app:showAsAction="never" />-->
     <item
-        android:id="@+id/action_register"
-        android:title="@string/action_register"
+        android:id="@+id/action_invite"
+        android:title="@string/action_invite"
         app:showAsAction="never" />
 
 </menu>

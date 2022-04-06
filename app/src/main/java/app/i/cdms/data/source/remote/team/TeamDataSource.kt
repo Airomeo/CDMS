@@ -1,5 +1,6 @@
 package app.i.cdms.data.source.remote.team
 
+import app.i.cdms.Constant
 import app.i.cdms.api.ApiService
 import app.i.cdms.data.model.MyTeam
 import retrofit2.Response
@@ -26,4 +27,9 @@ class TeamDataSource @Inject constructor(private val service: ApiService) {
             balance = balance
         )
     }
+
+    suspend fun fetchAgentLevel() = service.fetchAgentLevel()
+
+    suspend fun fetchInviteCode(level: String) =
+        service.fetchInviteCode(Constant.API_FETCH_INVITE_CODE + "/" + level)
 }

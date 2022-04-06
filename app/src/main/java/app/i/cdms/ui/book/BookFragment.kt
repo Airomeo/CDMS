@@ -784,7 +784,7 @@ class BookFragment : Fragment(R.layout.fragment_book) {
         val dialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.book_result_dialog_title)
             .setMessage(msg)
-            .setPositiveButton(R.string.book_result_dialog_positive_text) { dialog, which ->
+            .setPositiveButton(R.string.common_copy) { dialog, which ->
                 // copy
                 val clipboard =
                     requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager

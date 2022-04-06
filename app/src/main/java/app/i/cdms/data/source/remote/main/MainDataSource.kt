@@ -24,4 +24,6 @@ class MainDataSource @Inject constructor(private val service: ApiService) {
     suspend fun getAreaList(): Response<YiDaBaseResponse<List<Area>>> {
         return service.getAreaList()
     }
+
+    suspend fun fetchRouters() = service.fetchRouters()
 }
