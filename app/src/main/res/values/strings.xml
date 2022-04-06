@@ -29,7 +29,7 @@
     <string name="my_info_id">ID：%s</string>
     <string name="my_info_balance">余额：%s</string>
     <string name="my_info_earns">佣金：%s</string>
-    <string name="my_team">全部用户</string>
+    <string name="my_team">My team</string>
     <string name="my_team_all_users">全部用户：%s位</string>
     <string name="my_team_paying_users">充值用户：%s位</string>
     <string name="my_team_agent_balance">余额：%s</string>
@@ -49,7 +49,6 @@
     <string name="dialog_positive_text">确认</string>
     <string name="dialog_negative_text">取消</string>
     <string name="common_copy">Copy</string>
-    <string name="common_result">Result</string>
     <string name="dialog_next">下一步</string>
     <string name="agent_dialog_transfer">转账</string>
     <string name="agent_transfer">转账</string>
@@ -71,7 +70,7 @@
     </array>
     <string name="agent_withdraw_success">清账成功</string>
     <string name="agent_update_channel">配置渠道信息</string>
-    <string name="agent_channel_detail">渠道明细</string>
+    <string name="agent_channel_detail">Channels</string>
     <string name="register_and_set_channel">开户并配置渠道</string>
     <string name="agent_channel_config">该用户当前的渠道配置信息</string>
     <string name="transfer_label_amount">金额</string>
@@ -216,4 +215,9 @@
     <string name="fees_tips_get_delivery_id">请手动刷新获取</string>
     <string name="message_detail">查看详情</string>
     <string name="invite_choice_dialog_title">Select agent level</string>
+    <string name="common_result">Result</string>
+    <string name="common_charge">Charge</string>
+    <string name="common_wechat">WeChat</string>
+    <string name="common_alipay">Alipay</string>
+    <string name="charge_tips">在线充值实时到账，每笔收取0.6%手续费\n将二维码截图保存，然后打开微信\n方案一：微信扫一扫，选择截图扫码\n方案二：微信发给别人，长按截图扫码\n二维码有效时间5分钟，请及时扫码支付，点击可重新获取。付款后请下拉刷新余额</string>
 </resources>

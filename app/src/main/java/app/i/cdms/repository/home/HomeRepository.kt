@@ -51,4 +51,7 @@ class HomeRepository @Inject constructor(
     suspend fun getNotice(): NoticeList? {
         return executeResponse { dataSource.getNotice() }
     }
+
+    suspend fun fetchChargeQrCode(amount: Int) =
+        executeResponse { dataSource.fetchChargeQrCode(amount) }
 }

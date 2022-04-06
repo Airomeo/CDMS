@@ -217,4 +217,8 @@
     <string name="common_copy">复制</string>
     <string name="invite_choice_dialog_title">选择代理等级</string>
     <string name="common_result">结果</string>
+    <string name="common_charge">充值</string>
+    <string name="common_wechat">微信</string>
+    <string name="common_alipay">支付宝</string>
+    <string name="charge_tips">在线充值实时到账，每笔收取0.6%手续费\n将二维码截图保存，然后打开微信\n方案一：微信扫一扫，选择截图扫码\n方案二：微信发给别人，长按截图扫码\n二维码有效时间5分钟，请及时扫码支付，点击可重新获取。付款后请下拉刷新余额</string>
 </resources>

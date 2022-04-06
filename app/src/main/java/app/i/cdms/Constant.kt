@@ -67,6 +67,7 @@ object Constant {
     const val API_FETCH_POST_CODE = "$API/getPostCode"
     const val API_FETCH_INVITE_CODE = "$API/getInviteCode"
     const val API_FETCH_ROUTERS = "$API/getRouters"
+    const val API_CHARGE = "$API/wxPay/getPrePayNative?totalFee=10060"
 
     const val API_PARSE_ADDRESS_BY_SF =
         "https://www.sf-express.com/sf-service-owf-web/service/order/batch/orderAddressSplit"

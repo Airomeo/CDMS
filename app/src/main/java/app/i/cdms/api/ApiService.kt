@@ -188,4 +188,10 @@ interface ApiService {
     suspend fun fetchRouters(
         @Url url: String = Constant.API_FETCH_ROUTERS
     ): Response<YiDaBaseResponse<List<Router>>>
+
+    @GET
+    suspend fun fetchChargeQrCode(
+        @Url url: String = Constant.API_CHARGE,
+        @Query("totalFee") amount: Int
+    ): Response<YiDaBaseResponse<ChargeQrCode>>
 }

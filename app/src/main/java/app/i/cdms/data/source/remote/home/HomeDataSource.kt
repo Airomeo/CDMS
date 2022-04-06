@@ -23,4 +23,6 @@ class HomeDataSource @Inject constructor(private val service: ApiService) {
     suspend fun getNotice(): Response<NoticeList> {
         return service.getNotice()
     }
+
+    suspend fun fetchChargeQrCode(amount: Int) = service.fetchChargeQrCode(amount = amount)
 }
