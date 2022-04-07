@@ -62,14 +62,6 @@ interface ApiService {
     ): Response<MyTeam>
 
     @GET
-    suspend fun recordList(
-        @Url url: String = Constant.API_RECORD_LIST,
-        @Query("pageNum") pageNum: Int,
-        @Query("pageSize") pageSize: Int,
-        @Query("recordType") recordType: Int
-    ): Response<RecordListResult>
-
-    @GET
     suspend fun clearAccount(
         @Url url: String = Constant.API_CLEAR_ACCOUNT,
         @Query("userId") userId: Int
@@ -84,11 +76,6 @@ interface ApiService {
         @Query("recordType") recordType: String,
         @Query("changeAmount") changeAmount: Float
     ): Response<YiDaBaseResponse<Any>>
-
-    @GET
-    suspend fun getChannelConfigForAllUsers(
-        @Url url: String
-    ): Response<YiDaBaseResponse<List<ChannelConfig>>>
 
     @GET
     @Headers(
@@ -115,23 +102,6 @@ interface ApiService {
     suspend fun getCustomerChannelDetail(
         @Url url: String
     ): Response<YiDaBaseResponse<List<CustomerChannelZone>>>
-
-    @POST
-    suspend fun bindChannelToUser(
-        @Url url: String = Constant.API_BIND_CHANNEL_TO_USER,
-        @Body payload: RequestBody
-    ): Response<YiDaBaseResponse<Any>>
-
-    @PUT
-    suspend fun updateChildPrice(
-        @Url url: String = Constant.API_UPDATE_CHILD_PRICE,
-        @Body payload: RequestBody
-    ): Response<YiDaBaseResponse<Any>>
-
-    @DELETE
-    suspend fun deleteChildPrice(
-        @Url url: String
-    ): Response<YiDaBaseResponse<Any>>
 
     @GET
     suspend fun getAreaList(

@@ -1,6 +1,5 @@
 package app.i.cdms.repository.agent
 
-import app.i.cdms.data.model.ChannelConfig
 import app.i.cdms.data.model.OrderCount
 import app.i.cdms.data.model.YiDaBaseResponse
 import app.i.cdms.data.source.remote.agent.AgentDataSource
@@ -36,54 +35,6 @@ class AgentRepository @Inject constructor(private val dataSource: AgentDataSourc
                 remark,
                 recordType,
                 changeAmount
-            )
-        }
-    }
-
-    suspend fun getChannelConfigForAllUsers(channelId: Int): YiDaBaseResponse<List<ChannelConfig>>? {
-        return executeResponse { dataSource.getChannelConfigForAllUsers(channelId) }
-    }
-
-    suspend fun bindChannelToUser(
-        firstCommission: Float?,
-        addCommission: Float?,
-        channelId: Int,
-        customerId: Int,
-        discountPercent: Float?,
-        perAdd: Float?,
-        userIds: List<Int>
-    ): YiDaBaseResponse<Any>? {
-        return executeResponse {
-            dataSource.bindChannelToUser(
-                firstCommission,
-                addCommission,
-                channelId,
-                customerId,
-                discountPercent,
-                perAdd,
-                userIds
-            )
-        }
-    }
-
-    suspend fun updateChildPrice(
-        firstCommission: Float?,
-        addCommission: Float?,
-        channelId: Int,
-        customerId: Int,
-        discountPercent: Float?,
-        perAdd: Float?,
-        userIds: List<Int>
-    ): YiDaBaseResponse<Any>? {
-        return executeResponse {
-            dataSource.updateChildPrice(
-                firstCommission,
-                addCommission,
-                channelId,
-                customerId,
-                discountPercent,
-                perAdd,
-                userIds
             )
         }
     }

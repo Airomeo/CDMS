@@ -13,5 +13,9 @@ data class OrderCount(
     @Json(name = "stoOrderCount")
     val stoOrderCount: Int,
     @Json(name = "ytoOrderCount")
-    val ytoOrderCount: Int
+    val ytoOrderCount: Int,
+    @Json(name = "jtOrderCount")
+    val jtOrderCount: Int,
+    @Json(name = "sfOrderCount")
+    val sfOrderCount: Int,
 )

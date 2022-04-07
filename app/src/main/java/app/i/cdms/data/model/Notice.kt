@@ -19,7 +19,7 @@ data class Notice(
     @Json(name = "noticeType")
     val noticeType: String,
     @Json(name = "params")
-    val params: Params,
+    val params: Any,
     @Json(name = "remark")
     val remark: String?,
     @Json(name = "searchValue")
@@ -30,4 +30,16 @@ data class Notice(
     val updateBy: String,
     @Json(name = "updateTime")
     val updateTime: String
+)
+
+@JsonClass(generateAdapter = true)
+data class NoticeList(
+    @Json(name = "code")
+    val code: Int,
+    @Json(name = "msg")
+    val msg: String,
+    @Json(name = "rows")
+    val notices: List<Notice>,
+    @Json(name = "total")
+    val total: Int
 )

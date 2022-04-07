@@ -5,6 +5,56 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
+data class ParsedAddressBySf(
+    @Json(name = "hmtareaType")
+    val hmtareaType: Int,
+    @Json(name = "latitude")
+    val latitude: Any?,
+    @Json(name = "lontitude")
+    val lontitude: Any?,
+    @Json(name = "mobile")
+    val mobile: String?,
+    @Json(name = "originDestRegions")
+    val originDestRegions: List<OriginDestRegion>,
+    @Json(name = "personalName")
+    val personalName: String?,
+    @Json(name = "site")
+    val site: String,
+    @Json(name = "splitType")
+    val splitType: Any?,
+    @Json(name = "telephone")
+    val telephone: String?
+)
+
+@JsonClass(generateAdapter = true)
+data class OriginDestRegion(
+    @Json(name = "availableAsDestination")
+    val availableAsDestination: Boolean,
+    @Json(name = "availableAsOrigin")
+    val availableAsOrigin: Boolean,
+    @Json(name = "code")
+    val code: String,
+    @Json(name = "countryCode")
+    val countryCode: String,
+    @Json(name = "distId")
+    val distId: String,
+    @Json(name = "id")
+    val id: String,
+    @Json(name = "lang")
+    val lang: String,
+    @Json(name = "level")
+    val level: Int,
+    @Json(name = "name")
+    val name: String,
+    @Json(name = "parentCode")
+    val parentCode: String,
+    @Json(name = "parentId")
+    val parentId: String,
+    @Json(name = "rateCode")
+    val rateCode: String
+)
+
+@JsonClass(generateAdapter = true)
 data class ParsedAddressByJd(
     @Json(name = "address")
     val address: String,

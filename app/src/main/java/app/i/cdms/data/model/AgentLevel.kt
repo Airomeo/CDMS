@@ -6,29 +6,29 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class AgentLevel(
     @Json(name = "createBy")
-    val createBy: String,
+    val createBy: String, // admin
     @Json(name = "createTime")
-    val createTime: String,
+    val createTime: String, // 2022-03-02 23:57:28
     @Json(name = "flag")
-    val flag: Boolean,
+    val flag: Boolean, // false
     @Json(name = "params")
-    val params: Params,
+    val params: Any,
     @Json(name = "postCode")
-    val postCode: String,
+    val postCode: String, // level_3
     @Json(name = "postId")
-    val postId: Int,
+    val postId: Int, // 4
     @Json(name = "postName")
-    val postName: String,
+    val postName: String, // 二级代理
     @Json(name = "postSort")
-    val postSort: String,
+    val postSort: String, // 4
     @Json(name = "remark")
-    val remark: Any?,
+    val remark: Any?, // null
     @Json(name = "searchValue")
-    val searchValue: Any?,
+    val searchValue: Any?, // null
     @Json(name = "status")
-    val status: String,
+    val status: String, // 0
     @Json(name = "updateBy")
-    val updateBy: String,
+    val updateBy: String, // admin
     @Json(name = "updateTime")
-    val updateTime: String
+    val updateTime: String // 2022-03-03 01:26:49
 )

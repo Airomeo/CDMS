@@ -15,7 +15,7 @@ data class Router(
     @Json(name = "hidden")
     val hidden: Boolean,
     @Json(name = "meta")
-    val meta: RouterMeta?,
+    val meta: Meta?,
     @Json(name = "name")
     val name: String?,
     @Json(name = "path")
@@ -24,4 +24,16 @@ data class Router(
     val redirect: String?,
     @Json(name = "query")
     val query: String?
+)
+
+@JsonClass(generateAdapter = true)
+data class Meta(
+    @Json(name = "icon")
+    val icon: String,
+    @Json(name = "link")
+    val link: Any?,
+    @Json(name = "noCache")
+    val noCache: Boolean,
+    @Json(name = "title")
+    val title: String
 )

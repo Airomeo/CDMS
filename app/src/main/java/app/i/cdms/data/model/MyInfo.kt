@@ -17,7 +17,7 @@ data class MyInfo(
     @Json(name = "id")
     val id: Int,
     @Json(name = "params")
-    val params: Params,
+    val params: Any,
     @Json(name = "parentUserId")
     val parentUserId: Int,
     @Json(name = "payQrCode")

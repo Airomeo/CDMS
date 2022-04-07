@@ -48,17 +48,11 @@ object Constant {
     const val API_ADD_CHILD = "$API/userAccountAudit"
     const val API_MY_TEAM = "$API/wl/myTeam/list"
     const val API_CLEAR_ACCOUNT = "$API/wl/home/clearAccount"
-    const val API_RECORD_LIST = "$API/wl/home/recordList"
     const val API_TRANSFER = "$API/wl/userAccount/transfer"
     const val API_NOTICE = "$API/system/notice/list" // no need token
     const val API_ORDER_COUNT = "$API/wl/home/getUserOrderCount"
     const val API_CUSTOMER_CHANNEL = "$API/price/self"
     const val API_CUSTOMER_CHANNEL_DETAIL = "$API/price/selfDetail"
-    const val API_GET_CHILDREN_PRICE_BY_CHANNEL =
-        "$API/logistics/userChannelPrice/getChildrenPriceByChannel"
-    const val API_BIND_CHANNEL_TO_USER = "$API/logistics/userChannelPrice/bindChannel2Users"
-    const val API_UPDATE_CHILD_PRICE = "$API/logistics/userChannelPrice/updateChildPrice"
-    const val API_DELETE_CHILD_PRICE = "$API/logistics/userChannelPrice/126/2770"
     const val API_GET_AREA = "$API/logistics/area/getAreaCascaderVo" // no need token
     const val API_GET_PER_ORDER_FEE = "$API/commonOrder/getPreOrderFee"
     const val API_SUBMIT_ORDER = "$API/commonOrder/submitOrder"
