@@ -45,6 +45,8 @@
     <string name="agent_jd_order_count">京东日单\n%s</string>
     <string name="agent_sto_order_count">申通日单\n%s</string>
     <string name="agent_yto_order_count">圆通日单\n%s</string>
+    <string name="agent_jt_order_count">极兔日单\n%s</string>
+    <string name="agent_sf_order_count">顺丰日单\n%s</string>
     <string name="dialog_title_warning">警告</string>
     <string name="dialog_positive_text">确认</string>
     <string name="dialog_negative_text">取消</string>

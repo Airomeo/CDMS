@@ -63,19 +63,26 @@ class AgentFragment : Fragment(R.layout.fragment_agent) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 agentViewModel.orderCount.collectLatest {
                     with(binding) {
-                        tvYto.text =
+                        yto.text =
                             getString(
                                 R.string.agent_yto_order_count,
                                 it?.ytoOrderCount.toString()
                             )
-                        tvSto.text =
+                        sto.text =
                             getString(
                                 R.string.agent_sto_order_count,
                                 it?.stoOrderCount.toString()
                             )
-                        tvJd.text =
+                        jd.text =
                             getString(R.string.agent_jd_order_count, it?.jdOrderCount.toString())
-                        tvDpk.text =
+                        jt.text =
+                            getString(
+                                R.string.agent_jt_order_count,
+                                it?.jtOrderCount.toString()
+                            )
+                        sf.text =
+                            getString(R.string.agent_sf_order_count, it?.sfOrderCount.toString())
+                        dpk.text =
                             getString(
                                 R.string.agent_dpk_order_count,
                                 it?.dopOrderCount.toString()
