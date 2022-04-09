@@ -55,8 +55,8 @@ class ChannelRecyclerViewAdapter(
             }
             channelName.text = channel.channelName
             customerType.text = when (channel.customerType) {
-                "personal" -> "个人"
-                "business" -> "商家"
+                "kd" -> "快递"
+                "ky" -> "快运"
                 "poizon" -> "得物"
                 else -> "其他"
             }
@@ -286,8 +286,8 @@ class ChannelRecyclerViewAdapter(
                 else -> channel.backFeeType
             }
             backFeeType.text = root.context.getString(R.string.channel_back_fee_type, backFeeStr)
-            priority.text =
-                root.context.getString(R.string.channel_priority, channel.priority.toString())
+//            priority.text =
+//                root.context.getString(R.string.channel_priority, channel.priority.toString())
             val areaStr = when (channel.areaType) {
                 "P" -> "省"
                 "C" -> "城"

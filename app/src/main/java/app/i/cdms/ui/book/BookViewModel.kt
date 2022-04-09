@@ -55,7 +55,6 @@ class BookViewModel @Inject constructor(
                 },
                 null,
                 null,
-                null,
                 it.lightGoods,
                 it.customerType
             )
@@ -130,31 +129,31 @@ class BookViewModel @Inject constructor(
      * @return
      */
     fun fetchCompareFee() {
-        val result = Collections.synchronizedList(arrayListOf<ChannelFees>())
+        val list = Collections.synchronizedList(arrayListOf<ChannelFees>())
         viewModelScope.launch(Dispatchers.IO) {
             awaitAll(
                 async {
-                    val personalResult =
-                        bookRepository.fetchCompareFee(compareFeeBody.value.copy(customerType = "personal"))
-                    personalResult?.data?.let { list ->
-                        list.forEach { channel ->
-                            channel.customerType = "personal"
-                            result.add(channel)
+                    val result =
+                        bookRepository.fetchCompareFee(compareFeeBody.value.copy(customerType = "kd"))
+                    result?.data?.let {
+                        it.forEach { channel ->
+                            channel.customerType = "kd"
+                            list.add(channel)
                         }
                     }
                 },
                 async {
-                    val businessResult =
-                        bookRepository.fetchCompareFee(compareFeeBody.value.copy(customerType = "business"))
-                    businessResult?.data?.let { list ->
-                        list.forEach { channel ->
-                            channel.customerType = "business"
-                            result.add(channel)
+                    val result =
+                        bookRepository.fetchCompareFee(compareFeeBody.value.copy(customerType = "ky"))
+                    result?.data?.let {
+                        it.forEach { channel ->
+                            channel.customerType = "ky"
+                            list.add(channel)
                         }
                     }
                 }
             )
-            _channelFees.value = result
+            _channelFees.value = list
         }
     }
 

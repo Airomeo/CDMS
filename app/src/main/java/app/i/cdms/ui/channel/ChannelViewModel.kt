@@ -43,7 +43,7 @@ class ChannelViewModel @Inject constructor(private val mainRepository: MainRepos
     private fun fetchCustomerChannels() {
         viewModelScope.launch {
             val list = mutableListOf<CustomerChannels>()
-            val customerType = listOf("personal", "business", "poizon")
+            val customerType = listOf("kd", "ky", "poizon")
             for (customer in customerType) {
                 val result = mainRepository.fetchCustomerChannels(customer)
                 result?.data?.let { list.add(it) }
@@ -62,7 +62,6 @@ class ChannelViewModel @Inject constructor(private val mainRepository: MainRepos
                     customerChannel.limitWeight,
                     zone,
                     customerChannel.areaType,
-                    customerChannel.priority,
                     customerChannel.backFeeType,
                     customerChannel.lightGoods,
                     customerChannel.customerType,
@@ -77,7 +76,6 @@ class ChannelViewModel @Inject constructor(private val mainRepository: MainRepos
                     customerChannel.limitWeight,
                     zone.blocks,
                     customerChannel.areaType,
-                    customerChannel.priority,
                     customerChannel.backFeeType,
                     customerChannel.lightGoods,
                     customerChannel.customerType,

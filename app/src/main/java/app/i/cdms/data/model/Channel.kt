@@ -13,10 +13,9 @@ data class Channel(
     val tariffZone: Any,// DiscountZone or ProfitZone
     // "1-1公斤,价格5.2续0; 2-3公斤,价格6.9续0; 4-50公斤,价格8.6续1.8;" or "折扣0.45,单笔加收0.5"
     val areaType: String?,// "areaType": "P",
-    val priority: Int?,// "priority": 2,
     val backFeeType: String?,// "backFeeType": "whole",
     val lightGoods: String,// "lightGoods": "8000.0",
-    var customerType: String? = null,// bussiness or personal or poizon
+    var customerType: String? = null,// ky or kd or poizon
     var unfold: Boolean = false
 )
 
@@ -30,7 +29,7 @@ data class CustomerChannel(
     val backFeeType: String,
     @Json(name = "customerName")// "customerName": "极兔22P艾悦-外部渠道",
     val customerName: String,
-    @Json(name = "customerType")// "customerType": "personal",
+    @Json(name = "customerType")// "customerType": "kd",
     val customerType: String,
     @Json(name = "deliveryBusiness")// "deliveryBusiness": "JT_BK",
     val deliveryBusiness: String,
@@ -40,8 +39,6 @@ data class CustomerChannel(
     val lightGoods: String,
     @Json(name = "limitWeight")// "limitWeight": "30.0",
     val limitWeight: String,
-    @Json(name = "priority")// "priority": 2,
-    val priority: Int,
     @Json(name = "channelPrices")// "channelPrices": "1区:1-60公斤,价格9.6续2.1;\n2区:1-60公斤,价格9.6续3.4;\n3区:1-60公斤,价格9.6续4.1;\n4区:1-60公斤,价格9.6续5.2;\n5区:1-60公斤,价格11.5续8;"
     val channelPrices: String,
 )

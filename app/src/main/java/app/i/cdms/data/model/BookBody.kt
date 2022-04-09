@@ -116,7 +116,7 @@ data class BookBody(
     "goods": "1",
     "packageCount": 1,
     "weight": 1,
-    "customerType": "personal",
+    "customerType": "kd",
     "guaranteeValueAmount": 111,
     "dateTime": "2022-02-14 15:00-16:00",
     "remark": "备注",
