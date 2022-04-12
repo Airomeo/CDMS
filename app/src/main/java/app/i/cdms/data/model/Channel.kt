@@ -1,6 +1,7 @@
 package app.i.cdms.data.model
 
 
+import app.i.cdms.utils.ChannelUtil
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -107,3 +108,75 @@ data class ChannelFees(
     val originalFee: String,
     var customerType: String? = null
 )
+
+@JsonClass(generateAdapter = true)
+data class ChannelsOf<out T>(
+    @Json(name = "DOP")
+    val dop: List<T>?,
+    @Json(name = "JD")
+    val jd: List<T>?,
+    @Json(name = "STO-INT")
+    val sto: List<T>?,
+    @Json(name = "YTO")
+    val yto: List<T>?,
+    @Json(name = "JT")
+    val jt: List<T>?,
+    @Json(name = "SF")
+    val sf: List<T>?,
+) {
+    fun mapNotNull(): List<T> {
+        val list = mutableListOf<T>()
+        sto?.let { list.addAll(it) }
+        yto?.let { list.addAll(it) }
+        jd?.let { list.addAll(it) }
+        dop?.let { list.addAll(it) }
+        jt?.let { list.addAll(it) }
+        sf?.let { list.addAll(it) }
+        return list
+    }
+}
+
+@JsonClass(generateAdapter = true)
+data class PreOrderChannel(
+    @Json(name = "calcFeeType")
+    val calcFeeType: String, // profit
+    @Json(name = "channelId")
+    val channelId: String, // 56
+    @Json(name = "channelName")
+    val channelName: String, // 德邦22P艾悦-首重全国通渠道1区
+    @Json(name = "deliveryType")
+    val deliveryType: String, // DOP
+    @Json(name = "isBest")
+    val isBest: Boolean?, // true
+    @Json(name = "lightGoods")
+    val lightGoods: String, // 6000.0
+    @Json(name = "limitWeight")
+    val limitWeight: String, // 60.0
+    @Json(name = "originalFee")
+    val originalFee: String, // 10
+    @Json(name = "originalPrice")
+    val originalPrice: String, // 1-0公斤,价格10续2.14;
+    @Json(name = "preBjFee")
+    val preBjFee: String?, // 1
+    @Json(name = "preOrderFee")
+    val preOrderFee: String, // 10.6
+    @Json(name = "price")
+    val price: String // 1-60公斤,价格9.6续2.1;
+) {
+    val uiChannel = Channel(
+        calcFeeType,
+        if (preBjFee == null) {
+            "¥$preOrderFee$channelName"
+        } else {
+            "¥$preOrderFee(保费：$preBjFee)$channelName"
+        },
+        "",
+        limitWeight,
+        if (calcFeeType == "profit") ChannelUtil.parsePrice(price)
+        else ChannelUtil.parseToDiscountZone(price)[0],
+        null,
+        null,
+        lightGoods,
+        null,
+    )
+}

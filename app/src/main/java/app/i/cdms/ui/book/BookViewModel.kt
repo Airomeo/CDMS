@@ -28,12 +28,6 @@ class BookViewModel @Inject constructor(
     private val _parsedAddressBySf = MutableStateFlow<List<ParsedAddressBySf>?>(null)
     val parsedAddressBySf = _parsedAddressBySf.asStateFlow()
 
-    // 预下单结果
-    // private val _preOrderFeeResult = MutableStateFlow<ChannelFees?>(null)
-    // val preOrderFeeResult = _preOrderFeeResult.asStateFlow()
-    private val _preOrderFeeResult = MutableSharedFlow<ChannelFees?>()
-    val preOrderFeeResult = _preOrderFeeResult.asSharedFlow()
-
     // 订单号
     private val _deliveryId = MutableSharedFlow<String?>()
     val deliveryId = _deliveryId.asSharedFlow()
@@ -62,8 +56,40 @@ class BookViewModel @Inject constructor(
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     // 下单请求需要提交的参数
-    val _bookBody = MutableStateFlow(BookBody())
+    private val _bookBody = MutableStateFlow(BookBody())
     val bookBody = _bookBody.asStateFlow()
+
+    // 可用渠道列表
+    val smartPreOrderChannels = _bookBody
+        .mapLatest {
+            // 转换成下单前查询可用渠道的参数
+            BookBody(
+                goods = it.goods,
+                packageCount = it.packageCount,
+                receiveAddress = it.receiveAddress,
+                receiveCity = it.receiveCity,
+                receiveDistrict = it.receiveDistrict,
+                receiveMobile = it.receiveMobile,
+                receiveName = it.receiveName,
+                receiveProvince = it.receiveProvince,
+                receiveProvinceCode = it.receiveProvinceCode,
+                receiveTel = it.receiveTel,
+                receiveValues = it.receiveValues,
+                senderAddress = it.senderAddress,
+                senderCity = it.senderCity,
+                senderDistrict = it.senderDistrict,
+                senderMobile = it.senderMobile,
+                senderName = it.senderName,
+                senderProvince = it.senderProvince,
+                senderProvinceCode = it.senderProvinceCode,
+                senderTel = it.senderTel,
+                senderValues = it.senderValues,
+                weight = it.weight,
+            )
+        }
+        .distinctUntilChanged()
+        .mapLatest { fetchSmartPreOrderChannels(it) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
     // 比价请求需要提交的参数
     val compareFeeBody = _bookBody.map {
@@ -76,11 +102,6 @@ class BookViewModel @Inject constructor(
             it.weight,
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), CompareFeeBody())
-
-    // 用户当前选择的快递类型
-    val selectedChannel = _bookBody.map {
-        it.deliveryType to it.customerType
-    }
 
     // 下单结果
     private val _bookResult = MutableSharedFlow<BookResult?>()
@@ -158,14 +179,15 @@ class BookViewModel @Inject constructor(
     }
 
     /**
-     * 选中某一个渠道后预下单，返回预计费用等信息
+     * 智能下单，返回所有渠道预计费用等信息
      *
      * @return
      */
-    fun fetchPreOrderFee() {
-        viewModelScope.launch {
-            val result = bookRepository.fetchPreOrderFee(bookBody.value)
-            _preOrderFeeResult.emit(result?.data)
+    private suspend fun fetchSmartPreOrderChannels(body: BookBody): ChannelsOf<PreOrderChannel>? {
+        return if (body.isReadyForPreOrder) {
+            bookRepository.fetchSmartPreOrderChannels(body)?.data
+        } else {
+            null
         }
     }
 
@@ -176,10 +198,6 @@ class BookViewModel @Inject constructor(
      */
     fun book() {
         viewModelScope.launch {
-            if (bookBody.value.deliveryType == "STO-INT") {
-                // qty暂时用packageCount这个替代
-                updateBookBodyFlow(bookBody.value.copy(qty = bookBody.value.packageCount))
-            }
             val result = bookRepository.submitOrder(bookBody.value)
             _bookResult.emit(result?.data)
         }

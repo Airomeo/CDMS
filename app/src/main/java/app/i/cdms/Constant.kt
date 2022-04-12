@@ -54,14 +54,14 @@ object Constant {
     const val API_CUSTOMER_CHANNEL = "$API/price/self"
     const val API_CUSTOMER_CHANNEL_DETAIL = "$API/price/selfDetail"
     const val API_GET_AREA = "$API/logistics/area/getAreaCascaderVo" // no need token
-    const val API_GET_PER_ORDER_FEE = "$API/commonOrder/getPreOrderFee"
+    const val API_SMART_PRE_ORDER = "$API/commonOrder/smartPreOrder"
     const val API_SUBMIT_ORDER = "$API/commonOrder/submitOrder"
     const val API_GET_COMPARE_FEE = "$API/commonOrder/getCompareFee"
     const val API_GET_DELIVERY_ID = "$API/commonOrder/getDeliveryId"
     const val API_FETCH_POST_CODE = "$API/getPostCode"
     const val API_FETCH_INVITE_CODE = "$API/getInviteCode"
     const val API_FETCH_ROUTERS = "$API/getRouters"
-    const val API_CHARGE = "$API/wxPay/getPrePayNative?totalFee=10060"
+    const val API_CHARGE = "$API/wxPay/getPrePayNative"
 
     const val API_PARSE_ADDRESS_BY_SF =
         "https://www.sf-express.com/sf-service-owf-web/service/order/batch/orderAddressSplit"

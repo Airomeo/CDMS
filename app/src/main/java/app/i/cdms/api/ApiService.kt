@@ -115,10 +115,10 @@ interface ApiService {
     ): Response<YunYangBaseResponse<ParsedAddressByJd>>
 
     @POST
-    suspend fun fetchPreOrderFee(
-        @Url url: String = Constant.API_GET_PER_ORDER_FEE,
+    suspend fun fetchSmartPreOrderChannels(
+        @Url url: String = Constant.API_SMART_PRE_ORDER,
         @Body payload: RequestBody
-    ): Response<YiDaBaseResponse<ChannelFees>>
+    ): Response<YiDaBaseResponse<ChannelsOf<PreOrderChannel>>>
 
     @POST
     suspend fun submitOrder(

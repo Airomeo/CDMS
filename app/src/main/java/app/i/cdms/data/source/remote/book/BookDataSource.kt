@@ -3,6 +3,7 @@ package app.i.cdms.data.source.remote.book
 import app.i.cdms.Constant
 import app.i.cdms.api.ApiService
 import app.i.cdms.data.model.*
+import com.squareup.moshi.Moshi
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
@@ -32,99 +33,21 @@ class BookDataSource @Inject constructor(private val service: ApiService) {
         return service.parseAddressBySf(payload = payload)
     }
 
-    suspend fun fetchPreOrderFee(
+    suspend fun fetchSmartPreOrderChannels(
         bookBody: BookBody
-    ): Response<YiDaBaseResponse<ChannelFees>> {
-        val payload = JSONObject()
-            .put("senderAddress", bookBody.senderAddress)
-            .put("senderMobile", bookBody.senderMobile)
-            .put("senderTel", bookBody.senderTel)
-            .put("senderName", bookBody.senderName)
-            .put("type", bookBody.type)
-            .put("senderValues", bookBody.senderValues)
-            .put("senderDesc", bookBody.senderDesc)
-            .put("senderAddressDetail", bookBody.senderAddressDetail)
-            .put("senderProvinceCode", bookBody.senderProvinceCode)
-            .put("senderProvince", bookBody.senderProvince)
-            .put("senderCity", bookBody.senderCity)
-            .put("senderDistrict", bookBody.senderDistrict)
-            .put("receiveAddressDetail", bookBody.receiveAddressDetail)
-            .put("receiveAddress", bookBody.receiveAddress)
-            .put("receiveMobile", bookBody.receiveMobile)
-            .put("receiveTel", bookBody.receiveTel)
-            .put("receiveName", bookBody.receiveName)
-            .put("receiveValues", bookBody.receiveValues)
-            .put("receiveDesc", bookBody.receiveDesc)
-            .put("receiveProvinceCode", bookBody.receiveProvinceCode)
-            .put("receiveProvince", bookBody.receiveProvince)
-            .put("receiveCity", bookBody.receiveCity)
-            .put("receiveDistrict", bookBody.receiveDistrict)
-            .put("deliveryType", bookBody.deliveryType)
-            .put("goods", bookBody.goods)
-            .put("packageCount", bookBody.packageCount)
-            .put("weight", bookBody.weight)
-            .put("customerType", bookBody.customerType)
-            .put("guaranteeValueAmount", bookBody.guaranteeValueAmount)
-            .put("dateTime", bookBody.dateTime)
-            .put("remark", bookBody.remark)
-            .put("vloumLong", bookBody.vloumLong)
-            .put("vloumWidth", bookBody.vloumWidth)
-            .put("vloumHeight", bookBody.vloumHeight)
-            .put("pickUpStartTime", bookBody.pickUpStartTime)
-            .put("pickUpEndTime", bookBody.pickUpEndTime)
-            .put("guaranteeValue", bookBody.guaranteeValue)
-            .put("qty", bookBody.qty)
-            .put("unitPrice", bookBody.unitPrice)
-            .toString()
+    ): Response<YiDaBaseResponse<ChannelsOf<PreOrderChannel>>> {
+        val payload = BookBodyJsonAdapter(Moshi.Builder().build())
+            .toJson(bookBody)
             .toRequestBody("application/json".toMediaType())
 
-        return service.fetchPreOrderFee(payload = payload)
+        return service.fetchSmartPreOrderChannels(payload = payload)
     }
 
     suspend fun submitOrder(
         bookBody: BookBody
     ): Response<YiDaBaseResponse<BookResult>> {
-        val payload = JSONObject()
-            .put("senderAddress", bookBody.senderAddress)
-            .put("senderMobile", bookBody.senderMobile)
-            .put("senderTel", bookBody.senderTel)
-            .put("senderName", bookBody.senderName)
-            .put("type", bookBody.type)
-            .put("senderValues", bookBody.senderValues)
-            .put("senderDesc", bookBody.senderDesc)
-            .put("senderAddressDetail", bookBody.senderAddressDetail)
-            .put("senderProvinceCode", bookBody.senderProvinceCode)
-            .put("senderProvince", bookBody.senderProvince)
-            .put("senderCity", bookBody.senderCity)
-            .put("senderDistrict", bookBody.senderDistrict)
-            .put("receiveAddressDetail", bookBody.receiveAddressDetail)
-            .put("receiveAddress", bookBody.receiveAddress)
-            .put("receiveMobile", bookBody.receiveMobile)
-            .put("receiveTel", bookBody.receiveTel)
-            .put("receiveName", bookBody.receiveName)
-            .put("receiveValues", bookBody.receiveValues)
-            .put("receiveDesc", bookBody.receiveDesc)
-            .put("receiveProvinceCode", bookBody.receiveProvinceCode)
-            .put("receiveProvince", bookBody.receiveProvince)
-            .put("receiveCity", bookBody.receiveCity)
-            .put("receiveDistrict", bookBody.receiveDistrict)
-            .put("deliveryType", bookBody.deliveryType)
-            .put("goods", bookBody.goods)
-            .put("packageCount", bookBody.packageCount)
-            .put("weight", bookBody.weight)
-            .put("customerType", bookBody.customerType)
-            .put("guaranteeValueAmount", bookBody.guaranteeValueAmount)
-            .put("dateTime", bookBody.dateTime)
-            .put("remark", bookBody.remark)
-            .put("vloumLong", bookBody.vloumLong)
-            .put("vloumWidth", bookBody.vloumWidth)
-            .put("vloumHeight", bookBody.vloumHeight)
-            .put("pickUpStartTime", bookBody.pickUpStartTime)
-            .put("pickUpEndTime", bookBody.pickUpEndTime)
-            .put("guaranteeValue", bookBody.guaranteeValue)
-            .put("qty", bookBody.qty)
-            .put("unitPrice", bookBody.unitPrice)
-            .toString()
+        val payload = BookBodyJsonAdapter(Moshi.Builder().build())
+            .toJson(bookBody)
             .toRequestBody("application/json".toMediaType())
 
         return service.submitOrder(payload = payload)

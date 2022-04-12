@@ -54,22 +54,11 @@
     <string name="dialog_next">下一步</string>
     <string name="agent_dialog_transfer">转账</string>
     <string name="agent_transfer">转账</string>
-    <array name="cat_transfer_amount" translatable="false">
-        <item>50</item>
-        <item>100</item>
-        <item>200</item>
-        <item>300</item>
-    </array>
     <string name="agent_transfer_success">转账成功</string>
     <string name="agent_dialog_update_channel_message">批量调整下级抽佣，将会根据下面的“配置信息”，为所选用户添加新渠道/更新旧渠道。</string>
     <string name="agent_dialog_withdraw">清账</string>
     <string name="agent_dialog_withdraw_message">是否确认清零账户：%s？\n余额将退回您的账户！</string>
     <string name="agent_withdraw">清账</string>
-    <array name="cat_transfer_record_type">
-        <item>充值</item>
-        <item>退款</item>
-        <item>扣款</item>
-    </array>
     <string name="agent_withdraw_success">清账成功</string>
     <string name="agent_update_channel">配置渠道信息</string>
     <string name="agent_channel_detail">Channels</string>
@@ -93,7 +82,7 @@
     <string name="book_fill_address_parse_lack_info">信息太少了，写详细点</string>
     <string name="book_fill_address_parse_failed">未能识别%s，请检查或手动填写</string>
     <string name="book_address_incomplete">%s不完整</string>
-    <string name="book_goods_info_incomplete">物品信息不完整</string>
+    <string name="book_info_incomplete">Order information is incomplete</string>
     <string name="goods_type">物品类型</string>
     <string name="goods_type_1">日用百货</string>
     <string name="goods_type_2">电子产品</string>
@@ -101,39 +90,15 @@
     <string name="goods_type_4">贵重饰品</string>
     <string name="goods_type_5">易碎品</string>
     <string name="goods_type_6">其他</string>
-    <array name="cat_goods_type">
-        <item>@string/goods_type_1</item>
-        <item>@string/goods_type_2</item>
-        <item>@string/goods_type_3</item>
-        <item>@string/goods_type_4</item>
-        <item>@string/goods_type_5</item>
-        <item>@string/goods_type_6</item>
-    </array>
     <string name="goods_weight">物品重量</string>
-    <array name="cat_goods_weight" translatable="false">
-        <item>1</item>
-        <item>5</item>
-        <item>10</item>
-        <item>20</item>
-    </array>
     <string name="goods_volume">物品体积</string>
     <string name="goods_length">长*</string>
     <string name="goods_width">宽*</string>
     <string name="goods_height">高*</string>
-    <string name="goods_insurance_amount">保价金额*</string>
-    <string name="goods_price">物品价格</string>
-    <array name="cat_goods_price" translatable="false">
-        <item>500</item>
-        <item>1000</item>
-        <item>2000</item>
-    </array>
+    <string name="goods_insurance_amount">保额*</string>
+    <string name="goods_price">单价</string>
     <string name="goods_insurance">需要保价</string>
     <string name="package_quantity">包裹数量</string>
-    <array name="cat_package_quantity" translatable="false">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </array>
     <string name="book_time">预约取件时间*</string>
     <string name="book_note">备注*</string>
     <string name="goods_note_1">上门前联系</string>
@@ -142,14 +107,6 @@
     <string name="goods_note_4">需要胶带</string>
     <string name="goods_note_5">需要爬楼</string>
     <string name="goods_note_6">物品较重/大</string>
-    <array name="cat_book_note">
-        <item>@string/goods_note_1</item>
-        <item>@string/goods_note_2</item>
-        <item>@string/goods_note_3</item>
-        <item>@string/goods_note_4</item>
-        <item>@string/goods_note_5</item>
-        <item>@string/goods_note_6</item>
-    </array>
     <string name="book_price">¥ %s</string>
     <string name="book_price_tips">%s\n点击选择其他快递</string>
     <string name="book_price_tips_no_available_channel">未找到可用渠道</string>

@@ -7,4 +7,47 @@
         <item>500</item>
         <item>1000</item>
     </array>
+    <array name="cat_goods_price" translatable="false">
+        <item>500</item>
+        <item>1000</item>
+        <item>2000</item>
+    </array>
+    <array name="cat_book_note">
+        <item>@string/goods_note_1</item>
+        <item>@string/goods_note_2</item>
+        <item>@string/goods_note_3</item>
+        <item>@string/goods_note_4</item>
+        <item>@string/goods_note_5</item>
+        <item>@string/goods_note_6</item>
+    </array>
+    <array name="cat_package_quantity" translatable="false">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </array>
+    <array name="cat_goods_weight" translatable="false">
+        <item>1</item>
+        <item>5</item>
+        <item>10</item>
+        <item>20</item>
+    </array>
+    <array name="cat_goods_type">
+        <item>@string/goods_type_1</item>
+        <item>@string/goods_type_2</item>
+        <item>@string/goods_type_3</item>
+        <item>@string/goods_type_4</item>
+        <item>@string/goods_type_5</item>
+        <item>@string/goods_type_6</item>
+    </array>
+    <array name="cat_transfer_record_type">
+        <item>充值</item>
+        <item>退款</item>
+        <item>扣款</item>
+    </array>
+    <array name="cat_transfer_amount" translatable="false">
+        <item>50</item>
+        <item>100</item>
+        <item>200</item>
+        <item>300</item>
+    </array>
 </resources>

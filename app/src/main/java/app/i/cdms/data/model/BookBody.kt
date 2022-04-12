@@ -1,91 +1,151 @@
 package app.i.cdms.data.model
 
 
+import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class BookBody(
-    val customerType: String?, // 通道类型不能为空
-    val dateTime: String?,
-    val deliveryType: String?,
-    val goods: String?,
-    val guaranteeValue: Int?,// 不太确定，null时无影响。会随另一个参数guaranteeValueAmount出现而出现，推测数值1是true。
-    val guaranteeValueAmount: Int?,
-    val packageCount: Int?,
-    val qty: Int?,// 托寄物数量，申通专属参数，暂不明白与packageCount的区别。
-    val pickUpEndTime: String?,
-    val pickUpStartTime: String?,
-    val receiveAddress: String?,
-    val receiveAddressDetail: String?,
-    val receiveCity: String?,
-    val receiveDesc: String?,// This should be toRawAddress. But can be null after testing
-    val receiveDistrict: String?,
-    val receiveMobile: String?,
-    val receiveName: String?,
-    val receiveProvince: String?,
-    val receiveProvinceCode: String?, // 寄收地【省】编码，必填
-    val receiveTel: String?,
-    val receiveValues: List<String>?,
-    val remark: String?,
-    val senderAddress: String?,
-    val senderAddressDetail: String?,
-    val senderCity: String?,
-    val senderDesc: String?,// This should be fromRawAddress. But can be null after testing
-    val senderDistrict: String?,
-    val senderMobile: String?,
-    val senderName: String?,
-    val senderProvince: String?,
-    val senderProvinceCode: String?, // 寄收地【省】编码，必填
-    val senderTel: String?,
-    val senderValues: List<String>?,
-    val type: String?, // Not sure. Nullable after testing
-    val vloumHeight: Int?,
-    val vloumLong: Int?,
-    val vloumWidth: Int?,
-    val unitPrice: Int?, // 托寄物价格，申通专属参数。申通无保价费,提供对应货值证明,最高赔付金额2000元,单价请勿超过2000元
-    val weight: Int?
+    @Json(name = "channelId")
+    val channelId: String? = null, // 35
+    @Json(name = "customerType")
+    val customerType: String? = "kd", // kd // 通道类型不能为空
+    @Json(name = "dateTime")
+    val dateTime: String? = null, // 2022-04-10 09:00-10:00
+    @Json(name = "deliveryType")
+    val deliveryType: String? = null, // STO-INT
+    @Json(name = "goods")
+    val goods: String? = null, // 日用品
+    @Json(name = "guaranteeValueAmount")
+    val guaranteeValueAmount: String? = null, // 111
+    @Json(name = "packageCount")
+    val packageCount: Int? = null, // 1 // 托寄物数量，申通专属参数，暂不明白与packageCount的区别。
+    @Json(name = "pickUpEndTime")
+    val pickUpEndTime: String? = null, // 2022-04-10 10:00:00
+    @Json(name = "pickUpStartTime")
+    val pickUpStartTime: String? = null, // 2022-04-10 09:00:00
+    @Json(name = "qty")
+    val qty: Int? = null, // 2
+    @Json(name = "receiveAddress")
+    val receiveAddress: String? = null, // 吴中区苏州工业园区生物纳米科技园C25栋
+    @Json(name = "receiveCity")
+    val receiveCity: String? = null, // 苏州市
+    @Json(name = "receiveDistrict")
+    val receiveDistrict: String? = null, // 姑苏区
+    @Json(name = "receiveMobile")
+    val receiveMobile: String? = null, // 13815951577
+    @Json(name = "receiveName")
+    val receiveName: String? = null, // 何先生
+    @Json(name = "receiveProvince")
+    val receiveProvince: String? = null, // 江苏省
+    @Json(name = "receiveProvinceCode")
+    val receiveProvinceCode: String? = null, // 320000 // 寄收地【省】编码，必填
+    @Json(name = "receiveTel")
+    val receiveTel: String? = null,
+    @Json(name = "receiveValues")
+    val receiveValues: List<String>? = null, // ["32000","321200","321202"]
+    @Json(name = "senderAddress")
+    val senderAddress: String? = null, // 吴中区苏州工业园区生物纳米科技园C25栋
+    @Json(name = "senderCity")
+    val senderCity: String? = null, // 苏州市
+    @Json(name = "senderDistrict")
+    val senderDistrict: String? = null, // 姑苏区
+    @Json(name = "senderMobile")
+    val senderMobile: String? = null, // 13815951577
+    @Json(name = "senderName")
+    val senderName: String? = null, // 何先生
+    @Json(name = "senderProvince")
+    val senderProvince: String? = null, // 江苏省
+    @Json(name = "senderProvinceCode")
+    val senderProvinceCode: String? = null, // 320000 // 寄收地【省】编码，必填
+    @Json(name = "senderTel")
+    val senderTel: String? = null,
+    @Json(name = "senderValues")
+    val senderValues: List<String>? = null, // ["32000","321200","321202"]
+    @Json(name = "unitPrice")
+    val unitPrice: Int? = null, // 1000 // 托寄物价格，申通专属参数。申通无保价费,提供对应货值证明,最高赔付金额2000元,单价请勿超过2000元
+    @Json(name = "vloumHeight")
+    val vloumHeight: String? = null, // 12
+    @Json(name = "vloumLong")
+    val vloumLong: String? = null, // 12
+    @Json(name = "vloumWidth")
+    val vloumWidth: String? = null, // 12
+    @Json(name = "weight")
+    val weight: Int? = null, // 1
+    @Json(name = "remark")
+    val remark: String? = null // 备注
 ) {
-    constructor() : this(
-        customerType = null,
-        dateTime = null,
-        deliveryType = null,
-        goods = null,
-        guaranteeValue = 1,
-        guaranteeValueAmount = null,
-        packageCount = null,
-        qty = null,
-        pickUpEndTime = null,
-        pickUpStartTime = null,
-        receiveAddress = null,
-        receiveAddressDetail = null,
-        receiveCity = null,
-        receiveDesc = null,
-        receiveDistrict = null,
-        receiveMobile = null,
-        receiveName = null,
-        receiveProvince = null,
-        receiveProvinceCode = null,
-        receiveTel = null,
-        receiveValues = null,
-        remark = null,
-        senderAddress = null,
-        senderAddressDetail = null,
-        senderCity = null,
-        senderDesc = null,
-        senderDistrict = null,
-        senderMobile = null,
-        senderName = null,
-        senderProvince = null,
-        senderProvinceCode = null,
-        senderTel = null,
-        senderValues = null,
-        type = null,
-        vloumHeight = null,
-        vloumLong = null,
-        vloumWidth = null,
-        unitPrice = null,
-        weight = null
-    )
+    val isReadyForPreOrder = goods != null
+            && packageCount != null
+            && receiveAddress != null
+            && receiveCity != null
+            && receiveDistrict != null
+            && (receiveMobile ?: receiveTel) != null
+            && receiveName != null
+            && receiveProvince != null
+            && receiveProvinceCode != null
+            && receiveValues != null
+            && senderAddress != null
+            && senderCity != null
+            && senderDistrict != null
+            && (senderMobile ?: senderTel) != null
+            && senderName != null
+            && senderProvince != null
+            && senderProvinceCode != null
+            && senderValues != null
+            && weight != null
+    val isReadyForOrder = isReadyForPreOrder
+            && customerType != null
+            && channelId != null
+            && deliveryType != null
+            && qty != null
+            && unitPrice != null
+
+    //            && dateTime != null
+//            && pickUpEndTime != null
+//            && pickUpStartTime != null
+//            && remark != null
+//            && senderDesc != null
+//            && senderAddressDetail != null
+//            && receiveDesc != null
+//            && receiveAddressDetail != null
+//            && vloumHeight != null
+//            && vloumLong != null
+//            && vloumWidth != null
+//            && guaranteeValue != null
+//            && type != null
+//            && guaranteeValueAmount != null
+    fun getSenderNameAndPhoneOrNull(): String? {
+        val phone = senderMobile ?: senderTel
+        return if (senderName != null && phone != null) {
+            "$senderName,$phone"
+        } else {
+            null
+        }
+    }
+
+    fun getReceiverNameAndPhoneOrNull(): String? {
+        val phone = receiveMobile ?: receiveTel
+        return if (receiveName != null && phone != null) {
+            "$receiveName,$phone"
+        } else {
+            null
+        }
+    }
+
+    fun getSenderAddressOrNull() =
+        if (senderProvince != null && senderCity != null && senderDistrict != null && senderAddress != null) {
+            senderProvince + senderCity + senderDistrict + senderAddress
+        } else {
+            null
+        }
+
+    fun getReceiverAddressOrNull() =
+        if (receiveProvince != null && receiveCity != null && receiveDistrict != null && receiveAddress != null) {
+            receiveProvince + receiveCity + receiveDistrict + receiveAddress
+        } else {
+            null
+        }
 }
 
 /*{

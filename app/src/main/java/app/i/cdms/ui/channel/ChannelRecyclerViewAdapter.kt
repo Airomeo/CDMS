@@ -58,7 +58,7 @@ class ChannelRecyclerViewAdapter(
                 "kd" -> "快递"
                 "ky" -> "快运"
                 "poizon" -> "得物"
-                else -> "其他"
+                else -> ""
             }
             if (channel.unfold) {
                 actionDown.rotation = 180F

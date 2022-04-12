@@ -32,9 +32,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.elevation.SurfaceColors
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -116,58 +114,21 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                     tvPickUpTime.text = null
                 }
                 priceTips -> {
-                    // 因为channelsFlow是SharingStarted.WhileSubscribed()，
-                    // 为了节省资源，只在用户点击查看了快递列表时订阅获取
-                    val list = runBlocking { viewModel.channelsFlow.first() }
-                    if (list.isNotEmpty()) {
-                        showBookChannelListDialogs(list)
-                    }
+                    val list = viewModel.smartPreOrderChannels.value?.mapNotNull()
+                        ?.sortedBy { it.preOrderFee.toFloat() }
+                        ?.map { it.uiChannel }
+                    showBookChannelListDialogs(list)
                 }
                 book -> {
-                    with(viewModel.bookBody.value) {
-                        if (senderName == null ||
-                            senderProvince == null ||
-                            senderProvinceCode == null ||
-                            senderCity == null ||
-                            senderDistrict == null ||
-                            senderAddress == null ||
-                            senderValues == null ||
-                            (senderTel == null && senderMobile == null)
-                        ) {
-                            val str = getString(
-                                R.string.book_address_incomplete,
-                                getString(R.string.book_info_from)
-                            )
-                            Toast.makeText(requireContext(), str, Toast.LENGTH_SHORT).show()
-                            return@OnClickListener
-                        }
-                        if (receiveName == null ||
-                            receiveProvince == null ||
-                            receiveProvinceCode == null ||
-                            receiveCity == null ||
-                            receiveDistrict == null ||
-                            receiveAddress == null ||
-                            receiveValues == null ||
-                            (receiveTel == null && receiveMobile == null)
-                        ) {
-                            val str = getString(
-                                R.string.book_address_incomplete,
-                                getString(R.string.book_info_to)
-                            )
-                            Toast.makeText(requireContext(), str, Toast.LENGTH_SHORT).show()
-                            return@OnClickListener
-                        }
-                        if (weight == null || goods == null || packageCount == null) {
-                            Toast.makeText(
-                                requireContext(),
-                                R.string.book_goods_info_incomplete,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            return@OnClickListener
-                        }
+                    if (viewModel.bookBody.value.isReadyForOrder) {
+                        viewModel.book()
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            R.string.book_info_incomplete,
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-//                    viewModel.fetchPreOrderFee()
-                    viewModel.book()
                 }
             }
         }
@@ -176,8 +137,7 @@ class BookFragment : Fragment(R.layout.fragment_book) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        _binding = FragmentBookBinding.bind(view)
-        with(binding) {
+        _binding = FragmentBookBinding.bind(view).apply {
             iv.setOnClickListener(listener)
             tvName.setOnClickListener(listener)
             tvAddress.setOnClickListener(listener)
@@ -262,29 +222,27 @@ class BookFragment : Fragment(R.layout.fragment_book) {
             }
             tvGoodsName.doOnTextChanged { text, start, before, count ->
                 viewModel.updateBookBodyFlow(
-                    viewModel.bookBody.value.copy(goods = text.toString())
+                    viewModel.bookBody.value.copy(goods = if (text.isNullOrBlank()) null else text.toString())
                 )
             }
             tvGoodsLength.doOnTextChanged { text, start, before, count ->
                 viewModel.updateBookBodyFlow(
-                    viewModel.bookBody.value.copy(vloumLong = text.toString().toIntOrNull())
+                    viewModel.bookBody.value.copy(vloumLong = if (text.isNullOrBlank()) null else text.toString())
                 )
             }
             tvGoodsWidth.doOnTextChanged { text, start, before, count ->
                 viewModel.updateBookBodyFlow(
-                    viewModel.bookBody.value.copy(vloumWidth = text.toString().toIntOrNull())
+                    viewModel.bookBody.value.copy(vloumWidth = if (text.isNullOrBlank()) null else text.toString())
                 )
             }
             tvGoodsHeight.doOnTextChanged { text, start, before, count ->
                 viewModel.updateBookBodyFlow(
-                    viewModel.bookBody.value.copy(vloumHeight = text.toString().toIntOrNull())
+                    viewModel.bookBody.value.copy(vloumHeight = if (text.isNullOrBlank()) null else text.toString())
                 )
             }
             tvGuaranteeValueAmount.doOnTextChanged { text, start, before, count ->
                 viewModel.updateBookBodyFlow(
-                    viewModel.bookBody.value.copy(
-                        guaranteeValueAmount = text.toString().toIntOrNull()
-                    )
+                    viewModel.bookBody.value.copy(guaranteeValueAmount = if (text.isNullOrBlank()) null else text.toString())
                 )
             }
             tvGoodsPrice.doOnTextChanged { text, start, before, count ->
@@ -294,7 +252,11 @@ class BookFragment : Fragment(R.layout.fragment_book) {
             }
             tvPackageCount.doOnTextChanged { text, start, before, count ->
                 viewModel.updateBookBodyFlow(
-                    viewModel.bookBody.value.copy(packageCount = text.toString().toIntOrNull())
+                    // qty暂时用packageCount这个替代
+                    viewModel.bookBody.value.copy(
+                        packageCount = text.toString().toIntOrNull(),
+                        qty = text.toString().toIntOrNull()
+                    )
                 )
             }
             tvPickUpTime.doOnTextChanged { text, start, before, count ->
@@ -317,7 +279,7 @@ class BookFragment : Fragment(R.layout.fragment_book) {
 
             tvNote.doOnTextChanged { text, start, before, count ->
                 viewModel.updateBookBodyFlow(
-                    viewModel.bookBody.value.copy(remark = text.toString())
+                    viewModel.bookBody.value.copy(remark = if (text.isNullOrBlank()) null else text.toString())
                 )
             }
         }
@@ -331,15 +293,20 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                     }
                 }
                 launch {
-                    // 列出用户所有可用渠道
-                    viewModel.channelFees.collectLatest {
-                        if (it.isEmpty()) {
-                            viewModel.updateBookBodyFlow(
-                                viewModel.bookBody.value.copy(
-                                    deliveryType = null,
-                                    customerType = null
-                                )
+                    viewModel.smartPreOrderChannels.collectLatest { channelsOf ->
+                        // 按价格升序排序
+                        val preOrderChannels = channelsOf?.mapNotNull()
+                            ?.sortedBy { it.preOrderFee.toFloat() }
+
+                        viewModel.updateBookBodyFlow(
+                            viewModel.bookBody.value.copy(
+                                deliveryType = preOrderChannels?.getOrNull(0)?.deliveryType,
+                                channelId = preOrderChannels?.getOrNull(0)?.channelId
                             )
+                        )
+
+                        if (preOrderChannels.isNullOrEmpty()) {
+                            // 没有可用渠道 或 信息不全没选择渠道。提示文字
                             binding.price.text = getString(R.string.book_price, "-")
                             binding.priceTips.text =
                                 if (viewModel.compareFeeBody.value.isFulfilled()) {
@@ -347,80 +314,22 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                                 } else {
                                     getString(R.string.book_price_tips_not_filled)
                                 }
-                            return@collectLatest
-                        }
-                        // 找最便宜的渠道
-                        var cheapestChannel = it[0]
-                        for (item in it) {
-                            if (item.preOrderFee.toFloat() < cheapestChannel.preOrderFee.toFloat()) {
-                                cheapestChannel = item
-                            }
-                        }
-                        viewModel.updateBookBodyFlow(
-                            viewModel.bookBody.value.copy(
-                                deliveryType = cheapestChannel.deliveryType,
-                                customerType = cheapestChannel.customerType
-                            )
-                        )
-                        // 下单时，一家快递公司如果有多个渠道，系统只会返回一个最优的
-                        binding.price.text =
-                            getString(R.string.book_price, cheapestChannel.preOrderFee)
-                        binding.priceTips.text =
-                            getString(R.string.book_price_tips, cheapestChannel.channelName)
-                    }
-                }
-                launch {
-                    // 用户手动选择渠道或当前最便宜渠道变更时会触发
-                    viewModel.selectedChannel.collectLatest {
-                        it.first ?: return@collectLatest
-                        it.second ?: return@collectLatest
-                        // 下单时，单个customerType比如个人版，申通有渠道A、渠道B，系统只会返回一个最便宜的渠道A，所以deliveryType只有一个。
-                        // 但如果同时有个人版和商家版，会返回两个用户类型的deliveryType，所以要加上customerType
-                        val channel = viewModel.channelFees.value.find { channel ->
-                            channel.deliveryType == it.first && channel.customerType == it.second
-                        }
-                        binding.price.text = getString(R.string.book_price, channel?.preOrderFee)
-                        binding.priceTips.text =
-                            getString(R.string.book_price_tips, channel?.channelName)
-                    }
-                }
-                launch {
-                    viewModel.compareFeeBody.collectLatest {
-                        if (it.isFulfilled()) {
-                            // 获取所有快递价格
-                            viewModel.fetchCompareFee()
                         } else {
-                            // 提示信息不完整
-                            viewModel._channelFees.value = emptyList()
+                            // 最便宜的渠道
+                            val cheapestChannel = preOrderChannels[0]
+                            binding.price.text =
+                                getString(R.string.book_price, cheapestChannel.preOrderFee)
+                            binding.priceTips.text =
+                                getString(R.string.book_price_tips, cheapestChannel.channelName)
                         }
                     }
                 }
                 launch {
-                    viewModel.bookBody.collectLatest {
-                        if (it.senderName != null) {
-                            if (it.senderMobile != null) {
-                                binding.tvName.text = it.senderName + "," + it.senderMobile
-                            }
-                            if (it.senderTel != null) {
-                                binding.tvName.text = it.senderName + "," + it.senderTel
-                            }
-                        }
-                        if (it.senderProvince != null && it.senderCity != null && it.senderDistrict != null && it.senderAddress != null) {
-                            binding.tvAddress.text =
-                                it.senderProvince + it.senderCity + it.senderDistrict + it.senderAddress
-                        }
-                        if (it.receiveName != null) {
-                            if (it.receiveMobile != null) {
-                                binding.tvName2.text = it.receiveName + "," + it.receiveMobile
-                            }
-                            if (it.receiveTel != null) {
-                                binding.tvName2.text = it.receiveName + "," + it.receiveTel
-                            }
-                        }
-                        if (it.receiveProvince != null && it.receiveCity != null && it.receiveDistrict != null && it.receiveAddress != null) {
-                            binding.tvAddress2.text =
-                                it.receiveProvince + it.receiveCity + it.receiveDistrict + it.receiveAddress
-                        }
+                    viewModel.bookBody.collectLatest { bookBody ->
+                        bookBody.getSenderNameAndPhoneOrNull()?.let { binding.tvName.text = it }
+                        bookBody.getSenderAddressOrNull()?.let { binding.tvAddress.text = it }
+                        bookBody.getReceiverNameAndPhoneOrNull()?.let { binding.tvName2.text = it }
+                        bookBody.getReceiverAddressOrNull()?.let { binding.tvAddress2.text = it }
                     }
                 }
             }
@@ -430,8 +339,8 @@ class BookFragment : Fragment(R.layout.fragment_book) {
 
     private fun initData() {
         with(binding) {
-            viewModel._channelFees.value = emptyList()
-            viewModel._bookBody.value = BookBody()
+            viewModel.updateBookBodyFlow(BookBody())
+
             tvName.setText(R.string.book_info_from)
             tvAddress.setText(R.string.book_address_tips)
             tvName2.setText(R.string.book_info_to)
@@ -442,7 +351,7 @@ class BookFragment : Fragment(R.layout.fragment_book) {
             tvGoodsLength.text = null
             tvGoodsWidth.text = null
             tvGoodsHeight.text = null
-            tvGuaranteeValueAmount.setText("0")
+            tvGuaranteeValueAmount.text = null
             tvGoodsPrice.setText(resources.getIntArray(R.array.cat_goods_price).last().toString())
             tvPickUpTime.text = null
             tvNote.text = null
@@ -742,17 +651,20 @@ class BookFragment : Fragment(R.layout.fragment_book) {
      * @param list: 渠道信息列表
      * @return
      */
-    private fun showBookChannelListDialogs(list: List<Channel>) {
+    private fun showBookChannelListDialogs(list: List<Channel>?) {
+        if (list.isNullOrEmpty()) return
         val b = CatBottomsheetScrollableContentBinding.inflate(layoutInflater, null, false)
         val dialog = BottomSheetDialog(requireContext())
         dialog.setContentView(b.root)
         dialog.dismissWithAnimation = true
 
         val rootOnClickCallback: (channel: Channel) -> Unit = { channel ->
+            val channelId = viewModel.smartPreOrderChannels.value!!.mapNotNull()
+                .find { it.uiChannel == channel }!!.channelId
             viewModel.updateBookBodyFlow(
                 viewModel.bookBody.value.copy(
                     deliveryType = channel.deliveryType,
-                    customerType = channel.customerType
+                    channelId = channelId
                 )
             )
             dialog.dismiss()

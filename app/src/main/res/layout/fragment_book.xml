@@ -397,9 +397,8 @@
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
                     android:inputType="number"
-                    android:maxLength="6"
-                    android:selectAllOnFocus="true"
-                    android:text="0" />
+                    android:maxLength="5"
+                    android:selectAllOnFocus="true" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -414,17 +413,17 @@
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@id/weightPlus"
                 app:layout_constraintStart_toEndOf="@id/guaranteeValueAmount"
-                app:layout_constraintTop_toBottomOf="@+id/goodsLength">
+                app:layout_constraintTop_toBottomOf="@+id/goodsLength"
+                app:prefixText="¥">
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/tvGoodsPrice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
-                    android:inputType="textAutoComplete"
+                    android:inputType="number"
                     android:maxLength="5"
-                    android:selectAllOnFocus="true"
-                    android:text="2000" />
+                    android:selectAllOnFocus="true" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageView
