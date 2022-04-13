@@ -62,6 +62,9 @@ class BookViewModel @Inject constructor(
         .distinctUntilChanged()
         .mapLatest { fetchSmartPreOrderChannels(it) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
+    val selectedPreOrderChannel = _bookBody.mapLatest { body ->
+        smartPreOrderChannels.value?.find { it.channelId == body.channelId && it.deliveryType == body.deliveryType }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
     // 下单结果
     private val _bookResult = MutableSharedFlow<BookResult?>()
@@ -109,9 +112,11 @@ class BookViewModel @Inject constructor(
      *
      * @return
      */
-    private suspend fun fetchSmartPreOrderChannels(body: BookBody): ChannelsOf<PreOrderChannel>? {
+    private suspend fun fetchSmartPreOrderChannels(body: BookBody): List<PreOrderChannel>? {
         return if (body.isReadyForPreOrder) {
-            bookRepository.fetchSmartPreOrderChannels(body)?.data
+            // 按价格升序排序
+            bookRepository.fetchSmartPreOrderChannels(body)?.data?.mapNotNull()
+                ?.sortedBy { it.preOrderFee.toFloat() }
         } else {
             null
         }

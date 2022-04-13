@@ -18,6 +18,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import app.i.cdms.BuildConfig
 import app.i.cdms.R
 import app.i.cdms.data.model.BookBody
 import app.i.cdms.data.model.BookResult
@@ -114,9 +115,7 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                     tvPickUpTime.text = null
                 }
                 priceTips -> {
-                    val list = viewModel.smartPreOrderChannels.value?.mapNotNull()
-                        ?.sortedBy { it.preOrderFee.toFloat() }
-                        ?.map { it.uiChannel }
+                    val list = viewModel.smartPreOrderChannels.value?.map { it.uiChannel }
                     showBookChannelListDialogs(list)
                 }
                 book -> {
@@ -146,6 +145,12 @@ class BookFragment : Fragment(R.layout.fragment_book) {
             tvAddress2.setOnClickListener(listener)
             switcher.setOnClickListener(listener)
             clearAll.setOnClickListener(listener)
+            if (BuildConfig.DEBUG) {
+                clearAll.setOnLongClickListener {
+                    populateData()
+                    true
+                }
+            }
             dropdown.setOnClickListener(listener)
             weightMinus.setOnClickListener(listener)
             weightPlus.setOnClickListener(listener)
@@ -293,19 +298,26 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                     }
                 }
                 launch {
-                    viewModel.smartPreOrderChannels.collectLatest { channelsOf ->
-                        // 按价格升序排序
-                        val preOrderChannels = channelsOf?.mapNotNull()
-                            ?.sortedBy { it.preOrderFee.toFloat() }
-
+                    viewModel.smartPreOrderChannels.collectLatest { preOrderChannels ->
                         viewModel.updateBookBodyFlow(
                             viewModel.bookBody.value.copy(
                                 deliveryType = preOrderChannels?.getOrNull(0)?.deliveryType,
                                 channelId = preOrderChannels?.getOrNull(0)?.channelId
                             )
                         )
-
-                        if (preOrderChannels.isNullOrEmpty()) {
+                    }
+                }
+                launch {
+                    viewModel.bookBody.collectLatest { bookBody ->
+                        bookBody.getSenderNameAndPhoneOrNull()?.let { binding.tvName.text = it }
+                        bookBody.getSenderAddressOrNull()?.let { binding.tvAddress.text = it }
+                        bookBody.getReceiverNameAndPhoneOrNull()?.let { binding.tvName2.text = it }
+                        bookBody.getReceiverAddressOrNull()?.let { binding.tvAddress2.text = it }
+                    }
+                }
+                launch {
+                    viewModel.selectedPreOrderChannel.collectLatest { preOrderChannel ->
+                        if (preOrderChannel == null) {
                             // 没有可用渠道 或 信息不全没选择渠道。提示文字
                             binding.price.text = getString(R.string.book_price, "-")
                             binding.priceTips.text =
@@ -315,21 +327,11 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                                     getString(R.string.book_price_tips_not_filled)
                                 }
                         } else {
-                            // 最便宜的渠道
-                            val cheapestChannel = preOrderChannels[0]
                             binding.price.text =
-                                getString(R.string.book_price, cheapestChannel.preOrderFee)
+                                getString(R.string.book_price, preOrderChannel.preOrderFee)
                             binding.priceTips.text =
-                                getString(R.string.book_price_tips, cheapestChannel.channelName)
+                                getString(R.string.book_price_tips, preOrderChannel.channelName)
                         }
-                    }
-                }
-                launch {
-                    viewModel.bookBody.collectLatest { bookBody ->
-                        bookBody.getSenderNameAndPhoneOrNull()?.let { binding.tvName.text = it }
-                        bookBody.getSenderAddressOrNull()?.let { binding.tvAddress.text = it }
-                        bookBody.getReceiverNameAndPhoneOrNull()?.let { binding.tvName2.text = it }
-                        bookBody.getReceiverAddressOrNull()?.let { binding.tvAddress2.text = it }
                     }
                 }
             }
@@ -345,6 +347,44 @@ class BookFragment : Fragment(R.layout.fragment_book) {
             tvAddress.setText(R.string.book_address_tips)
             tvName2.setText(R.string.book_info_to)
             tvAddress2.setText(R.string.book_address_tips)
+            tvGoodsWeight.setText("1")
+            tvGoodsName.setText(resources.getStringArray(R.array.cat_goods_type).first())
+            tvPackageCount.setText("1")
+            tvGoodsLength.text = null
+            tvGoodsWidth.text = null
+            tvGoodsHeight.text = null
+            tvGuaranteeValueAmount.text = null
+            tvGoodsPrice.setText(resources.getIntArray(R.array.cat_goods_price).last().toString())
+            tvPickUpTime.text = null
+            tvNote.text = null
+        }
+    }
+
+    private fun populateData() {
+        with(binding) {
+            viewModel.updateBookBodyFlow(
+                BookBody(
+                    receiveAddress = "乐成米兰城3楼南大街372(到付拒收)",
+                    receiveCity = "石家庄市",
+                    receiveDistrict = "长安区",
+                    receiveMobile = "13333333333",
+                    receiveName = "测试",
+                    receiveProvince = "河北省",
+                    receiveProvinceCode = "130000",
+                    receiveTel = null,
+                    receiveValues = listOf("130000", "130100", "130102"),
+                    senderAddress = "翠福园40号楼二单元802室",
+                    senderCity = "北京市",
+                    senderDistrict = "通州区",
+                    senderMobile = "17777777777",
+                    senderName = "测试",
+                    senderProvince = "北京市",
+                    senderProvinceCode = "110000",
+                    senderTel = null,
+                    senderValues = listOf("110000", "110100", "110112"),
+                )
+            )
+
             tvGoodsWeight.setText("1")
             tvGoodsName.setText(resources.getStringArray(R.array.cat_goods_type).first())
             tvPackageCount.setText("1")
@@ -659,8 +699,8 @@ class BookFragment : Fragment(R.layout.fragment_book) {
         dialog.dismissWithAnimation = true
 
         val rootOnClickCallback: (channel: Channel) -> Unit = { channel ->
-            val channelId = viewModel.smartPreOrderChannels.value!!.mapNotNull()
-                .find { it.uiChannel == channel }!!.channelId
+            val channelId =
+                viewModel.smartPreOrderChannels.value!!.find { it.uiChannel == channel }!!.channelId
             viewModel.updateBookBodyFlow(
                 viewModel.bookBody.value.copy(
                     deliveryType = channel.deliveryType,

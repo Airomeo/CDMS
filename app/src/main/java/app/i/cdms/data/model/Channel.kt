@@ -146,7 +146,7 @@ data class PreOrderChannel(
         } else {
             "¥$preOrderFee(保费：$preBjFee) $channelName"
         },
-        "",
+        deliveryType,
         limitWeight,
         if (calcFeeType == "profit") ChannelUtil.parsePrice(price)
         else ChannelUtil.parseToDiscountZone(price)[0],
