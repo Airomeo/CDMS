@@ -5,14 +5,9 @@ import androidx.lifecycle.viewModelScope
 import app.i.cdms.data.model.*
 import app.i.cdms.repository.book.BookRepository
 import app.i.cdms.repository.main.MainRepository
-import app.i.cdms.utils.ChannelUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,29 +26,6 @@ class BookViewModel @Inject constructor(
     // 订单号
     private val _deliveryId = MutableSharedFlow<String?>()
     val deliveryId = _deliveryId.asSharedFlow()
-
-    // 可用渠道列表
-    val _channelFees = MutableStateFlow<List<ChannelFees>>(emptyList())
-    val channelFees = _channelFees.asStateFlow()
-    val channelsFlow = _channelFees.mapLatest { value ->
-        value.map {
-            Channel(
-                it.calcFeeType,
-                "¥" + it.preOrderFee + " " + it.channelName,
-                it.deliveryType,
-                it.limitWeight,
-                if (it.calcFeeType == "profit") {
-                    ChannelUtil.parsePrice(it.price)
-                } else {
-                    ChannelUtil.parseToDiscountZone(it.price)[0]
-                },
-                null,
-                null,
-                it.lightGoods,
-                it.customerType
-            )
-        }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     // 下单请求需要提交的参数
     private val _bookBody = MutableStateFlow(BookBody())
@@ -90,18 +62,6 @@ class BookViewModel @Inject constructor(
         .distinctUntilChanged()
         .mapLatest { fetchSmartPreOrderChannels(it) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
-
-    // 比价请求需要提交的参数
-    val compareFeeBody = _bookBody.map {
-        CompareFeeBody(
-            it.customerType,
-            it.receiveCity,
-            it.receiveValues?.getOrNull(1),
-            it.senderCity,
-            it.senderValues?.getOrNull(1),
-            it.weight,
-        )
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), CompareFeeBody())
 
     // 下单结果
     private val _bookResult = MutableSharedFlow<BookResult?>()
@@ -141,40 +101,6 @@ class BookViewModel @Inject constructor(
 //            _parseAddressResult.value = result?.result
             val result = bookRepository.parseAddressBySf(rawAddress)
             updateParseAddressBySf(result?.result)
-        }
-    }
-
-    /**
-     * 获取所有可用渠道信息
-     *
-     * @return
-     */
-    fun fetchCompareFee() {
-        val list = Collections.synchronizedList(arrayListOf<ChannelFees>())
-        viewModelScope.launch(Dispatchers.IO) {
-            awaitAll(
-                async {
-                    val result =
-                        bookRepository.fetchCompareFee(compareFeeBody.value.copy(customerType = "kd"))
-                    result?.data?.let {
-                        it.forEach { channel ->
-                            channel.customerType = "kd"
-                            list.add(channel)
-                        }
-                    }
-                },
-                async {
-                    val result =
-                        bookRepository.fetchCompareFee(compareFeeBody.value.copy(customerType = "ky"))
-                    result?.data?.let {
-                        it.forEach { channel ->
-                            channel.customerType = "ky"
-                            list.add(channel)
-                        }
-                    }
-                }
-            )
-            _channelFees.value = list
         }
     }
 

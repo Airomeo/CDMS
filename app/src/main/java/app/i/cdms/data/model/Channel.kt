@@ -45,30 +45,6 @@ data class CustomerChannel(
 )
 
 @JsonClass(generateAdapter = true)
-data class CustomerChannels(
-    @Json(name = "DOP")
-    val dop: List<CustomerChannel>?,
-    @Json(name = "JD")
-    val jd: List<CustomerChannel>?,
-    @Json(name = "STO-INT")
-    val sto: List<CustomerChannel>?,
-    @Json(name = "YTO")
-    val yto: List<CustomerChannel>?,
-    @Json(name = "JT")
-    val jt: List<CustomerChannel>?
-) {
-    fun mapNotNull(): List<List<CustomerChannel>> {
-        val list = mutableListOf<List<CustomerChannel>>()
-        sto?.let { list.add(it) }
-        yto?.let { list.add(it) }
-        jd?.let { list.add(it) }
-        dop?.let { list.add(it) }
-        jt?.let { list.add(it) }
-        return list
-    }
-}
-
-@JsonClass(generateAdapter = true)
 data class CustomerChannelZone(
     @Json(name = "calcFeeType")
     val calcFeeType: String,
@@ -166,9 +142,9 @@ data class PreOrderChannel(
     val uiChannel = Channel(
         calcFeeType,
         if (preBjFee == null) {
-            "¥$preOrderFee$channelName"
+            "¥$preOrderFee $channelName"
         } else {
-            "¥$preOrderFee(保费：$preBjFee)$channelName"
+            "¥$preOrderFee(保费：$preBjFee) $channelName"
         },
         "",
         limitWeight,

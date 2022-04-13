@@ -1,11 +1,11 @@
-package app.i.cdms.ui.channel
+package app.i.cdms.ui.fees
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.i.cdms.data.model.Area
 import app.i.cdms.data.model.Channel
 import app.i.cdms.data.model.ChannelsOf
 import app.i.cdms.data.model.CustomerChannel
-import app.i.cdms.data.model.MyTeam
 import app.i.cdms.repository.main.MainRepository
 import app.i.cdms.utils.ChannelUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,35 +15,52 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class ChannelViewModel @Inject constructor(private val mainRepository: MainRepository) :
-    ViewModel() {
+class FeesViewModel @Inject constructor(private val mainRepository: MainRepository) : ViewModel() {
 
     private val _customerChannels = MutableStateFlow<List<ChannelsOf<CustomerChannel>>>(emptyList())
-    val channelsFlow = _customerChannels.mapLatest { value ->
-        val channels = arrayListOf<Channel>()
-        value.forEach {
-            it.mapNotNull().forEach { customerChannel ->
-                channels.addAll(parseToChannels(customerChannel))
+    val channels = _customerChannels.mapLatest { value ->
+        arrayListOf<Channel>().apply {
+            value.forEach {
+                it.mapNotNull().forEach { customerChannel ->
+                    addAll(parseToChannels(customerChannel))
+                }
             }
         }
-        channels
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
-    private val _myTeam = MutableStateFlow<MyTeam?>(null)
-    val myTeam = _myTeam.asStateFlow()
+    var areaList: List<Area>? = null
 
     init {
-        fetchCustomerChannels(null, null)
+        initAreaList()
+    }
+
+    /**
+     * init AreaList from local datastore or network
+     *
+     * @return
+     */
+    private fun initAreaList() {
+        viewModelScope.launch {
+            mainRepository.areaListFlow.collectLatest {
+                if (it == null) {
+                    mainRepository.getAndUpdateAreaList()
+                } else {
+                    areaList = it
+                }
+            }
+        }
     }
 
     // 获取所有渠道详细信息
-    private fun fetchCustomerChannels(scCode: String?, rcCode: String?) {
+    fun fetchCustomerChannels(scCode: String?, rcCode: String?) {
         viewModelScope.launch {
             val list = mutableListOf<ChannelsOf<CustomerChannel>>()
-            val customerType = listOf("kd", "ky", "poizon")
-            for (customer in customerType) {
-                val result = mainRepository.fetchCustomerChannels(customer, scCode, rcCode)
-                result?.data?.let { list.add(it) }
+            if (scCode != null && rcCode != null) {
+                val customerType = listOf("kd", "ky", "poizon")
+                for (customer in customerType) {
+                    val result = mainRepository.fetchCustomerChannels(customer, scCode, rcCode)
+                    result?.data?.let { list.add(it) }
+                }
             }
             _customerChannels.value = list
         }
@@ -78,19 +95,6 @@ class ChannelViewModel @Inject constructor(private val mainRepository: MainRepos
                     customerChannel.customerType,
                 )
             }
-        }
-    }
-
-    // 获取渠道详细信息
-    private fun getChannelDetail(customerChannel: CustomerChannel) {
-        viewModelScope.launch {
-//            val result = mainRepository.getCustomerChannelDetail(customerChannel.id)
-//            result?.data?.let {
-//                for (item in it) {
-//                    val copy = item.copy(customerChannel = customerChannel)
-//                    channelDetailList.add(copy)
-//                }
-//            }
         }
     }
 }

@@ -309,7 +309,7 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                             // 没有可用渠道 或 信息不全没选择渠道。提示文字
                             binding.price.text = getString(R.string.book_price, "-")
                             binding.priceTips.text =
-                                if (viewModel.compareFeeBody.value.isFulfilled()) {
+                                if (viewModel.bookBody.value.isReadyForPreOrder) {
                                     getString(R.string.book_price_tips_no_available_channel)
                                 } else {
                                     getString(R.string.book_price_tips_not_filled)

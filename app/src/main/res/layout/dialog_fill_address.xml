@@ -129,6 +129,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/book_fill_address_name"
+            android:maxLength="10"
             android:imeOptions="actionNext"
             android:inputType="textAutoComplete" />
     </com.google.android.material.textfield.TextInputLayout>

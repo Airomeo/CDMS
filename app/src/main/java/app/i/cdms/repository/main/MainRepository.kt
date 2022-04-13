@@ -23,8 +23,11 @@ class MainRepository @Inject constructor(
         userPrefDataSource.updateToken(token)
     }
 
-    suspend fun fetchCustomerChannels(customerType: String) =
-        executeResponse { dataSource.fetchCustomerChannels(customerType) }
+    suspend fun fetchCustomerChannels(
+        customerType: String,
+        scCode: String?,
+        rcCode: String?
+    ) = executeResponse { dataSource.fetchCustomerChannels(customerType, scCode, rcCode) }
 
     suspend fun getCustomerChannelDetail(customerId: Int): YiDaBaseResponse<List<CustomerChannelZone>>? {
         return executeResponse { dataSource.getCustomerChannelDetail(customerId) }

@@ -95,8 +95,10 @@ interface ApiService {
     @GET
     suspend fun fetchCustomerChannels(
         @Url url: String = Constant.API_CUSTOMER_CHANNEL,
-        @Query("customerType") customerType: String
-    ): Response<YiDaBaseResponse<CustomerChannels>>
+        @Query("customerType") customerType: String,
+        @Query("scCode") scCode: String?, // 寄
+        @Query("rcCode") rcCode: String? // 收
+    ): Response<YiDaBaseResponse<ChannelsOf<CustomerChannel>>>
 
     @GET
     suspend fun getCustomerChannelDetail(
