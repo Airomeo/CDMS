@@ -136,7 +136,8 @@ class BookFragment : Fragment(R.layout.fragment_book) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        _binding = FragmentBookBinding.bind(view).apply {
+        _binding = FragmentBookBinding.bind(view)
+        with(binding) {
             iv.setOnClickListener(listener)
             tvName.setOnClickListener(listener)
             tvAddress.setOnClickListener(listener)

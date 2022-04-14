@@ -119,7 +119,7 @@ class FeesFragment : Fragment(R.layout.fragment_fees) {
      */
     private fun showMenu(view: View, block: (list: List<Pair<String, String>>) -> Unit) {
         viewModel.areaList?.let {
-            val popup = PopupMenu(requireContext(), view)
+            val popup = PopupMenu(view.context, view)
             for (a in it) {
                 if (a.children == null) {
                     popup.menu.add(Menu.NONE, a.value.toInt(), Menu.NONE, a.label)

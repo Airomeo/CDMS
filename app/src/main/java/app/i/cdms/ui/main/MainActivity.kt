@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity() {
                 .setAction(R.string.message_detail) { showMessageDialog(text) }
                 .show()
         } else {
-            Toast.makeText(this@MainActivity, text, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
         }
     }
 

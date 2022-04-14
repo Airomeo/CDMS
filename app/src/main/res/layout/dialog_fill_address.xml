@@ -121,6 +121,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="56dp"
         app:endIconMode="clear_text"
+        android:hint="@string/book_fill_address_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/ivName"
         app:layout_constraintTop_toBottomOf="@id/auto">
@@ -128,7 +129,6 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/book_fill_address_name"
             android:maxLength="10"
             android:imeOptions="actionNext"
             android:inputType="textAutoComplete" />
@@ -154,6 +154,7 @@
         android:layout_marginEnd="56dp"
         app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
+        android:hint="@string/book_fill_address_phone"
         app:layout_constraintStart_toEndOf="@id/ivPhone"
         app:layout_constraintTop_toBottomOf="@id/name"
         app:placeholderText="@string/book_fill_address_phone_tips">
@@ -161,7 +162,6 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/book_fill_address_phone"
             android:imeOptions="actionNext"
             android:inputType="number"
             android:maxLength="13" />
@@ -187,6 +187,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="56dp"
         app:endIconMode="clear_text"
+        android:hint="@string/book_fill_address_province"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/ivProvince"
         app:layout_constraintTop_toBottomOf="@id/phone">
@@ -196,7 +197,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/provinceMenu"
             android:cursorVisible="false"
-            android:hint="@string/book_fill_address_province"
             android:imeOptions="actionNext"
             android:inputType="none"
             android:textIsSelectable="false" />
@@ -211,13 +211,13 @@
         app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/province"
+        android:hint="@string/book_fill_address_detail"
         app:layout_constraintTop_toBottomOf="@id/province"
         app:placeholderText="@string/book_fill_address_detail_tips">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/book_fill_address_detail"
             android:imeOptions="actionDone"
             android:maxLength="50" />
     </com.google.android.material.textfield.TextInputLayout>
