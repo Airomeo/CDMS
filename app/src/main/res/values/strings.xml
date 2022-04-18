@@ -108,12 +108,12 @@
     <string name="goods_note_5">需要爬楼</string>
     <string name="goods_note_6">物品较重/大</string>
     <string name="book_price">¥ %s</string>
-    <string name="book_price_tips">%s\n点击选择其他快递</string>
-    <string name="book_price_tips_no_available_channel">未找到可用渠道</string>
-    <string name="book_price_tips_not_filled">完整填写快递信息后\n将显示所有可用渠道</string>
-    <string name="book">下单</string>
-    <string name="book_result_dialog_title">下单结果</string>
-    <string name="book_goods_info">物品信息</string>
+    <string name="book_tips_selectable">Select Courier</string>
+    <string name="book_tips_not_found">No available courier found</string>
+    <string name="book_price_tips_not_filled">All available couriers will be displayed after completing the information</string>
+    <string name="book">Book</string>
+    <string name="book_result_dialog_title">Book result</string>
+    <string name="book_goods_info">Goods Info</string>
     <string name="book_goods_info_clear">Clear all</string>
     <string name="book_tips">注：\n带有* 标记的为选填项\n
         包裹信息填写准确，便于匹配最优惠的渠道。\n

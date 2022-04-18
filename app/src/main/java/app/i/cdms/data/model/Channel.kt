@@ -134,6 +134,8 @@ data class PreOrderChannel(
     val originalPrice: String, // 1-0公斤,价格10续2.14;
     @Json(name = "preBjFee")
     val preBjFee: String?, // 1
+    @Json(name = "bjRuleStr")
+    val bjRuleStr: String?, // "保额0至20000，费率0.004;保额20001至0，费率0.005;" or "不支持保价"
     @Json(name = "preOrderFee")
     val preOrderFee: String, // 10.6
     @Json(name = "price")
@@ -144,7 +146,7 @@ data class PreOrderChannel(
         if (preBjFee == null) {
             "¥$preOrderFee $channelName"
         } else {
-            "¥$preOrderFee(保费：$preBjFee) $channelName"
+            "¥$preOrderFee(保费¥$preBjFee) $channelName"
         },
         deliveryType,
         limitWeight,

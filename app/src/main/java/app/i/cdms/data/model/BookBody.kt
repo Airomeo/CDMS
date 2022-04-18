@@ -115,6 +115,33 @@ data class BookBody(
 //            && guaranteeValue != null
 //            && type != null
 //            && guaranteeValueAmount != null
+    fun toPreOrderBody(): BookBody {
+        return BookBody(
+            goods = goods,
+            packageCount = packageCount,
+            receiveAddress = receiveAddress,
+            receiveCity = receiveCity,
+            receiveDistrict = receiveDistrict,
+            receiveMobile = receiveMobile,
+            receiveName = receiveName,
+            receiveProvince = receiveProvince,
+            receiveProvinceCode = receiveProvinceCode,
+            receiveTel = receiveTel,
+            receiveValues = receiveValues,
+            senderAddress = senderAddress,
+            senderCity = senderCity,
+            senderDistrict = senderDistrict,
+            senderMobile = senderMobile,
+            senderName = senderName,
+            senderProvince = senderProvince,
+            senderProvinceCode = senderProvinceCode,
+            senderTel = senderTel,
+            senderValues = senderValues,
+            weight = weight,
+            guaranteeValueAmount = guaranteeValueAmount
+        )
+    }
+
     fun getSenderNameAndPhoneOrNull(): String? {
         val phone = senderMobile ?: senderTel
         return if (senderName != null && phone != null) {

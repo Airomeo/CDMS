@@ -55,29 +55,28 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                 }
                 switcher -> {
                     it.animate().rotation(it.rotation + 180F)
-                    val body = viewModel.bookBody.value
-                    viewModel.updateBookBodyFlow(
-                        body.copy(
-                            senderName = body.receiveName,
-                            senderTel = body.receiveTel,
-                            senderMobile = body.receiveMobile,
-                            senderProvince = body.receiveProvince,
-                            senderProvinceCode = body.receiveProvinceCode,
-                            senderCity = body.receiveCity,
-                            senderDistrict = body.receiveDistrict,
-                            senderAddress = body.receiveAddress,
-                            senderValues = body.receiveValues,
-                            receiveName = body.senderName,
-                            receiveTel = body.senderTel,
-                            receiveMobile = body.senderMobile,
-                            receiveProvince = body.senderProvince,
-                            receiveProvinceCode = body.senderProvinceCode,
-                            receiveCity = body.senderCity,
-                            receiveDistrict = body.senderDistrict,
-                            receiveAddress = body.senderAddress,
-                            receiveValues = body.senderValues
+                    viewModel.bookBodyChanged {
+                        it.copy(
+                            senderName = it.receiveName,
+                            senderTel = it.receiveTel,
+                            senderMobile = it.receiveMobile,
+                            senderProvince = it.receiveProvince,
+                            senderProvinceCode = it.receiveProvinceCode,
+                            senderCity = it.receiveCity,
+                            senderDistrict = it.receiveDistrict,
+                            senderAddress = it.receiveAddress,
+                            senderValues = it.receiveValues,
+                            receiveName = it.senderName,
+                            receiveTel = it.senderTel,
+                            receiveMobile = it.senderMobile,
+                            receiveProvince = it.senderProvince,
+                            receiveProvinceCode = it.senderProvinceCode,
+                            receiveCity = it.senderCity,
+                            receiveDistrict = it.senderDistrict,
+                            receiveAddress = it.senderAddress,
+                            receiveValues = it.senderValues
                         )
-                    )
+                    }
                 }
                 clearAll -> {
                     initData()
@@ -114,20 +113,12 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                     it.animate().rotation(it.rotation + 180F)
                     tvPickUpTime.text = null
                 }
-                priceTips -> {
-                    val list = viewModel.smartPreOrderChannels.value?.map { it.uiChannel }
+                price, channelName, channelTips -> {
+                    val list = viewModel.smartPreOrderChannels.map { it.uiChannel }
                     showBookChannelListDialogs(list)
                 }
                 book -> {
-                    if (viewModel.bookBody.value.isReadyForOrder) {
-                        viewModel.book()
-                    } else {
-                        Toast.makeText(
-                            requireContext(),
-                            R.string.book_info_incomplete,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                    viewModel.book()
                 }
             }
         }
@@ -156,7 +147,9 @@ class BookFragment : Fragment(R.layout.fragment_book) {
             weightMinus.setOnClickListener(listener)
             weightPlus.setOnClickListener(listener)
             clearTime.setOnClickListener(listener)
-            priceTips.setOnClickListener(listener)
+            price.setOnClickListener(listener)
+            channelName.setOnClickListener(listener)
+            channelTips.setOnClickListener(listener)
             book.setOnClickListener(listener)
             nestedScrollView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
                 if (scrollY - oldScrollY > 0) {
@@ -222,48 +215,48 @@ class BookFragment : Fragment(R.layout.fragment_book) {
             )
 
             tvGoodsWeight.doOnTextChanged { text, start, before, count ->
-                viewModel.updateBookBodyFlow(
-                    viewModel.bookBody.value.copy(weight = text.toString().toIntOrNull())
-                )
+                viewModel.bookBodyChanged {
+                    it.copy(weight = text.toString().toIntOrNull())
+                }
             }
             tvGoodsName.doOnTextChanged { text, start, before, count ->
-                viewModel.updateBookBodyFlow(
-                    viewModel.bookBody.value.copy(goods = if (text.isNullOrBlank()) null else text.toString())
-                )
+                viewModel.bookBodyChanged {
+                    it.copy(goods = if (text.isNullOrBlank()) null else text.toString())
+                }
             }
             tvGoodsLength.doOnTextChanged { text, start, before, count ->
-                viewModel.updateBookBodyFlow(
-                    viewModel.bookBody.value.copy(vloumLong = if (text.isNullOrBlank()) null else text.toString())
-                )
+                viewModel.bookBodyChanged {
+                    it.copy(vloumLong = if (text.isNullOrBlank()) null else text.toString())
+                }
             }
             tvGoodsWidth.doOnTextChanged { text, start, before, count ->
-                viewModel.updateBookBodyFlow(
-                    viewModel.bookBody.value.copy(vloumWidth = if (text.isNullOrBlank()) null else text.toString())
-                )
+                viewModel.bookBodyChanged {
+                    it.copy(vloumWidth = if (text.isNullOrBlank()) null else text.toString())
+                }
             }
             tvGoodsHeight.doOnTextChanged { text, start, before, count ->
-                viewModel.updateBookBodyFlow(
-                    viewModel.bookBody.value.copy(vloumHeight = if (text.isNullOrBlank()) null else text.toString())
-                )
+                viewModel.bookBodyChanged {
+                    it.copy(vloumHeight = if (text.isNullOrBlank()) null else text.toString())
+                }
             }
             tvGuaranteeValueAmount.doOnTextChanged { text, start, before, count ->
-                viewModel.updateBookBodyFlow(
-                    viewModel.bookBody.value.copy(guaranteeValueAmount = if (text.isNullOrBlank()) null else text.toString())
-                )
+                viewModel.bookBodyChanged {
+                    it.copy(guaranteeValueAmount = if (text.isNullOrBlank()) null else text.toString())
+                }
             }
             tvGoodsPrice.doOnTextChanged { text, start, before, count ->
-                viewModel.updateBookBodyFlow(
-                    viewModel.bookBody.value.copy(unitPrice = text.toString().toIntOrNull())
-                )
+                viewModel.bookBodyChanged {
+                    it.copy(unitPrice = text.toString().toIntOrNull())
+                }
             }
             tvPackageCount.doOnTextChanged { text, start, before, count ->
-                viewModel.updateBookBodyFlow(
+                viewModel.bookBodyChanged {
                     // qty暂时用packageCount这个替代
-                    viewModel.bookBody.value.copy(
+                    it.copy(
                         packageCount = text.toString().toIntOrNull(),
                         qty = text.toString().toIntOrNull()
                     )
-                )
+                }
             }
             tvPickUpTime.doOnTextChanged { text, start, before, count ->
                 if (text.isNullOrBlank()) {
@@ -274,46 +267,39 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                 val dateStr = text.substring(0, 11)
                 val startTimeStr = text.substring(11, 16) + ":00"
                 val endTimeStr = text.substring(17, 22) + ":00"
-                viewModel.updateBookBodyFlow(
-                    viewModel.bookBody.value.copy(
+                viewModel.bookBodyChanged {
+                    it.copy(
                         dateTime = text.toString(),
                         pickUpStartTime = dateStr + startTimeStr,
                         pickUpEndTime = dateStr + endTimeStr
                     )
-                )
+                }
             }
 
             tvNote.doOnTextChanged { text, start, before, count ->
-                viewModel.updateBookBodyFlow(
-                    viewModel.bookBody.value.copy(remark = if (text.isNullOrBlank()) null else text.toString())
-                )
+                viewModel.bookBodyChanged {
+                    it.copy(remark = if (text.isNullOrBlank()) null else text.toString())
+                }
             }
         }
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    // 显示下单结果
-                    viewModel.bookResultFlow.collectLatest {
-                        it ?: return@collectLatest
-                        showBookResultDialog(it)
-                    }
-                }
-                launch {
-                    viewModel.smartPreOrderChannels.collectLatest { preOrderChannels ->
-                        viewModel.updateBookBodyFlow(
-                            viewModel.bookBody.value.copy(
-                                deliveryType = preOrderChannels?.getOrNull(0)?.deliveryType,
-                                channelId = preOrderChannels?.getOrNull(0)?.channelId
-                            )
-                        )
-                    }
-                }
-                launch {
-                    viewModel.bookBody.collectLatest { bookBody ->
-                        bookBody.getSenderNameAndPhoneOrNull()?.let { binding.tvName.text = it }
-                        bookBody.getSenderAddressOrNull()?.let { binding.tvAddress.text = it }
-                        bookBody.getReceiverNameAndPhoneOrNull()?.let { binding.tvName2.text = it }
-                        bookBody.getReceiverAddressOrNull()?.let { binding.tvAddress2.text = it }
+                    viewModel.uiEvent.collectLatest { event ->
+                        when (event) {
+                            is BookViewModel.Event.ShowBookResult -> {
+                                // 显示下单结果
+                                event.result ?: return@collectLatest
+                                showBookResultDialog(event.result)
+                            }
+                            is BookViewModel.Event.BookInfoIncomplete -> {
+                                Toast.makeText(
+                                    requireContext(),
+                                    R.string.book_info_incomplete,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
                     }
                 }
                 launch {
@@ -321,17 +307,20 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                         if (preOrderChannel == null) {
                             // 没有可用渠道 或 信息不全没选择渠道。提示文字
                             binding.price.text = getString(R.string.book_price, "-")
-                            binding.priceTips.text =
-                                if (viewModel.bookBody.value.isReadyForPreOrder) {
-                                    getString(R.string.book_price_tips_no_available_channel)
+                            binding.channelName.visibility = View.GONE
+                            binding.channelName.text = null
+                            binding.channelTips.text =
+                                if (viewModel.bookBody.isReadyForPreOrder) {
+                                    getString(R.string.book_tips_not_found)
                                 } else {
                                     getString(R.string.book_price_tips_not_filled)
                                 }
                         } else {
                             binding.price.text =
                                 getString(R.string.book_price, preOrderChannel.preOrderFee)
-                            binding.priceTips.text =
-                                getString(R.string.book_price_tips, preOrderChannel.channelName)
+                            binding.channelName.visibility = View.VISIBLE
+                            binding.channelName.text = preOrderChannel.channelName
+                            binding.channelTips.text = getString(R.string.book_tips_selectable)
                         }
                     }
                 }
@@ -340,9 +329,10 @@ class BookFragment : Fragment(R.layout.fragment_book) {
         initData()
     }
 
+    // 初始化数据
     private fun initData() {
         with(binding) {
-            viewModel.updateBookBodyFlow(BookBody())
+            viewModel.bookBodyChanged { BookBody() }
 
             tvName.setText(R.string.book_info_from)
             tvAddress.setText(R.string.book_address_tips)
@@ -361,15 +351,16 @@ class BookFragment : Fragment(R.layout.fragment_book) {
         }
     }
 
+    // 填充数据，测试用
     private fun populateData() {
         with(binding) {
-            viewModel.updateBookBodyFlow(
+            viewModel.bookBodyChanged {
                 BookBody(
                     receiveAddress = "乐成米兰城3楼南大街372(到付拒收)",
                     receiveCity = "石家庄市",
                     receiveDistrict = "长安区",
                     receiveMobile = "13333333333",
-                    receiveName = "测试",
+                    receiveName = "小白",
                     receiveProvince = "河北省",
                     receiveProvinceCode = "130000",
                     receiveTel = null,
@@ -378,14 +369,17 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                     senderCity = "北京市",
                     senderDistrict = "通州区",
                     senderMobile = "17777777777",
-                    senderName = "测试",
+                    senderName = "小黄",
                     senderProvince = "北京市",
                     senderProvinceCode = "110000",
                     senderTel = null,
                     senderValues = listOf("110000", "110100", "110112"),
                 )
-            )
-
+            }
+            tvName.text = "小黄,17777777777"
+            tvAddress.text = "北京市北京市通州区翠福园40号楼二单元802室"
+            tvName2.text = "小白,13333333333"
+            tvAddress2.text = "河北省石家庄市长安区乐成米兰城3楼南大街372(到付拒收)"
             tvGoodsWeight.setText("1")
             tvGoodsName.setText(resources.getStringArray(R.array.cat_goods_type).first())
             tvPackageCount.setText("1")
@@ -472,26 +466,26 @@ class BookFragment : Fragment(R.layout.fragment_book) {
         val dialog = BottomSheetDialog(requireContext())
         dialog.setContentView(b.root)
         dialog.setOnDismissListener {
-            viewModel.updateParseAddressBySf(null)
+            viewModel.clearParsedAddressBySf()
         }
         dialog.dismissWithAnimation = true
 
         // 如果是之前填好了信息，重新点进去的，就从viewModel读取并填充数据
         if (isFrom) {
             b.title.setText(R.string.book_info_from)
-            viewModel.bookBody.value.senderName?.let {
+            viewModel.bookBody.senderName?.let {
                 b.name.editText?.setText(it)
             }
-            viewModel.bookBody.value.senderMobile?.let {
+            viewModel.bookBody.senderMobile?.let {
                 b.phone.editText?.setText(it)
             }
-            viewModel.bookBody.value.senderTel?.let {
+            viewModel.bookBody.senderTel?.let {
                 b.phone.editText?.setText(it)
             }
-            val provinceName = viewModel.bookBody.value.senderProvince
-            val cityName = viewModel.bookBody.value.senderCity
-            val countyName = viewModel.bookBody.value.senderDistrict
-            val values = viewModel.bookBody.value.senderValues
+            val provinceName = viewModel.bookBody.senderProvince
+            val cityName = viewModel.bookBody.senderCity
+            val countyName = viewModel.bookBody.senderDistrict
+            val values = viewModel.bookBody.senderValues
             if (provinceName != null && cityName != null && countyName != null && values != null) {
                 b.provinceMenu.setText(provinceName + cityName + countyName)
                 b.provinceMenu.tag = listOf(
@@ -500,24 +494,24 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                     Pair(countyName, values[2])
                 )
             }
-            viewModel.bookBody.value.senderAddress?.let {
+            viewModel.bookBody.senderAddress?.let {
                 b.address.editText?.setText(it)
             }
         } else {
             b.title.setText(R.string.book_info_to)
-            viewModel.bookBody.value.receiveName?.let {
+            viewModel.bookBody.receiveName?.let {
                 b.name.editText?.setText(it)
             }
-            viewModel.bookBody.value.receiveMobile?.let {
+            viewModel.bookBody.receiveMobile?.let {
                 b.phone.editText?.setText(it)
             }
-            viewModel.bookBody.value.receiveTel?.let {
+            viewModel.bookBody.receiveTel?.let {
                 b.phone.editText?.setText(it)
             }
-            val provinceName = viewModel.bookBody.value.receiveProvince
-            val cityName = viewModel.bookBody.value.receiveCity
-            val countyName = viewModel.bookBody.value.receiveDistrict
-            val values = viewModel.bookBody.value.receiveValues
+            val provinceName = viewModel.bookBody.receiveProvince
+            val cityName = viewModel.bookBody.receiveCity
+            val countyName = viewModel.bookBody.receiveDistrict
+            val values = viewModel.bookBody.receiveValues
             if (provinceName != null && cityName != null && countyName != null && values != null) {
                 b.provinceMenu.setText(provinceName + cityName + countyName)
                 b.provinceMenu.tag = listOf(
@@ -526,7 +520,7 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                     Pair(countyName, values[2])
                 )
             }
-            viewModel.bookBody.value.receiveAddress?.let {
+            viewModel.bookBody.receiveAddress?.let {
                 b.address.editText?.setText(it)
             }
         }
@@ -562,8 +556,8 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                 val areaCodeList = listOf(provinceCode, cityCode, countyCode)
 
                 if (isFrom) {
-                    viewModel.updateBookBodyFlow(
-                        viewModel.bookBody.value.copy(
+                    viewModel.bookBodyChanged {
+                        it.copy(
                             senderName = name,
                             senderTel = tel,
                             senderMobile = mobile,
@@ -574,10 +568,14 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                             senderAddress = address,
                             senderValues = areaCodeList
                         )
-                    )
+                    }
+                    binding.tvName.text = viewModel.bookBody.getSenderNameAndPhoneOrNull()
+                        ?: getString(R.string.book_info_from)
+                    binding.tvAddress.text = viewModel.bookBody.getSenderAddressOrNull()
+                        ?: getString(R.string.book_address_tips)
                 } else {
-                    viewModel.updateBookBodyFlow(
-                        viewModel.bookBody.value.copy(
+                    viewModel.bookBodyChanged {
+                        it.copy(
                             receiveName = name,
                             receiveTel = tel,
                             receiveMobile = mobile,
@@ -588,7 +586,11 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                             receiveAddress = address,
                             receiveValues = areaCodeList
                         )
-                    )
+                    }
+                    binding.tvName2.text = viewModel.bookBody.getReceiverNameAndPhoneOrNull()
+                        ?: getString(R.string.book_info_to)
+                    binding.tvAddress2.text = viewModel.bookBody.getReceiverAddressOrNull()
+                        ?: getString(R.string.book_address_tips)
                 }
                 dialog.dismiss()
             }
@@ -606,7 +608,7 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                 ).show()
             }
         }
-        b.pasteAndClear.setOnClickListener {
+        b.pasteOrClear.setOnClickListener {
             it.animate().rotation(it.rotation + 360F)
             if (b.auto.editText?.text.isNullOrBlank()) {
                 val clipboard =
@@ -621,9 +623,9 @@ class BookFragment : Fragment(R.layout.fragment_book) {
         }
         b.auto.editText?.doOnTextChanged { text, start, before, count ->
             if (text.isNullOrBlank()) {
-                b.pasteAndClear.setImageResource(R.drawable.ic_baseline_content_paste_24)
+                b.pasteOrClear.setImageResource(R.drawable.ic_baseline_content_paste_24)
             } else {
-                b.pasteAndClear.setImageResource(R.drawable.ic_baseline_close_24)
+                b.pasteOrClear.setImageResource(R.drawable.ic_baseline_close_24)
             }
         }
         b.provinceMenu.apply {
@@ -701,13 +703,13 @@ class BookFragment : Fragment(R.layout.fragment_book) {
 
         val rootOnClickCallback: (channel: Channel) -> Unit = { channel ->
             val channelId =
-                viewModel.smartPreOrderChannels.value!!.find { it.uiChannel == channel }!!.channelId
-            viewModel.updateBookBodyFlow(
-                viewModel.bookBody.value.copy(
+                viewModel.smartPreOrderChannels.find { it.uiChannel == channel }!!.channelId
+            viewModel.bookBodyChanged {
+                it.copy(
                     deliveryType = channel.deliveryType,
                     channelId = channelId
                 )
-            )
+            }
             dialog.dismiss()
         }
         val mAdapter = ChannelRecyclerViewAdapter(rootOnClickCallback)
@@ -725,15 +727,23 @@ class BookFragment : Fragment(R.layout.fragment_book) {
      */
     private fun showBookResultDialog(bookResult: BookResult) {
         val deliveryIdStr = bookResult.deliveryId ?: getString(R.string.fees_tips_get_delivery_id)
-        var msg = "快递单号：${deliveryIdStr}\n" +
-                "寄方姓名：${viewModel.bookBody.value.senderName}\n" +
-                "寄方电话：${viewModel.bookBody.value.senderMobile.orEmpty() + viewModel.bookBody.value.senderTel.orEmpty()}\n" +
-                "寄方地址：${binding.tvAddress.text}\n" +
-                "收方姓名：${viewModel.bookBody.value.receiveName}\n" +
-                "收方电话：${viewModel.bookBody.value.receiveMobile.orEmpty() + viewModel.bookBody.value.receiveTel.orEmpty()}\n" +
-                "收方地址：${binding.tvAddress2.text}\n" +
-                "下单物品：${viewModel.bookBody.value.goods}\n" +
-                "下单重量：${viewModel.bookBody.value.weight}\n"
+        val brand = when {
+            bookResult.orderNo.startsWith("YT") -> "圆通"
+            bookResult.orderNo.startsWith("ST") -> "申通"
+            bookResult.orderNo.startsWith("DB") -> "德邦"
+            bookResult.orderNo.startsWith("JT") -> "极兔"
+            bookResult.orderNo.startsWith("SF") -> "顺丰"
+            bookResult.orderNo.startsWith("JD") -> "京东"
+            else -> ""
+        }
+        var msg = "${brand}单号：${deliveryIdStr}\n" +
+                "寄件人：${binding.tvName.text}\n" +
+                "寄件地址：${binding.tvAddress.text}\n" +
+                "收件人：${binding.tvName2.text}\n" +
+                "收件地址：${binding.tvAddress2.text}\n" +
+                "下单物品：${binding.tvGoodsName.text}\n" +
+                "下单重量：${binding.tvGoodsWeight.text}kg\n" +
+                "重要提示：超重需补差价；未保价最高赔付运费6倍；售后问题联系\"下单员\"或致电：4000-563-365。"
         val dialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.book_result_dialog_title)
             .setMessage(msg)
@@ -761,13 +771,16 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                     )
                 }
                 neutralButton.visibility = View.VISIBLE
-                viewLifecycleOwner.lifecycleScope.launch {
+                val job = viewLifecycleOwner.lifecycleScope.launch {
                     viewModel.deliveryId.collectLatest {
                         it ?: return@collectLatest
                         msg = msg.replace(deliveryIdStr, it)
                         dialog.setMessage(msg)
                         neutralButton.visibility = View.GONE
                     }
+                }
+                dialog.setOnDismissListener {
+                    job.cancel()
                 }
             }
         }

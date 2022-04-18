@@ -28,47 +28,24 @@ class BookViewModel @Inject constructor(
     val deliveryId = _deliveryId.asSharedFlow()
 
     // 下单请求需要提交的参数
-    private val _bookBody = MutableStateFlow(BookBody())
-    val bookBody = _bookBody.asStateFlow()
+    var bookBody = BookBody()
+        private set
 
     // 可用渠道列表
-    val smartPreOrderChannels = _bookBody
-        .mapLatest {
-            // 转换成下单前查询可用渠道的参数
-            BookBody(
-                goods = it.goods,
-                packageCount = it.packageCount,
-                receiveAddress = it.receiveAddress,
-                receiveCity = it.receiveCity,
-                receiveDistrict = it.receiveDistrict,
-                receiveMobile = it.receiveMobile,
-                receiveName = it.receiveName,
-                receiveProvince = it.receiveProvince,
-                receiveProvinceCode = it.receiveProvinceCode,
-                receiveTel = it.receiveTel,
-                receiveValues = it.receiveValues,
-                senderAddress = it.senderAddress,
-                senderCity = it.senderCity,
-                senderDistrict = it.senderDistrict,
-                senderMobile = it.senderMobile,
-                senderName = it.senderName,
-                senderProvince = it.senderProvince,
-                senderProvinceCode = it.senderProvinceCode,
-                senderTel = it.senderTel,
-                senderValues = it.senderValues,
-                weight = it.weight,
-            )
-        }
-        .distinctUntilChanged()
-        .mapLatest { fetchSmartPreOrderChannels(it) }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
-    val selectedPreOrderChannel = _bookBody.mapLatest { body ->
-        smartPreOrderChannels.value?.find { it.channelId == body.channelId && it.deliveryType == body.deliveryType }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
+    var smartPreOrderChannels = emptyList<PreOrderChannel>()
 
-    // 下单结果
-    private val _bookResult = MutableSharedFlow<BookResult?>()
-    val bookResultFlow = _bookResult.asSharedFlow()
+    // 当前选中的渠道
+    private val _selectedPreOrderChannel = MutableStateFlow<PreOrderChannel?>(null)
+    val selectedPreOrderChannel = _selectedPreOrderChannel.asStateFlow()
+
+    private val _event = MutableSharedFlow<Event>()
+    val uiEvent = _event.asSharedFlow()
+
+    sealed class Event {
+        data class ShowBookResult(val result: BookResult?) : Event()
+        object BookInfoIncomplete : Event()
+    }
+
     var areaList: List<Area>? = null
 
     init {
@@ -103,8 +80,12 @@ class BookViewModel @Inject constructor(
 //            val result = bookRepository.parseAddressByJd(rawAddress)
 //            _parseAddressResult.value = result?.result
             val result = bookRepository.parseAddressBySf(rawAddress)
-            updateParseAddressBySf(result?.result)
+            _parsedAddressBySf.value = result?.result
         }
+    }
+
+    fun clearParsedAddressBySf() {
+        _parsedAddressBySf.value = null
     }
 
     /**
@@ -112,13 +93,13 @@ class BookViewModel @Inject constructor(
      *
      * @return
      */
-    private suspend fun fetchSmartPreOrderChannels(body: BookBody): List<PreOrderChannel>? {
+    private suspend fun fetchSmartPreOrderChannels(body: BookBody): List<PreOrderChannel> {
         return if (body.isReadyForPreOrder) {
             // 按价格升序排序
             bookRepository.fetchSmartPreOrderChannels(body)?.data?.mapNotNull()
-                ?.sortedBy { it.preOrderFee.toFloat() }
+                ?.sortedBy { it.preOrderFee.toFloat() } ?: emptyList()
         } else {
-            null
+            emptyList()
         }
     }
 
@@ -129,17 +110,40 @@ class BookViewModel @Inject constructor(
      */
     fun book() {
         viewModelScope.launch {
-            val result = bookRepository.submitOrder(bookBody.value)
-            _bookResult.emit(result?.data)
+            if (bookBody.isReadyForOrder) {
+                val result = bookRepository.submitOrder(bookBody)
+                _event.emit(Event.ShowBookResult(result?.data))
+            } else {
+                _event.emit(Event.BookInfoIncomplete)
+            }
         }
     }
 
-    fun updateParseAddressBySf(parsedAddressBySf: List<ParsedAddressBySf>?) {
-        _parsedAddressBySf.value = parsedAddressBySf
-    }
+    /**
+     * 更改bookBody
+     *
+     * @param block:
+     * @return
+     */
+    fun bookBodyChanged(block: (bookBody: BookBody) -> BookBody) {
+        viewModelScope.launch {
+            val oldBody = bookBody
+            bookBody = block.invoke(bookBody)
 
-    fun updateBookBodyFlow(bookBody: BookBody) {
-        _bookBody.value = bookBody
+            // 判断是否需要查询价格
+            if (oldBody.toPreOrderBody() != bookBody.toPreOrderBody()) {
+                smartPreOrderChannels = fetchSmartPreOrderChannels(bookBody.toPreOrderBody())
+                bookBody = bookBody.copy(
+                    deliveryType = smartPreOrderChannels.getOrNull(0)?.deliveryType,
+                    channelId = smartPreOrderChannels.getOrNull(0)?.channelId
+                )
+            }
+
+            // 更改当前选中的渠道
+            _selectedPreOrderChannel.value = smartPreOrderChannels.find {
+                it.channelId == bookBody.channelId && it.deliveryType == bookBody.deliveryType
+            }
+        }
     }
 
     /**

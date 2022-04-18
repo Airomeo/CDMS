@@ -11,8 +11,15 @@ import kotlinx.coroutines.launch
  * 2021/11/30.
  */
 object EventBus : ViewModel() {
-
-    private val _events = MutableSharedFlow<BaseEvent>() // private mutable shared flow
+//    class EventBus {
+//        private val _events = MutableSharedFlow<Event>() // private mutable shared flow
+//        val events = _events.asSharedFlow() // publicly exposed as read-only shared flow
+//
+//        suspend fun produceEvent(event: Event) {
+//            _events.emit(event) // suspends until all subscribers receive it
+//        }
+//    }
+private val _events = MutableSharedFlow<BaseEvent>() // private mutable shared flow
     val events = _events.asSharedFlow() // publicly exposed as read-only shared flow
 
     fun produceEvent(event: BaseEvent) {
