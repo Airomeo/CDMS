@@ -91,7 +91,7 @@ class TeamViewModel @Inject constructor(private val teamRepository: TeamReposito
     /**
      * 根据所选等级，获取邀请码
      *
-     * @param level: Level_3, Level_2, Level_1
+     * @param level: 30, 20, 10
      * @return
      */
     fun fetchInviteCode(level: String) {

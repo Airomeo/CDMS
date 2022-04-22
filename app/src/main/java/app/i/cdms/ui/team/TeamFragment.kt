@@ -106,12 +106,12 @@ class TeamFragment : Fragment(R.layout.fragment_team) {
      * @return
      */
     private fun showInviteDialog(list: List<AgentLevel>) {
-        val array = list.map { it.postName }.toTypedArray()
+        val array = list.map { it.desc }.toTypedArray()
         var selectedIndex = 0
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.invite_choice_dialog_title)
             .setPositiveButton(R.string.dialog_positive_text) { dialog, which ->
-                viewModel.fetchInviteCode(list[selectedIndex].postCode)
+                viewModel.fetchInviteCode(list[selectedIndex].type)
             }
             .setNegativeButton(R.string.dialog_negative_text, null)
             .setSingleChoiceItems(
@@ -131,7 +131,7 @@ class TeamFragment : Fragment(R.layout.fragment_team) {
      */
     private fun showInviteCodeDialog(code: String) {
         val msg =
-            "欢迎加入易达，邀请码${code}，有效期24小时，请进入链接地址：https://www.yida178.cn/register?code=${code} 完成账户注册。"
+            "欢迎加入易达，邀请码${code}，有效期24小时，打开链接注册账户。：https://www.yida178.cn/register?code=${code}"
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.common_result)
             .setMessage(msg)
