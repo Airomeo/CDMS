@@ -55,6 +55,12 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                 }
                 switcher -> {
                     it.animate().rotation(it.rotation + 180F)
+                    val tempName = tvName.text
+                    val tempAddress = tvAddress.text
+                    tvName.text = tvName2.text
+                    tvAddress.text = tvAddress2.text
+                    tvName2.text = tempName
+                    tvAddress2.text = tempAddress
                     viewModel.bookBodyChanged {
                         it.copy(
                             senderName = it.receiveName,
