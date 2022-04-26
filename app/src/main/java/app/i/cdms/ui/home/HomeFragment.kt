@@ -75,6 +75,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 showChargeQrCodeDialog()
             },
             HomeMenuItem(
+                R.drawable.ic_baseline_person_add_24,
+                R.string.title_register
+            ) {
+                findNavController().navigate(R.id.AuthFragment)
+            },
+            HomeMenuItem(
                 R.drawable.ic_baseline_apps_24,
                 R.string.common_libs
             ) {
@@ -85,12 +91,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 R.string.common_doc
             ) {
                 findNavController().navigate(R.id.dashboardFragment)
-            },
-            HomeMenuItem(
-                R.drawable.ic_baseline_person_add_24,
-                R.string.title_register
-            ) {
-                findNavController().navigate(R.id.AuthFragment)
             },
             HomeMenuItem(
                 R.drawable.ic_baseline_logout_24,
@@ -136,7 +136,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
                 launch {
                     homeViewModel.myInfo.collectLatest {
-                        it ?: return@collectLatest
+                        if (it == null) {
+                            binding.tvUsername.setText(R.string.title_not_login)
+                            binding.tvBalance.setText(R.string.title_not_login_tips)
+                            binding.tvEarns.text = null
+                            binding.tvBalance.text = null
+                            return@collectLatest
+                        }
                         homeViewModel.updateMyInfo(it)
                         updateUiWithUser(it)
                     }

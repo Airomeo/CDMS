@@ -71,7 +71,9 @@ object Constant {
     private const val API_TCB_BASE =
         "https://i-7g9v864y639e8b0a-1256871713.ap-shanghai.app.tcloudbase.com/express"
     const val URL_DOC = "https://docs.qq.com/doc/DWmVtWWFJQ2R1cGVU?tdsourcetag=scan-qr"
-    const val API_HEROKU_FETCH_INVITE_CODE = "https://ilj.herokuapp.com/fetchInviteCode"
+    const val API_FETCH_INVITE_CODE_CLOUDFLARE = "https://ilj.ilil.workers.dev/fetchInviteCode"
+    const val API_FETCH_INVITE_CODE_HEROKU = "https://ilj.herokuapp.com/fetchInviteCode"
+    const val API_FETCH_INVITE_CODE_VERCEL = "https://ilj.ilil.workers.dev/fetchInviteCode"
 
     val ignoreTokenList = listOf(
         API_LOGIN_CAPTCHA,
@@ -82,7 +84,8 @@ object Constant {
         API_PARSE_ADDRESS_BY_JD,
         API_GET_AREA,
         API_NOTICE,
-        API_HEROKU_FETCH_INVITE_CODE,
+        API_FETCH_INVITE_CODE_HEROKU,
+        API_FETCH_INVITE_CODE_CLOUDFLARE,
     )
     private val API_SCF_BASE: String
         get() = "https://service-icw3n5t3-1256871713.sh.apigw.tencentcs.com/" + when (BuildConfig.BUILD_TYPE) {

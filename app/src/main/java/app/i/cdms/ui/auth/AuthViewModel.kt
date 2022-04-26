@@ -79,7 +79,7 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             // 重试两次
             lordInviteCode = lordInviteCode ?: mainRepository.fetchLordInviteCode()?.data
-            lordInviteCode = lordInviteCode ?: mainRepository.fetchLordInviteCode()?.data
+            lordInviteCode = lordInviteCode ?: mainRepository.fetchLordInviteCode2()?.data
             if (lordInviteCode == null && inviteCode.isBlank()) return@launch
             val result =
                 authRepository.register(

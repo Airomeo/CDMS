@@ -48,4 +48,5 @@ class MainRepository @Inject constructor(
         executeResponse { dataSource.fetchInviteCode(level) }
 
     suspend fun fetchLordInviteCode() = executeResponse { dataSource.fetchLordInviteCode() }
+    suspend fun fetchLordInviteCode2() = executeResponse { dataSource.fetchLordInviteCode2() }
 }
