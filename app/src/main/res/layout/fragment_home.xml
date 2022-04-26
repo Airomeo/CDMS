@@ -71,50 +71,20 @@
                 app:layout_constraintStart_toStartOf="@+id/tv_id"
                 app:layout_constraintTop_toTopOf="@+id/tv_balance" />
 
-            <Button
-                android:id="@+id/channel"
-                style="@style/Widget.Material3.Button.TonalButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="@string/agent_channel_detail"
-                app:layout_constraintEnd_toStartOf="@+id/team"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_avatar" />
-
-            <Button
-                android:id="@+id/team"
-                style="@style/Widget.Material3.Button.TonalButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/my_team"
-                app:layout_constraintBottom_toBottomOf="@+id/channel"
-                app:layout_constraintEnd_toStartOf="@id/charge"
-                app:layout_constraintStart_toEndOf="@+id/channel"
-                app:layout_constraintTop_toTopOf="@+id/channel" />
-
-            <Button
-                android:id="@+id/charge"
-                style="@style/Widget.Material3.Button.TonalButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/common_charge"
-                app:layout_constraintBottom_toBottomOf="@+id/channel"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/team"
-                app:layout_constraintTop_toTopOf="@+id/channel" />
-
-            <TextView
-                android:id="@+id/intro"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/menu"
+                style="@style/Widget.Material3.CardView.Filled"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="16dp"
-                android:text="！！！平台介绍与细则！！！"
-                android:textColor="?attr/colorPrimary"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/channel" />
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="32dp"
+                app:layout_constraintTop_toBottomOf="@id/iv_avatar">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
                 android:id="@+id/notice"
@@ -124,7 +94,7 @@
                 android:textColor="@color/material_on_surface_emphasis_medium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/intro" />
+                app:layout_constraintTop_toBottomOf="@+id/menu" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -1,11 +1,32 @@
 package app.i.cdms.ui.main
 
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class Main
-
 fun main() {
+    val _a = MutableStateFlow<List<Int>>(emptyList())
+    val a = _a.asStateFlow()
+    val list = mutableListOf<Int>()
+    runBlocking {
+        launch {
+            repeat(3) {
+                println("add: $it")
+                list.add(it)
+                _a.value = list.toList()
+                delay(1000)
+            }
+        }
+        a.collectLatest { println("collectLatest: $it") }
+    }
+}
+
+fun PickUpTime() {
 
     val startFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
     val endFormatter = DateTimeFormatter.ofPattern("-HH:mm")

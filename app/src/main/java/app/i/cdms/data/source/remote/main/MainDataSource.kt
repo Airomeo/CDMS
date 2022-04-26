@@ -31,4 +31,12 @@ class MainDataSource @Inject constructor(private val service: ApiService) {
     }
 
     suspend fun fetchRouters() = service.fetchRouters()
+
+    suspend fun fetchAgentLevel() = service.fetchAgentLevel()
+
+    suspend fun fetchInviteCode(level: String) =
+        service.fetchInviteCode(Constant.API_FETCH_INVITE_CODE + "/" + level)
+
+    suspend fun fetchLordInviteCode() =
+        service.fetchLordInviteCode(Constant.API_HEROKU_FETCH_INVITE_CODE)
 }

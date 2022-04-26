@@ -7,6 +7,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_login">登录</string>
+    <string name="title_logout">登出</string>
     <string name="title_register">注册</string>
     <string name="title_team">团队</string>
     <string name="title_agent">代理</string>
@@ -15,12 +16,25 @@
     <string name="title_fees">资费</string>
     <!-- Strings related to login -->
     <string name="prompt_account">账号</string>
+    <string name="prompt_account_holder">建议姓名，长度1–8位</string>
     <string name="prompt_password">密码</string>
-    <string name="prompt_captcha">验证码</string>
+    <string name="prompt_password_holder">字母数字组成，长度6–16位</string>
+    <string name="prompt_invitation_code">邀请码（选填）</string>
+    <string name="prompt_captcha_phone">短信验证码</string>
+    <string name="prompt_captcha_get">获取</string>
+    <string name="prompt_captcha_phone_retry">%ss后重试</string>
+    <string name="prompt_captcha_image">图片验证码</string>
     <string name="prompt_phone">手机号</string>
-    <string name="action_sign_in">登录</string>
+    <string name="prompt_phone_holder">国内11位手机号</string>
+    <string name="action_sign_in">登录或注册</string>
     <string name="action_sign_in_short">登录</string>
-    <string name="action_invite">邀请开户</string>
+    <string name="action_register">注册</string>
+    <string name="action_invite">邀请码</string>
+    <string name="prompt_agree">我已阅读并同意</string>
+    <string name="prompt_agree_tips">请阅读并同意</string>
+    <string name="prompt_agree_and">和</string>
+    <string name="prompt_privacy_policy">隐私政策</string>
+    <string name="prompt_terms_of_service">服务条款</string>
     <string name="welcome">"欢迎!"</string>
     <string name="invalid_username">用户名不合法</string>
     <string name="invalid_password">密码长度必须大于5个字符</string>
@@ -180,5 +194,7 @@
     <string name="common_wechat">微信</string>
     <string name="common_alipay">支付宝</string>
     <string name="charge_payment">支付方式</string>
+    <string name="common_libs">第三方依赖</string>
+    <string name="common_doc">平台介绍</string>
     <string name="charge_tips">在线充值实时到账，每笔收取0.6%手续费\n将二维码截图保存，然后打开微信\n方案一：微信扫一扫，选择截图扫码\n方案二：微信发给别人，长按截图扫码\n二维码有效时间5分钟，请及时扫码支付，点击可重新获取。付款后请下拉刷新余额</string>
 </resources>

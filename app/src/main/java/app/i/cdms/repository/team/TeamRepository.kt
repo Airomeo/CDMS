@@ -30,9 +30,4 @@ class TeamRepository @Inject constructor(private val dataSource: TeamDataSource)
             )
         }
     }
-
-    suspend fun fetchAgentLevel() = executeResponse { dataSource.fetchAgentLevel() }
-
-    suspend fun fetchInviteCode(level: String) =
-        executeResponse { dataSource.fetchInviteCode(level) }
 }

@@ -28,9 +28,9 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
         _binding = FragmentNotificationsBinding.bind(view)
         with(binding) {
             val fragments = listOf(
-                Pair(R.string.title_book, BookFragment()),
-                Pair(R.string.title_fees, FeesFragment()),
                 Pair(R.string.title_home, HomeFragment()),
+                Pair(R.string.title_fees, FeesFragment()),
+                Pair(R.string.title_book, BookFragment()),
             )
             pager.adapter =
                 object : FragmentStateAdapter(childFragmentManager, viewLifecycleOwner.lifecycle) {

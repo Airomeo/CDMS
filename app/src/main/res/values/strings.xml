@@ -6,6 +6,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_login">Login</string>
+    <string name="title_logout">Logout</string>
     <string name="title_register">Register</string>
     <string name="title_team">Team</string>
     <string name="title_agent">Agent</string>
@@ -14,12 +15,25 @@
     <string name="title_fees">Fees</string>
     <!-- Strings related to login -->
     <string name="prompt_account">Account</string>
+    <string name="prompt_account_holder">1 to 8 characters</string>
     <string name="prompt_password">Password</string>
-    <string name="prompt_captcha">CAPTCHA</string>
+    <string name="prompt_password_holder">6 to 16 letters and digits</string>
+    <string name="prompt_invitation_code">Invite code (optional)</string>
+    <string name="prompt_captcha_phone">SMS CAPTCHA</string>
+    <string name="prompt_captcha_get">Send</string>
+    <string name="prompt_captcha_phone_retry">%ss retry</string>
+    <string name="prompt_captcha_image">Image CAPTCHA</string>
     <string name="prompt_phone">Phone</string>
+    <string name="prompt_phone_holder">11-digit phone number</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="action_invite">Invite friends</string>
+    <string name="action_register">Register</string>
+    <string name="action_invite">Invite</string>
+    <string name="prompt_agree">I have read and agree to the\u0020</string>
+    <string name="prompt_agree_tips">Please read and agree to the\u0020</string>
+    <string name="prompt_agree_and">\u0020and\u0020</string>
+    <string name="prompt_privacy_policy">Privacy Policy</string>
+    <string name="prompt_terms_of_service">Terms of Service</string>
     <string name="welcome">"Welcome!"</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
@@ -179,5 +193,7 @@
     <string name="common_wechat">WeChat</string>
     <string name="common_alipay">Alipay</string>
     <string name="charge_payment">Payment</string>
+    <string name="common_libs">Libraries</string>
+    <string name="common_doc">Document</string>
     <string name="charge_tips">在线充值实时到账，每笔收取0.6%手续费\n将二维码截图保存，然后打开微信\n方案一：微信扫一扫，选择截图扫码\n方案二：微信发给别人，长按截图扫码\n二维码有效时间5分钟，请及时扫码支付，点击可重新获取。付款后请下拉刷新余额</string>
 </resources>

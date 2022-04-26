@@ -31,9 +31,14 @@ interface ApiService {
 //    ): Response<VideoResponse>
 
     @GET
-    suspend fun getCaptcha(
-        @Url url: String = Constant.API_GET_CAPTCHA
+    suspend fun fetchLoginCaptcha(
+        @Url url: String = Constant.API_LOGIN_CAPTCHA
     ): Response<YiDaBaseResponse<CaptchaData>>
+
+    @PUT
+    suspend fun fetchRegisterCaptcha(
+        @Url url: String
+    ): Response<YiDaBaseResponse<Any?>>
 
     @POST
     suspend fun login(
@@ -45,8 +50,8 @@ interface ApiService {
     suspend fun myInfo(@Url url: String = Constant.API_MY_INFO): Response<YiDaBaseResponse<MyInfo>>
 
     @POST
-    suspend fun addChild(
-        @Url url: String = Constant.API_ADD_CHILD,
+    suspend fun register(
+        @Url url: String = Constant.API_REGISTER,
         @Body payload: RequestBody
     ): Response<YiDaBaseResponse<Any>>
 
@@ -155,6 +160,9 @@ interface ApiService {
 
     @PUT
     suspend fun fetchInviteCode(@Url url: String): Response<YiDaBaseResponse<String>>
+
+    @GET
+    suspend fun fetchLordInviteCode(@Url url: String): Response<YiDaBaseResponse<String>>
 
     @GET
     suspend fun fetchRouters(

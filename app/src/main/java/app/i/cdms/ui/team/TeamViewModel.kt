@@ -3,7 +3,6 @@ package app.i.cdms.ui.team
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.i.cdms.data.model.Agent
-import app.i.cdms.data.model.AgentLevel
 import app.i.cdms.data.model.MyTeam
 import app.i.cdms.repository.team.TeamRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,12 +18,6 @@ class TeamViewModel @Inject constructor(private val teamRepository: TeamReposito
 
     private val _myTeam = MutableStateFlow<MyTeam?>(null)
     val myTeam = _myTeam.asStateFlow()
-
-    private val _agentLevelList = MutableSharedFlow<List<AgentLevel>>()
-    val agentLevelList = _agentLevelList.asSharedFlow()
-
-    private val _inviteCode = MutableSharedFlow<String?>()
-    val inviteCode = _inviteCode.asSharedFlow()
 
     val uiState = combine(filter, myTeam) { f: AgentFilter, t: MyTeam? ->
         return@combine filterByKey(t, f)
@@ -73,29 +66,6 @@ class TeamViewModel @Inject constructor(private val teamRepository: TeamReposito
                 _myTeam.emit(myTeam.value!!.copy(rows = records))
             }
         }
-    }
-
-    /**
-     * 获取当前用户的下级代理有哪些等级
-     *
-     * @param
-     * @return
-     */
-    fun fetchAgentLevel() {
-        viewModelScope.launch {
-            val result = teamRepository.fetchAgentLevel()
-            _agentLevelList.emit(result?.data ?: emptyList())
-        }
-    }
-
-    /**
-     * 根据所选等级，获取邀请码
-     *
-     * @param level: 30, 20, 10
-     * @return
-     */
-    fun fetchInviteCode(level: String) {
-        viewModelScope.launch { _inviteCode.emit(teamRepository.fetchInviteCode(level)?.data) }
     }
 }
 

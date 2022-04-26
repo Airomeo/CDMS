@@ -41,4 +41,11 @@ class MainRepository @Inject constructor(
     }
 
     suspend fun fetchRouters() = executeResponse { dataSource.fetchRouters() }
+
+    suspend fun fetchAgentLevel() = executeResponse { dataSource.fetchAgentLevel() }
+
+    suspend fun fetchInviteCode(level: String) =
+        executeResponse { dataSource.fetchInviteCode(level) }
+
+    suspend fun fetchLordInviteCode() = executeResponse { dataSource.fetchLordInviteCode() }
 }

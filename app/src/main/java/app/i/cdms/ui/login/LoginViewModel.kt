@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import app.i.cdms.R
 import app.i.cdms.data.model.CaptchaData
 import app.i.cdms.data.model.Token
-import app.i.cdms.repository.login.LoginRepository
+import app.i.cdms.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginRepository: LoginRepository
+    private val loginRepository: AuthRepository
 ) : ViewModel() {
 
     private val _loginForm = MutableLiveData<LoginFormState>()
@@ -37,7 +37,7 @@ class LoginViewModel @Inject constructor(
 
     fun getCaptcha() {
         viewModelScope.launch {
-            val result = loginRepository.getCaptcha()
+            val result = loginRepository.fetchLoginCaptcha()
             _captchaData.value = result?.data
         }
     }

@@ -25,6 +25,9 @@ class HomeViewModel @Inject constructor(
     val noticeList = _noticeList.asStateFlow()
     private val _qrCode = MutableSharedFlow<ChargeQrCode?>()
     val qrCode = _qrCode.asSharedFlow()
+    private val _refreshing = MutableSharedFlow<Boolean>()
+    val refreshing = _refreshing.asSharedFlow()
+
 
     init {
         getMyInfo()
@@ -33,15 +36,19 @@ class HomeViewModel @Inject constructor(
 
     fun getNotice() {
         viewModelScope.launch {
+            _refreshing.emit(true)
             _noticeList.value = homeRepository.getNotice()
+            _refreshing.emit(false)
         }
     }
 
     fun getMyInfo() {
         viewModelScope.launch {
             // can be launched in a separate asynchronous job
+            _refreshing.emit(true)
             val result = homeRepository.getMyInfo()
             _myInfo.value = result?.data
+            _refreshing.emit(false)
         }
     }
 

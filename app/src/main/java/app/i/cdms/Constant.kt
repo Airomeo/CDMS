@@ -42,10 +42,11 @@ object Constant {
      * HOST and API
      */
     private const val API = "https://www.yida178.cn/prod-api"
-    const val API_GET_CAPTCHA = "$API/captchaImage"
+    const val API_LOGIN_CAPTCHA = "$API/captchaImage"
+    const val API_REGISTER_CAPTCHA = "$API/sendRegisterCode"
     const val API_LOGIN = "$API/login"
+    const val API_REGISTER = "$API/register"
     const val API_MY_INFO = "$API/wl/home/myInfo"
-    const val API_ADD_CHILD = "$API/userAccountAudit"
     const val API_MY_TEAM = "$API/wl/myTeam/list"
     const val API_CLEAR_ACCOUNT = "$API/wl/home/clearAccount"
     const val API_TRANSFER = "$API/wl/userAccount/transfer"
@@ -70,14 +71,18 @@ object Constant {
     private const val API_TCB_BASE =
         "https://i-7g9v864y639e8b0a-1256871713.ap-shanghai.app.tcloudbase.com/express"
     const val URL_DOC = "https://docs.qq.com/doc/DWmVtWWFJQ2R1cGVU?tdsourcetag=scan-qr"
+    const val API_HEROKU_FETCH_INVITE_CODE = "https://ilj.herokuapp.com/fetchInviteCode"
 
     val ignoreTokenList = listOf(
-        API_GET_CAPTCHA,
+        API_LOGIN_CAPTCHA,
         API_LOGIN,
+        API_REGISTER,
+        API_REGISTER_CAPTCHA,
         API_PARSE_ADDRESS_BY_SF,
         API_PARSE_ADDRESS_BY_JD,
         API_GET_AREA,
-        API_NOTICE
+        API_NOTICE,
+        API_HEROKU_FETCH_INVITE_CODE,
     )
     private val API_SCF_BASE: String
         get() = "https://service-icw3n5t3-1256871713.sh.apigw.tencentcs.com/" + when (BuildConfig.BUILD_TYPE) {

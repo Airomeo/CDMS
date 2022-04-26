@@ -1,11 +1,15 @@
 package app.i.cdms.ui.home
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.Html
 import android.util.Base64
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -14,7 +18,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import app.i.cdms.R
+import app.i.cdms.data.model.AgentLevel
 import app.i.cdms.data.model.MyInfo
 import app.i.cdms.databinding.DialogChargeBinding
 import app.i.cdms.databinding.FragmentHomeBinding
@@ -45,29 +51,56 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         binding.refresh.setOnRefreshListener {
             homeViewModel.getMyInfo()
+            homeViewModel.getNotice()
         }
         binding.ivAvatar.setOnClickListener {
             findNavController().navigate(R.id.loginFragment)
         }
-
-        binding.channel.setOnClickListener {
-            findNavController().navigate(R.id.channelFragment)
+        val mAdapter = HomeMenuAdapter()
+        with(binding.recyclerView) {
+            adapter = mAdapter
+            layoutManager = GridLayoutManager(context, 4)
         }
-
-//        binding.logout.setOnClickListener {
-//            mainViewModel.updateToken(null)
-//            homeViewModel.updateMyInfo(null)
-//        }
-
-        binding.team.setOnClickListener {
-            findNavController().navigate(R.id.navigation_team)
-        }
-        binding.intro.setOnClickListener {
-            findNavController().navigate(R.id.dashboardFragment)
-        }
-        binding.charge.setOnClickListener {
-            showChargeQrCodeDialog()
-        }
+        val menus = listOf(
+            HomeMenuItem(
+                R.drawable.ic_baseline_list_24,
+                R.string.agent_channel_detail
+            ) {
+                findNavController().navigate(R.id.channelFragment)
+            },
+            HomeMenuItem(
+                R.drawable.ic_baseline_currency_yen_24,
+                R.string.common_charge
+            ) {
+                showChargeQrCodeDialog()
+            },
+            HomeMenuItem(
+                R.drawable.ic_baseline_apps_24,
+                R.string.common_libs
+            ) {
+                findNavController().navigate(R.id.aboutLibrariesFragment)
+            },
+            HomeMenuItem(
+                R.drawable.ic_baseline_menu_book_24,
+                R.string.common_doc
+            ) {
+                findNavController().navigate(R.id.dashboardFragment)
+            },
+            HomeMenuItem(
+                R.drawable.ic_baseline_person_add_24,
+                R.string.title_register
+            ) {
+                findNavController().navigate(R.id.AuthFragment)
+            },
+            HomeMenuItem(
+                R.drawable.ic_baseline_logout_24,
+                R.string.title_logout
+            ) {
+                mainViewModel.updateToken(null)
+                homeViewModel.updateMyInfo(null)
+            },
+        )
+        mAdapter.submitList(menus)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -77,13 +110,32 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         val accountRouter = it.find { router -> router.name == "Account" }
                         val myTeamRouter =
                             accountRouter?.children?.find { router -> router.name == "My_team" }
-                        binding.team.visibility =
-                            if (myTeamRouter == null) View.GONE else View.VISIBLE
+                        if (myTeamRouter != null) {
+                            mAdapter.submitList(
+                                listOf(
+                                    HomeMenuItem(
+                                        R.drawable.ic_baseline_people_24,
+                                        R.string.my_team
+                                    ) {
+                                        findNavController().navigate(R.id.navigation_team)
+                                    },
+                                    HomeMenuItem(
+                                        R.drawable.ic_baseline_alternate_email_24,
+                                        R.string.action_invite
+                                    ) {
+                                        mainViewModel.fetchAgentLevel()
+                                    }).plus(menus)
+                            )
+                        }
+                    }
+                }
+                launch {
+                    homeViewModel.refreshing.collectLatest {
+                        binding.refresh.isRefreshing = it
                     }
                 }
                 launch {
                     homeViewModel.myInfo.collectLatest {
-                        binding.refresh.isRefreshing = false
                         it ?: return@collectLatest
                         homeViewModel.updateMyInfo(it)
                         updateUiWithUser(it)
@@ -102,8 +154,72 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         binding.notice.text = text
                     }
                 }
+                launch {
+                    mainViewModel.agentLevelList.collectLatest {
+                        if (it.isEmpty()) {
+                            Toast.makeText(requireContext(), "您当前的代理等级没有邀请权限", Toast.LENGTH_SHORT)
+                                .show()
+                        } else {
+                            showInviteDialog(it)
+                        }
+                    }
+                }
+                launch {
+                    mainViewModel.inviteCode.collectLatest {
+                        it ?: return@collectLatest
+                        showInviteCodeDialog(it)
+                    }
+                }
             }
         }
+    }
+
+
+    /**
+     * 显示获取邀请码窗口
+     *
+     * @param list: List<AgentLevel>
+     * @return
+     */
+    private fun showInviteDialog(list: List<AgentLevel>) {
+        val array = list.map { it.desc }.toTypedArray()
+        var selectedIndex = 0
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.invite_choice_dialog_title)
+            .setPositiveButton(R.string.dialog_positive_text) { dialog, which ->
+                mainViewModel.fetchInviteCode(list[selectedIndex].type)
+            }
+            .setNegativeButton(R.string.dialog_negative_text, null)
+            .setSingleChoiceItems(
+                array, selectedIndex
+            ) { dialog, which ->
+//                ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                selectedIndex = which
+            }
+            .show()
+    }
+
+    /**
+     * 显示生成的邀请码文案
+     *
+     * @param code: 邀请码
+     * @return
+     */
+    private fun showInviteCodeDialog(code: String) {
+        val msg =
+            "欢迎加入易达，邀请码${code}，有效期24小时，打开链接注册账户：https://www.yida178.cn/register?code=${code}"
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.common_result)
+            .setMessage(msg)
+            .setPositiveButton(R.string.common_copy) { dialog, which ->
+                // copy
+                val clipboard =
+                    requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clip: ClipData = ClipData.newPlainText("simple text", msg)
+                // Set the clipboard's primary clip.
+                clipboard.setPrimaryClip(clip)
+            }
+            .show()
     }
 
     /**
@@ -195,3 +311,5 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 }
+
+data class HomeMenuItem(val iconRes: Int, val titleRes: Int, val block: () -> Unit)
