@@ -10,6 +10,7 @@
     <string name="title_not_login_tips">Click avatar to login</string>
     <string name="title_logout">Logout</string>
     <string name="title_register">Register</string>
+    <string name="register_tips">Register</string>
     <string name="title_team">Team</string>
     <string name="title_agent">Agent</string>
     <string name="title_channel">Channel</string>

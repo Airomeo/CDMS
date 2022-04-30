@@ -11,6 +11,7 @@
     <string name="title_not_login_tips">点击头像去登录</string>
     <string name="title_logout">登出</string>
     <string name="title_register">注册</string>
+    <string name="register_tips">没有账号？点击注册</string>
     <string name="title_team">团队</string>
     <string name="title_agent">代理</string>
     <string name="title_channel">渠道</string>

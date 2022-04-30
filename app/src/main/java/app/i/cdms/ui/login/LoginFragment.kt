@@ -139,6 +139,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 captchaEditText.text.toString().toInt()
             )
         }
+
+        binding.register.setOnClickListener {
+            findNavController().navigate(R.id.AuthFragment)
+        }
     }
 
     override fun onDestroyView() {

@@ -306,12 +306,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun updateUiWithUser(myInfo: MyInfo) {
         binding.tvUsername.text = myInfo.userName
         binding.tvId.text = getString(R.string.my_info_id, myInfo.userId.toString())
-        binding.tvBalance.text =
-            getString(R.string.my_info_balance, myInfo.accountBalance.toString())
-        if (myInfo.earns > 0) {
+        binding.tvBalance.text = getString(R.string.my_info_balance, myInfo.accountBalance)
+        if (myInfo.earns.toFloat() != 0F) {
             binding.tvEarns.visibility = View.VISIBLE
-            binding.tvEarns.text =
-                getString(R.string.my_info_earns, myInfo.earns.toString())
+            binding.tvEarns.text = getString(R.string.my_info_earns, myInfo.earns)
         } else {
             binding.tvEarns.visibility = View.GONE
         }
