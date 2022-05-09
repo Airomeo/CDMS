@@ -23,6 +23,7 @@ import app.i.cdms.R
 import app.i.cdms.data.model.AgentLevel
 import app.i.cdms.data.model.MyInfo
 import app.i.cdms.databinding.DialogChargeBinding
+import app.i.cdms.databinding.DialogUpdatePasswordBinding
 import app.i.cdms.databinding.FragmentHomeBinding
 import app.i.cdms.ui.main.MainViewModel
 import coil.load
@@ -119,6 +120,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                                         R.string.action_invite
                                     ) {
                                         mainViewModel.fetchAgentLevel()
+                                    },
+                                    HomeMenuItem(
+                                        R.drawable.ic_baseline_vpn_key_24,
+                                        R.string.common_update_password
+                                    ) {
+                                        showUpdatePasswordDialog()
                                     }).plus(menus)
                             )
                         }
@@ -308,6 +315,49 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         } else {
             binding.tvEarns.visibility = View.GONE
         }
+    }
+
+    /**
+     * 更改密码
+     *
+     * @return
+     */
+    private fun showUpdatePasswordDialog() {
+        val b = DialogUpdatePasswordBinding.inflate(layoutInflater, null, false)
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.common_update_password)
+            .setView(b.root)
+            .setNegativeButton(R.string.dialog_negative_text, null)
+            .setPositiveButton(R.string.dialog_positive_text) { dialog, which ->
+                val old = b.old.text.toString()
+                val new = b.newer.text.toString()
+                if (old.isBlank() || new.isBlank()) {
+                    Toast.makeText(
+                        requireContext(),
+                        R.string.common_update_password_tips,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setPositiveButton
+                }
+                if (old == new) {
+                    Toast.makeText(
+                        requireContext(),
+                        R.string.common_update_password_tips1,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setPositiveButton
+                }
+                if (new.length < 6 || new.length > 20) {
+                    Toast.makeText(
+                        requireContext(),
+                        R.string.common_update_password_tips2,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setPositiveButton
+                }
+                homeViewModel.updatePassword(old, new)
+            }
+            .show()
     }
 }
 

@@ -199,6 +199,13 @@
     <string name="charge_payment">Payment</string>
     <string name="common_libs">Libraries</string>
     <string name="common_doc">Document</string>
+    <string name="common_update_password">Update password</string>
+    <string name="common_update_password_tips">Password can not be blank</string>
+    <string name="common_update_password_tips1">Passwords cannot be the same</string>
+    <string name="common_update_password_tips2">Password length should be 6–20 digits</string>
+    <string name="common_update_password_success">Password update success.</string>
+    <string name="common_current_password">Current password</string>
+    <string name="common_new_password">New password</string>
     <string name="charge_tips">在线充值实时到账，每笔收取0.6%手续费\n将二维码截图保存，然后打开微信\n方案一：微信扫一扫，选择截图扫码\n方案二：微信发给别人，长按截图扫码\n二维码有效时间5分钟，请及时扫码支付，点击可重新获取。付款后请下拉刷新余额</string>
     <string name="retrieve_password_success">The reset password has been sent to your mobile phone, please go to the personal center to reset it as soon as possible to avoid forgetting</string>
     <string name="retrieve_password_dialog_title">Reset password</string>

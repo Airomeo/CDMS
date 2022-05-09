@@ -2,10 +2,14 @@ package app.i.cdms.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.i.cdms.R
 import app.i.cdms.data.model.ChargeQrCode
 import app.i.cdms.data.model.MyInfo
 import app.i.cdms.data.model.NoticeList
+import app.i.cdms.repository.AuthRepository
 import app.i.cdms.repository.home.HomeRepository
+import app.i.cdms.utils.BaseEvent
+import app.i.cdms.utils.EventBus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val homeRepository: HomeRepository
+    private val homeRepository: HomeRepository,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     private val _myInfo = MutableStateFlow<MyInfo?>(null)
@@ -73,6 +78,23 @@ class HomeViewModel @Inject constructor(
             val result = homeRepository.fetchChargeQrCode(amount)
             result?.data?.let {
                 _qrCode.emit(it)
+            }
+        }
+    }
+
+    /**
+     * 更改密码
+     * {"code":200,"msg":"操作成功","data":null}
+     * {"code":500,"msg":"修改密码失败，旧密码错误","data":null}
+     * @param old: old password
+     * @param new: new password
+     * @return
+     */
+    fun updatePassword(old: String, new: String) {
+        viewModelScope.launch {
+            val result = authRepository.updatePassword(old, new)
+            if (result?.data == 200) {
+                EventBus.produceEvent(BaseEvent.Toast(R.string.sign_up_success))
             }
         }
     }
