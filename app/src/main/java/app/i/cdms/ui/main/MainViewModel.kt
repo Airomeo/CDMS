@@ -30,33 +30,29 @@ class MainViewModel @Inject constructor(
 
     private val _inviteCode = MutableSharedFlow<String?>()
     val inviteCode = _inviteCode.asSharedFlow()
+    val token = mainRepository.token.distinctUntilChanged()
 
     init {
-        initToken()
+        verifyToken()
     }
 
-    private fun initToken() {
+    private fun verifyToken() {
         viewModelScope.launch {
-            mainRepository.token.collectLatest {
+            token.collectLatest {
                 if (it == null) {
-                    EventBus.produceEvent(BaseEvent.NeedLogin)
+                    EventBus.produceEvent(BaseEvent.Auth)
                 } else {
                     fetchRouters()
+                    EventBus.produceEvent(BaseEvent.Refresh)
                 }
-                Log.d("TAG", "MainViewModel init: token = " + it?.token)
+                Log.e("TAG", "MainViewModel token = " + it?.token)
             }
-        }
-    }
-
-    fun verifyToken() {
-        viewModelScope.launch {
         }
     }
 
     fun updateToken(token: Token?) {
         viewModelScope.launch {
             mainRepository.updateToken(token)
-            EventBus.produceEvent(BaseEvent.Refresh)
         }
     }
 

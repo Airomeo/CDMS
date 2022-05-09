@@ -33,4 +33,10 @@ class AuthRepository @Inject constructor(private val dataSource: AuthDataSource)
         phoneCaptcha: String,
         inviteCode: String
     ) = executeResponse { dataSource.register(username, password, phone, phoneCaptcha, inviteCode) }
+
+    suspend fun retrievePassword(phone: String) =
+        executeResponse { dataSource.retrievePassword(phone) }
+
+    suspend fun updatePassword(old: String, new: String) =
+        executeResponse { dataSource.updatePassword(old, new) }
 }

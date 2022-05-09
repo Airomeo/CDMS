@@ -38,7 +38,7 @@ open class BaseRepository {
                                 return body
                             }
                             401 -> {
-                                EventBus.produceEvent(BaseEvent.NeedLogin)
+                                EventBus.produceEvent(BaseEvent.Auth)
                             }
                             else -> {
                                 EventBus.produceEvent(BaseEvent.Failed(body.msg))
@@ -51,7 +51,7 @@ open class BaseRepository {
                                 return body
                             }
                             401 -> {
-                                EventBus.produceEvent(BaseEvent.NeedLogin)
+                                EventBus.produceEvent(BaseEvent.Auth)
                             }
                             else -> {
                                 EventBus.produceEvent(BaseEvent.Failed(body.msg))

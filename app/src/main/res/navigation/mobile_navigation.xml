@@ -28,12 +28,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/loginFragment"
-        android:name="app.i.cdms.ui.login.LoginFragment"
-        android:label="@string/title_login"
-        tools:layout="@layout/fragment_login" />
-
-    <fragment
         android:id="@+id/channelFragment"
         android:name="app.i.cdms.ui.channel.ChannelFragment"
         android:label="@string/title_channel"
@@ -57,9 +51,9 @@
         android:label="About" />
 
     <fragment
-        android:id="@+id/AuthFragment"
+        android:id="@+id/authFragment"
         android:name="app.i.cdms.ui.auth.AuthFragment"
-        android:label="@string/title_register" />
+        android:label="@string/action_sign_in" />
 
     <navigation
         android:id="@+id/navigation_team"

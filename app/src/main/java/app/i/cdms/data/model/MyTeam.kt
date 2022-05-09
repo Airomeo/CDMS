@@ -13,5 +13,5 @@ data class MyTeam(
     @Json(name = "code")
     val code: Int,
     @Json(name = "total")
-    val total: Int
+    val total: Int?
 )

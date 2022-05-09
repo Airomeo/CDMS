@@ -58,4 +58,12 @@ class AuthDataSource @Inject constructor(private val service: ApiService) {
             .toRequestBody("application/json".toMediaType())
         return service.register(payload = payload)
     }
+
+    suspend fun retrievePassword(phone: String): Response<YiDaBaseResponse<Any>> {
+        return service.retrievePassword("${Constant.API_RETRIEVE_PASSWORD}/${phone}")
+    }
+
+    suspend fun updatePassword(old: String, new: String): Response<YiDaBaseResponse<Any>> {
+        return service.updatePassword(oldPassword = old, newPassword = new)
+    }
 }

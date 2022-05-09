@@ -54,7 +54,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             homeViewModel.getNotice()
         }
         binding.ivAvatar.setOnClickListener {
-            findNavController().navigate(R.id.loginFragment)
+            findNavController().navigate(R.id.authFragment)
         }
         val mAdapter = HomeMenuAdapter()
         with(binding.recyclerView) {
@@ -75,12 +75,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 showChargeQrCodeDialog()
             },
             HomeMenuItem(
-                R.drawable.ic_baseline_person_add_24,
-                R.string.title_register
-            ) {
-                findNavController().navigate(R.id.AuthFragment)
-            },
-            HomeMenuItem(
                 R.drawable.ic_baseline_apps_24,
                 R.string.common_libs
             ) {
@@ -94,8 +88,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             },
             HomeMenuItem(
                 R.drawable.ic_baseline_logout_24,
-                R.string.title_logout
+                R.string.title_sign_out
             ) {
+//                mainViewModel.updateToken(Token(System.currentTimeMillis().toString()))
                 mainViewModel.updateToken(null)
                 homeViewModel.updateMyInfo(null)
             },
@@ -120,7 +115,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                                         findNavController().navigate(R.id.navigation_team)
                                     },
                                     HomeMenuItem(
-                                        R.drawable.ic_baseline_alternate_email_24,
+                                        R.drawable.ic_baseline_person_add_24,
                                         R.string.action_invite
                                     ) {
                                         mainViewModel.fetchAgentLevel()
@@ -137,8 +132,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 launch {
                     homeViewModel.myInfo.collectLatest {
                         if (it == null) {
-                            binding.tvUsername.setText(R.string.title_not_login)
-                            binding.tvBalance.setText(R.string.title_not_login_tips)
+                            binding.tvUsername.setText(R.string.title_not_sign_in)
+                            binding.tvBalance.setText(R.string.title_not_sign_in_tips)
                             binding.tvEarns.text = null
                             binding.tvBalance.text = null
                             return@collectLatest

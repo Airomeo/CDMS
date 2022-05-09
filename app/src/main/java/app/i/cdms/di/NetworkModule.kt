@@ -71,7 +71,7 @@ object NetworkModule {
             }
             chain.proceed(request)
         }
-        val tokenFlowInterceptor = Interceptor { chain ->
+        val tokenInterceptor = Interceptor { chain ->
             var request = chain.request()
 
 //            val ignored = Constant.ignoreTokenList.any {
@@ -84,16 +84,16 @@ object NetworkModule {
                 userPrefDataSource.tokenFlow.first()
             }
             if (!ignored) {
-                if (token == null) {
-                    Log.d("TAG", "ApiClient token null. Cancel request")
-                    // EventBus.produceEvent(Event.NeedLogin)
-                    // cancel request
-                    chain.call().cancel()
-                } else {
-                    request = request.newBuilder()
-                        .addHeader("authorization", "Bearer ${token.token}")
-                        .build()
-                }
+//                if (token == null) {
+//                    Log.d("TAG", "ApiClient token null. Cancel request")
+                // EventBus.produceEvent(Event.NeedLogin)
+                // cancel request
+//                    chain.call().cancel()
+//                } else {
+                request = request.newBuilder()
+                    .addHeader("authorization", "Bearer ${token?.token}")
+                    .build()
+//                }
             }
 
             return@Interceptor chain.proceed(request)
@@ -106,7 +106,7 @@ object NetworkModule {
 
         return OkHttpClient().newBuilder()
             .addInterceptor(cacheInterceptor)
-            .addInterceptor(tokenFlowInterceptor)
+            .addInterceptor(tokenInterceptor)
             .addInterceptor(loggingInterceptor)
             .retryOnConnectionFailure(true)//默认重试一次，若需要重试N次，则要实现拦截器。
             .cache(Cache(File(context.cacheDir, "ResponsesCache"), (30 * 1024 * 1024).toLong()))

@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Material You DynamicColors
-        DynamicColors.applyIfAvailable(this)
+        DynamicColors.applyToActivityIfAvailable(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -76,12 +76,17 @@ class MainActivity : AppCompatActivity() {
                             binding.loading.visibility = View.VISIBLE
                         }
                         is BaseEvent.Nothing -> {}
-                        is BaseEvent.NeedLogin -> {
-                            navController.navigate(R.id.loginFragment)
+                        is BaseEvent.Auth -> {
+                            if (R.id.authFragment != navController.currentDestination?.id) {
+                                showMessage(getString(R.string.title_not_sign_in))
+                                navController.navigate(R.id.authFragment)
+                            }
                         }
                         is BaseEvent.Refresh -> {
 //                            Re-enter current fragment
-                            val id = navController.currentDestination?.id
+                            var id = navController.currentDestination?.id
+                            if (id == R.id.authFragment) navController.popBackStack()
+                            id = navController.currentDestination?.id
                             navController.popBackStack(id!!, true)
                             navController.navigate(id)
                         }

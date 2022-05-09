@@ -46,6 +46,16 @@ interface ApiService {
         @Body payload: RequestBody
     ): Response<YiDaBaseResponse<Token>>
 
+    @PUT
+    suspend fun retrievePassword(@Url url: String): Response<YiDaBaseResponse<Any>>
+
+    @PUT
+    suspend fun updatePassword(
+        @Url url: String = Constant.API_UPDATE_PASSWORD,
+        @Query("oldPassword") oldPassword: String,
+        @Query("newPassword") newPassword: String,
+    ): Response<YiDaBaseResponse<Any>>
+
     @GET
     suspend fun myInfo(@Url url: String = Constant.API_MY_INFO): Response<YiDaBaseResponse<MyInfo>>
 

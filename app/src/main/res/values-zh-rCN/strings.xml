@@ -6,32 +6,33 @@
     <string name="title_home">我</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="title_login">登录</string>
-    <string name="title_not_login">未登录</string>
-    <string name="title_not_login_tips">点击头像去登录</string>
-    <string name="title_logout">登出</string>
-    <string name="title_register">注册</string>
-    <string name="register_tips">没有账号？点击注册</string>
+    <string name="title_sign_in">登录</string>
+    <string name="title_not_sign_in">未登录</string>
+    <string name="title_not_sign_in_tips">点击头像登录/注册</string>
+    <string name="title_sign_out">登出</string>
+    <string name="title_sign_up">注册</string>
+    <string name="sign_up_tips">没有账号？点击注册</string>
+    <string name="sign_in_tips">已有账号？点击登录</string>
+    <string name="sign_up_success">注册成功</string>
     <string name="title_team">团队</string>
     <string name="title_agent">代理</string>
     <string name="title_channel">渠道</string>
     <string name="title_book">下单</string>
     <string name="title_fees">资费</string>
-    <!-- Strings related to login -->
+    <!-- Strings related to sign in -->
     <string name="prompt_account">账号</string>
     <string name="prompt_account_holder">建议姓名，长度1–8位</string>
     <string name="prompt_password">密码</string>
     <string name="prompt_password_holder">字母数字组成，长度6–16位</string>
     <string name="prompt_invitation_code">邀请码（选填）</string>
-    <string name="prompt_captcha_phone">短信验证码</string>
+    <string name="prompt_captcha">验证码</string>
     <string name="prompt_captcha_get">获取</string>
     <string name="prompt_captcha_phone_retry">%ss后重试</string>
-    <string name="prompt_captcha_image">图片验证码</string>
     <string name="prompt_phone">手机号</string>
     <string name="prompt_phone_holder">国内11位手机号</string>
     <string name="action_sign_in">登录或注册</string>
     <string name="action_sign_in_short">登录</string>
-    <string name="action_register">注册</string>
+    <string name="action_sign_up">注册</string>
     <string name="action_invite">邀请码</string>
     <string name="prompt_agree">我已阅读并同意</string>
     <string name="prompt_agree_tips">请阅读并同意</string>
@@ -43,7 +44,8 @@
     <string name="invalid_password">密码长度必须大于5个字符</string>
     <string name="invalid_captcha">验证码不能空</string>
     <string name="invalid_phone">手机号无效</string>
-    <string name="login_failed">登录失败</string>
+    <string name="sign_in_failed">登录失败</string>
+    <string name="trouble_signing_in">找回密码</string>
     <string name="my_info_id">ID：%s</string>
     <string name="my_info_balance">余额：%s</string>
     <string name="my_info_earns">佣金：%s</string>
@@ -79,7 +81,6 @@
     <string name="agent_withdraw_success">清账成功</string>
     <string name="agent_update_channel">配置渠道信息</string>
     <string name="agent_channel_detail">渠道明细</string>
-    <string name="register_and_set_channel">开户并配置渠道</string>
     <string name="agent_channel_config">该用户当前的渠道配置信息</string>
     <string name="transfer_label_amount">金额</string>
     <string name="transfer_label_amount_prefix">¥</string>
@@ -200,4 +201,7 @@
     <string name="common_libs">第三方依赖</string>
     <string name="common_doc">平台介绍</string>
     <string name="charge_tips">在线充值实时到账，每笔收取0.6%手续费\n将二维码截图保存，然后打开微信\n方案一：微信扫一扫，选择截图扫码\n方案二：微信发给别人，长按截图扫码\n二维码有效时间5分钟，请及时扫码支付，点击可重新获取。付款后请下拉刷新余额</string>
+    <string name="retrieve_password_success">重置密码已发送至您的手机，请尽快前往个人中心重置，避免遗忘</string>
+    <string name="retrieve_password_dialog_title">重置密码</string>
+    <string name="retrieve_password_dialog_message">点击确定后会将新密码发送至填写的手机号</string>
 </resources>

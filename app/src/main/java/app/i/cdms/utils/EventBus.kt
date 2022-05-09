@@ -35,6 +35,6 @@ sealed class BaseEvent {
     data class Toast(val resId: Int) : BaseEvent()
     object Loading : BaseEvent()
     object Nothing : BaseEvent()
-    object NeedLogin : BaseEvent()
+    object Auth : BaseEvent()
     object Refresh : BaseEvent()
 }
