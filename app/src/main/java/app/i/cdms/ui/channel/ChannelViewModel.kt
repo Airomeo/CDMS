@@ -44,7 +44,6 @@ class ChannelViewModel @Inject constructor(
 
     init {
         fetchCustomerChannels(null, null)
-        getMyTeam(1, 9999, null, null, null, null)
     }
 
     // 获取所有渠道详细信息

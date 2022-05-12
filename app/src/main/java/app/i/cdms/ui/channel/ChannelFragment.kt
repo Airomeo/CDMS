@@ -39,7 +39,13 @@ class ChannelFragment : Fragment(R.layout.fragment_channel) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+        val accountRouter = mainViewModel.routers.value.find { router -> router.name == "Account" }
+        val myTeamRouter =
+            accountRouter?.children?.find { router -> router.name == "My_team" }
+        if (myTeamRouter != null) {
+            setHasOptionsMenu(true)
+            channelViewModel.getMyTeam(1, 9999, null, null, null, null)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

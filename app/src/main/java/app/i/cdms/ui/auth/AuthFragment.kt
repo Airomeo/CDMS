@@ -430,6 +430,8 @@ fun RetrievePasswordDialog(
                         keyboardType = KeyboardType.Number,
                         imeAction = ImeAction.Done
                     ),
+                    placeholder = { Text(text = stringResource(id = R.string.prompt_phone_holder)) },
+                    label = { Text(text = stringResource(id = R.string.prompt_phone)) }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
