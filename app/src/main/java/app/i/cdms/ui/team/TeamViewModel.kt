@@ -3,7 +3,7 @@ package app.i.cdms.ui.team
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.i.cdms.data.model.Agent
-import app.i.cdms.data.model.MyTeam
+import app.i.cdms.data.model.PageOf
 import app.i.cdms.repository.team.TeamRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -16,10 +16,10 @@ class TeamViewModel @Inject constructor(private val teamRepository: TeamReposito
     private val _filter = MutableStateFlow(AgentFilter())
     val filter = _filter.asStateFlow()
 
-    private val _myTeam = MutableStateFlow<MyTeam?>(null)
+    private val _myTeam = MutableStateFlow<PageOf<Agent>?>(null)
     val myTeam = _myTeam.asStateFlow()
 
-    val uiState = combine(filter, myTeam) { f: AgentFilter, t: MyTeam? ->
+    val uiState = combine(filter, myTeam) { f: AgentFilter, t: PageOf<Agent>? ->
         return@combine filterByKey(t, f)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
@@ -42,7 +42,7 @@ class TeamViewModel @Inject constructor(private val teamRepository: TeamReposito
         }
     }
 
-    private fun filterByKey(myTeam: MyTeam?, filter: AgentFilter): List<Agent> {
+    private fun filterByKey(myTeam: PageOf<Agent>?, filter: AgentFilter): List<Agent> {
         var result = myTeam?.rows ?: return emptyList()
         filter.keyName?.let { result = result.filter { it.userName.contains(filter.keyName) } }
         filter.keyId?.let {

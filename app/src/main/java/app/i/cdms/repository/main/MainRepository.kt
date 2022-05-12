@@ -1,8 +1,6 @@
 package app.i.cdms.repository.main
 
-import app.i.cdms.data.model.CustomerChannelZone
 import app.i.cdms.data.model.Token
-import app.i.cdms.data.model.YiDaBaseResponse
 import app.i.cdms.data.source.local.UserPrefDataSource
 import app.i.cdms.data.source.remote.main.MainDataSource
 import app.i.cdms.repository.BaseRepository
@@ -28,10 +26,6 @@ class MainRepository @Inject constructor(
         scCode: String?,
         rcCode: String?
     ) = executeResponse { dataSource.fetchCustomerChannels(customerType, scCode, rcCode) }
-
-    suspend fun getCustomerChannelDetail(customerId: Int): YiDaBaseResponse<List<CustomerChannelZone>>? {
-        return executeResponse { dataSource.getCustomerChannelDetail(customerId) }
-    }
 
     suspend fun getAndUpdateAreaList() {
         val result = executeResponse { dataSource.getAreaList() }

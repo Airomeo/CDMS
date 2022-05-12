@@ -1,6 +1,7 @@
 package app.i.cdms.repository.team
 
-import app.i.cdms.data.model.MyTeam
+import app.i.cdms.data.model.Agent
+import app.i.cdms.data.model.PageOf
 import app.i.cdms.data.source.remote.team.TeamDataSource
 import app.i.cdms.repository.BaseRepository
 import javax.inject.Inject
@@ -18,7 +19,7 @@ class TeamRepository @Inject constructor(private val dataSource: TeamDataSource)
         parentUserId: Int?,
         than: String?,
         balance: String?,
-    ): MyTeam? {
+    ): PageOf<Agent>? {
         return executeResponse {
             dataSource.getMyTeam(
                 pageNum,

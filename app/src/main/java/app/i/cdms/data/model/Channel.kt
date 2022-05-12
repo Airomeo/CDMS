@@ -46,18 +46,18 @@ data class CustomerChannel(
 
 @JsonClass(generateAdapter = true)
 data class CustomerChannelZone(
-    @Json(name = "calcFeeType")
+    @Json(name = "calcFeeType") // "calcFeeType": "profit",
     val calcFeeType: String,
-    @Json(name = "channelId")
+    @Json(name = "channelId") // "channelId": 50,
     val channelId: Int,
-    @Json(name = "channelName")
+    @Json(name = "channelName") // "channelName" : "极兔22P艾悦-外部渠道1区",
     val channelName: String,
-    @Json(name = "price")
+    @Json(name = "price")// "price": "1-1公斤,价格5.1续0;2-3公斤,价格6.8续0;4-50公斤,价格8.6续1.8;",
     val price: String,
-    @Json(name = "sort")
+    @Json(name = "sort") // "sort": 1,
     val sort: Int,
-    @Json(name = "srArea")
-    val srArea: List<String>
+    @Json(name = "srArea") // "srArea": null
+    val srArea: List<String>?
 )
 
 @JsonClass(generateAdapter = true)
@@ -99,6 +99,8 @@ data class ChannelsOf<out T>(
     val jt: List<T>?,
     @Json(name = "SF")
     val sf: List<T>?,
+    @Json(name = "ZTO")
+    val zto: List<T>?,
 ) {
     fun mapNotNull(): List<T> {
         val list = mutableListOf<T>()
@@ -108,6 +110,7 @@ data class ChannelsOf<out T>(
         dop?.let { list.addAll(it) }
         jt?.let { list.addAll(it) }
         sf?.let { list.addAll(it) }
+        zto?.let { list.addAll(it) }
         return list
     }
 }
@@ -158,3 +161,39 @@ data class PreOrderChannel(
         null,
     )
 }
+
+@JsonClass(generateAdapter = true)
+data class ChildChannelPrice(
+    @Json(name = "calcFeeType")
+    val calcFeeType: String?, // null
+    @Json(name = "channelId")
+    val channelId: Int?, // 148
+    @Json(name = "createBy")
+    val createBy: String?, // null
+    @Json(name = "createTime")
+    val createTime: String?, // null
+    @Json(name = "id")
+    val id: Int?, // 295164
+    @Json(name = "levelType")
+    val levelType: Int, // 20
+    @Json(name = "oid")
+    val oid: Any?, // null
+    @Json(name = "params")
+    val params: Any,
+    @Json(name = "price")
+    val price: String?, // 1-50=7.1+1.6
+    @Json(name = "priceStr")
+    val priceStr: String?, // 1-50公斤,价格7.1续1.6;
+    @Json(name = "searchValue")
+    val searchValue: Any?, // null
+    @Json(name = "type")
+    val type: Int?, // 1
+    @Json(name = "updateBy")
+    val updateBy: Any?, // null
+    @Json(name = "updateTime")
+    val updateTime: Any?, // null
+    @Json(name = "userId")
+    val userId: Int, // 2314
+    @Json(name = "userName")
+    val userName: String // 周国海1
+)

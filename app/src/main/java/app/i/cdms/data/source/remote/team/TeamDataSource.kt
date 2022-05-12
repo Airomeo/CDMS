@@ -1,7 +1,8 @@
 package app.i.cdms.data.source.remote.team
 
 import app.i.cdms.api.ApiService
-import app.i.cdms.data.model.MyTeam
+import app.i.cdms.data.model.Agent
+import app.i.cdms.data.model.PageOf
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -16,7 +17,7 @@ class TeamDataSource @Inject constructor(private val service: ApiService) {
         parentUserId: Int?,
         than: String?,
         balance: String?,
-    ): Response<MyTeam> {
+    ): Response<PageOf<Agent>> {
         return service.myTeam(
             pageNum = pageNum,
             pageSize = pageSize,

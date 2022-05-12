@@ -1,7 +1,7 @@
 package app.i.cdms.repository
 
 import app.i.cdms.R
-import app.i.cdms.data.model.MyTeam
+import app.i.cdms.data.model.PageOf
 import app.i.cdms.data.model.ShunFengBaseResponse
 import app.i.cdms.data.model.YiDaBaseResponse
 import app.i.cdms.data.model.YunYangBaseResponse
@@ -45,7 +45,7 @@ open class BaseRepository {
                             }
                         }
                     }
-                    is MyTeam -> {
+                    is PageOf<*> -> {
                         when (body.code) {
                             200 -> {
                                 return body

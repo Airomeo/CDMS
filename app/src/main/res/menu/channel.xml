@@ -11,5 +11,9 @@
         android:id="@+id/action_bind_channel_to_user"
         android:title="@string/action_batch_update_channel"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_delete_channel_to_user"
+        android:title="@string/action_batch_delete_channel"
+        app:showAsAction="never" />
 
 </menu>

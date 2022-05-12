@@ -85,12 +85,8 @@ fun SignInAndSignUpScreen(
             })
     }
 
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    if (BuildConfig.DEBUG && viewModel.isSignIn) {
-        username = "朱朝阳"
-        password = "bonjour"
-    }
+    var username by remember { mutableStateOf(if (BuildConfig.DEBUG && viewModel.isSignIn) "朱朝阳" else "") }
+    var password by remember { mutableStateOf(if (BuildConfig.DEBUG && viewModel.isSignIn) "bonjour" else "") }
     var phone by remember { mutableStateOf("") }
     var phoneCaptcha by remember { mutableStateOf("") }
     val countDownTime = viewModel.countDownTime

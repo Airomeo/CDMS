@@ -96,6 +96,7 @@
             android:id="@+id/tips"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
             android:text="@string/fees_tips"
             android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="parent"

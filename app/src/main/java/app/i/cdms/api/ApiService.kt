@@ -74,7 +74,7 @@ interface ApiService {
         @Query("parentUserId") parentUserId: Int?,
         @Query("than") than: String?,
         @Query("balance") balance: String?,
-    ): Response<MyTeam>
+    ): Response<PageOf<Agent>>
 
     @GET
     suspend fun clearAccount(
@@ -116,9 +116,37 @@ interface ApiService {
     ): Response<YiDaBaseResponse<ChannelsOf<CustomerChannel>>>
 
     @GET
-    suspend fun getCustomerChannelDetail(
-        @Url url: String
-    ): Response<YiDaBaseResponse<List<CustomerChannelZone>>>
+    suspend fun getCustomerChannelPrice(@Url url: String): Response<YiDaBaseResponse<List<CustomerChannelZone>>>
+
+    @GET
+    suspend fun fetchBindUserPrice(
+        @Url url: String = Constant.API_GET_USER_PRICE,
+        @Query("channelId") channelId: Int,
+        @Query("pageNum") pageNum: Int,
+        @Query("pageSize") pageSize: Int,
+    ): Response<PageOf<ChildChannelPrice>>
+
+    @GET
+    suspend fun fetchUserPrice(
+        @Url url: String = Constant.API_GET_USER_PRICE_BY_BIND,
+        @Query("channelId") channelId: Int,
+        @Query("isBind") isBind: Boolean,
+    ): Response<YiDaBaseResponse<List<ChildChannelPrice>>>
+
+    @POST
+    suspend fun addUserPrice(
+        @Url url: String = Constant.API_ADD_USER_PRICE,
+        @Body payload: RequestBody
+    ): Response<YiDaBaseResponse<Any>>
+
+    @PUT
+    suspend fun updateUserPrice(
+        @Url url: String = Constant.API_UPDATE_USER_PRICE,
+        @Body payload: RequestBody
+    ): Response<YiDaBaseResponse<Any>>
+
+    @DELETE
+    suspend fun deleteChildPrice(@Url url: String): Response<YiDaBaseResponse<Any>>
 
     @GET
     suspend fun getAreaList(

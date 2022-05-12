@@ -157,7 +157,8 @@
     <string name="action_show_completed">显示完成项</string>
     <string name="action_delete_all_completed">删除完成项</string>
     <string name="action_search">搜索</string>
-    <string name="action_batch_update_channel">配置渠道至用户</string>
+    <string name="action_batch_update_channel">批量给用户配置渠道</string>
+    <string name="action_batch_delete_channel">批量删除用户渠道</string>
     <string name="price">¥%s</string>
     <string name="weight">%skg</string>
     <string name="channel_light_weight">抛比：%s</string>
@@ -174,10 +175,14 @@
     <string name="config_per_add">单笔加收：¥%s</string>
     <string name="config_per_add_commission">"单笔加收"抽佣：+ ¥%s</string>
     <string name="channel_update_config_no_user_selected">未选择用户！</string>
+    <string name="channel_update_config_no_user_group_selected">未选择用户组</string>
+    <string name="channel_update_config_no_user">未找到您的下级用户</string>
+    <string name="channel_update_config_no_channel_selected">未选择渠道！</string>
     <string name="channel_update_config_waiting">正在配置，请等待进度条消失。</string>
     <string name="channel_update_config_finished">配置完毕。</string>
     <string name="channel_update_config_dialog_title">选择用户</string>
-    <string name="channel_update_config_dialog_select_user">反选</string>
+    <string name="channel_update_config_dialog_title_group">选择用户组</string>
+    <string name="channel_update_config_dialog_invert_select">反选</string>
     <string name="channel_config_commission_title">配置抽佣</string>
     <string name="channel_config_commission_default">默认值</string>
     <string name="api_wait">执行成功，请于2分钟后检查结果。</string>
@@ -203,7 +208,7 @@
     <string name="common_update_password">更改密码</string>
     <string name="common_update_password_tips">密码不能为空</string>
     <string name="common_update_password_tips1">新旧密码不能相同</string>
-    <string name="common_update_password_tips2">密码长度应为6-20位</string>
+    <string name="common_update_password_tips2">密码长度应为6–20位</string>
     <string name="common_update_password_success">密码更改成功</string>
     <string name="common_current_password">旧密码</string>
     <string name="common_new_password">新密码</string>

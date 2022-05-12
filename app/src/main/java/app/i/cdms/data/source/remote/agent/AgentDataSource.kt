@@ -6,10 +6,6 @@ import app.i.cdms.data.model.YiDaBaseResponse
 import retrofit2.Response
 import javax.inject.Inject
 
-/**
- * @author ZZY
- * 2021/11/6.
- */
 class AgentDataSource @Inject constructor(private val service: ApiService) {
 
     suspend fun withdraw(userId: Int): Response<YiDaBaseResponse<Any>> {

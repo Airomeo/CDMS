@@ -6,10 +6,6 @@ import app.i.cdms.data.source.remote.agent.AgentDataSource
 import app.i.cdms.repository.BaseRepository
 import javax.inject.Inject
 
-/**
- * @author ZZY
- * 2021/10/26.
- */
 class AgentRepository @Inject constructor(private val dataSource: AgentDataSource) :
     BaseRepository() {
 

@@ -55,7 +55,13 @@ object Constant {
     const val API_NOTICE = "$API/system/notice/list" // no need token
     const val API_ORDER_COUNT = "$API/wl/home/getUserOrderCount"
     const val API_CUSTOMER_CHANNEL = "$API/price/self"
-    const val API_CUSTOMER_CHANNEL_DETAIL = "$API/price/selfDetail"
+    const val API_CUSTOMER_CHANNEL_PRICE = "$API/price/selfDetail"
+    const val API_CUSTOMER_CHANNEL_PRICE_NO_AREA = "$API/price/getByCustomer"
+    const val API_GET_USER_PRICE = "$API/price/pageChildPrice"
+    const val API_GET_USER_PRICE_BY_BIND = "$API/price/listChildPrice"
+    const val API_ADD_USER_PRICE = "$API/price/addUserPrice"
+    const val API_UPDATE_USER_PRICE = "$API/price/updateUserPrice"
+    const val API_DELETE_USER_PRICE = "$API/price/remove"
     const val API_GET_AREA = "$API/logistics/area/getAreaCascaderVo" // no need token
     const val API_SMART_PRE_ORDER = "$API/commonOrder/smartPreOrder"
     const val API_SUBMIT_ORDER = "$API/commonOrder/submitOrder"
