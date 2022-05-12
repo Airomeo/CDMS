@@ -88,6 +88,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 findNavController().navigate(R.id.dashboardFragment)
             },
             HomeMenuItem(
+                R.drawable.ic_baseline_vpn_key_24,
+                R.string.common_update_password
+            ) {
+                showUpdatePasswordDialog()
+            },
+            HomeMenuItem(
                 R.drawable.ic_baseline_logout_24,
                 R.string.title_sign_out
             ) {
@@ -120,12 +126,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                                         R.string.action_invite
                                     ) {
                                         mainViewModel.fetchAgentLevel()
-                                    },
-                                    HomeMenuItem(
-                                        R.drawable.ic_baseline_vpn_key_24,
-                                        R.string.common_update_password
-                                    ) {
-                                        showUpdatePasswordDialog()
                                     }).plus(menus)
                             )
                         }
