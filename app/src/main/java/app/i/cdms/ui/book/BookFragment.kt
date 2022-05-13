@@ -740,6 +740,8 @@ class BookFragment : Fragment(R.layout.fragment_book) {
             bookResult.orderNo.startsWith("JT") -> "极兔"
             bookResult.orderNo.startsWith("SF") -> "顺丰"
             bookResult.orderNo.startsWith("JD") -> "京东"
+            bookResult.orderNo.startsWith("ZTO") -> "中通"
+            bookResult.orderNo.startsWith("YD") -> "韵达"
             else -> ""
         }
         var msg = "${brand}单号：${deliveryIdStr}\n" +
@@ -770,7 +772,17 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                 neutralButton.setText(R.string.fees_tips_refresh)
                 neutralButton.setOnClickListener {
                     val deliverType =
-                        if (bookResult.orderNo.startsWith("YT")) "YTO" else "JT"
+                        when {
+                            bookResult.orderNo.startsWith("YT") -> "YTO"
+                            bookResult.orderNo.startsWith("ZTO") -> "ZTO"
+                            bookResult.orderNo.startsWith("JT") -> "JT"
+                            bookResult.orderNo.startsWith("ST") -> "STO-INT"
+                            bookResult.orderNo.startsWith("DB") -> "DOP"
+                            bookResult.orderNo.startsWith("SF") -> "SF"
+                            bookResult.orderNo.startsWith("JD") -> "JD"
+                            bookResult.orderNo.startsWith("YD") -> "YD"
+                            else -> ""
+                        }
                     viewModel.getDeliveryId(
                         bookResult.orderNo,
                         deliverType
