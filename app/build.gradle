@@ -9,44 +9,45 @@ plugins {
 
 // Creates a variable called keystorePropertiesFile, and initializes it to the
 // keystore.properties file.
-def keystorePropertiesFile = rootProject.file("keystore.properties")
+//def keystorePropertiesFile = rootProject.file("keystore.properties")
 
 // Initializes a new Properties() object called keystoreProperties.
-def keystoreProperties = new Properties()
+//def keystoreProperties = new Properties()
 
 // Loads the keystore.properties file into the keystoreProperties object.
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+//keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
-static def gitVersionCode() {
-    def cmd = 'git rev-list HEAD --first-parent --count'
-    cmd.execute().text.trim().toInteger()
-}
+//static def gitVersionCode() {
+//    def cmd = 'git rev-list HEAD --first-parent --count'
+//    cmd.execute().text.trim().toInteger()
+//}
 
-static def gitVersionTag() {
-    def cmd = 'git describe --tags'
-    def version = cmd.execute().text.trim()
-
-    def pattern = "-(\\d+)-g"
-    def matcher = version =~ pattern
-
-    if (matcher) {
-        version = version.substring(0, matcher.start()) + "." + matcher[0][1]
-    } else {
-        version = version + ".0"
-    }
-
-    return version
-}
+//static def gitVersionTag() {
+//    def cmd = 'git describe --tags'
+//    def version = cmd.execute().text.trim()
+//
+//    def pattern = "-(\\d+)-g"
+//    def matcher = version =~ pattern
+//
+//    if (matcher) {
+//        version = version.substring(0, matcher.start()) + "." + matcher[0][1]
+//    } else {
+//        version = version + ".0"
+//    }
+//
+//    return version
+//}
 
 android {
-    signingConfigs {
-        config {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
-        }
-    }
+//    Using Microsoft AppCenter build instead
+//    signingConfigs {
+//        config {
+//            keyAlias keystoreProperties['keyAlias']
+//            keyPassword keystoreProperties['keyPassword']
+//            storeFile file(keystoreProperties['storeFile'])
+//            storePassword keystoreProperties['storePassword']
+//        }
+//    }
 
     defaultConfig {
         applicationId "app.i.cdms"
@@ -123,11 +124,11 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
     }
     buildFeatures {
         viewBinding true
@@ -147,7 +148,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.7.0-alpha01'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-beta01'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-rc01'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.2'
@@ -159,12 +160,12 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     // An image loading library for Android backed by Kotlin Coroutines.
-    implementation('io.coil-kt:coil:2.0.0-rc03')
+    implementation('io.coil-kt:coil:2.0.0')
     // debugImplementation because LeakCanary should only run in debug builds.
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
 
     // define a BOM and its version
-    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.3"))
+    implementation(platform('com.squareup.okhttp3:okhttp-bom:5.0.0-alpha.7'))
 
     // define any required OkHttp artifacts without version
     implementation 'com.squareup.okhttp3:okhttp'
@@ -200,24 +201,24 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.4.0'
     // Compose Material Design
 //    implementation 'androidx.compose.material:material:1.1.1'
-    implementation "androidx.compose.material3:material3:1.0.0-alpha10"
+    implementation "androidx.compose.material3:material3:1.0.0-alpha11"
     // Animations
     implementation 'androidx.compose.animation:animation:1.1.1'
     // Tooling support (Previews, etc.)
     implementation 'androidx.compose.ui:ui-tooling:1.1.1'
     // Integration with ViewModels
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0-beta01'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0-rc01'
     // UI Tests
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.1.1'
     // When using a MDC theme
-    implementation "com.google.android.material:compose-theme-adapter:1.1.7"
+    implementation "com.google.android.material:compose-theme-adapter:1.1.9"
     // Coil
-    implementation('io.coil-kt:coil-compose:2.0.0-rc03')
+    implementation('io.coil-kt:coil-compose:2.0.0')
     // Hilt
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
     // https://github.com/mikepenz/AboutLibraries
-    implementation "com.mikepenz:aboutlibraries-core:10.1.0"
-    implementation "com.mikepenz:aboutlibraries-compose:10.1.0"
+    implementation 'com.mikepenz:aboutlibraries-core:10.2.0'
+    implementation 'com.mikepenz:aboutlibraries-compose:10.2.0'
 
 }

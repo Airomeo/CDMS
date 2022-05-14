@@ -41,7 +41,7 @@ buildscript {
         okhttp_version = '5.0.0-alpha.2'
         coil = '1.3.2'
         appCenterSdkVersion = '4.4.3'
-        hiltVersion = '2.41'
+        hiltVersion = '2.42'
 
     }
     repositories {
