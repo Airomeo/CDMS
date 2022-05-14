@@ -212,7 +212,7 @@
     <string name="common_update_password_success">密码更改成功</string>
     <string name="common_current_password">旧密码</string>
     <string name="common_new_password">新密码</string>
-    <string name="charge_tips">在线充值实时到账，每笔收取0.6%手续费\n将二维码截图保存，然后打开微信\n方案一：微信扫一扫，选择截图扫码\n方案二：微信发给别人，长按截图扫码\n二维码有效时间5分钟，请及时扫码支付，点击可重新获取。付款后请下拉刷新余额</string>
+    <string name="charge_tips">输入金额，生成付款二维码\n- 微信扫一扫，选择截图扫码\n- 发给别人，长按截图扫码\n每笔收取0.6%手续费，二维码有效期5分钟，请截图微信支付，点击可重新获取。付款后请下拉刷新余额</string>
     <string name="retrieve_password_success">重置密码已发送至您的手机，请尽快前往个人中心重置，避免遗忘</string>
     <string name="retrieve_password_dialog_title">重置密码</string>
     <string name="retrieve_password_dialog_message">点击确定后会将新密码发送至填写的手机号</string>

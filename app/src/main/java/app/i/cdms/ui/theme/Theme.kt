@@ -1,6 +1,7 @@
 package app.i.cdms.ui.theme
 
 import android.content.Context
+import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -74,11 +75,11 @@ fun AppTheme(
     content: @Composable() () -> Unit,
 ) {
     val colors = if (!useDarkTheme) {
-        dynamicLightColorScheme(context)
-//        LightThemeColors
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) LightThemeColors
+        else dynamicLightColorScheme(context)
     } else {
-        dynamicDarkColorScheme(context)
-//        DarkThemeColors
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) DarkThemeColors
+        else dynamicDarkColorScheme(context)
     }
 
     MaterialTheme(
