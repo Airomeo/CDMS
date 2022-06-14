@@ -55,6 +55,11 @@
         android:name="app.i.cdms.ui.auth.AuthFragment"
         android:label="@string/action_sign_in" />
 
+    <fragment
+        android:id="@+id/orderFragment"
+        android:name="app.i.cdms.ui.orderlist.OrderFragment"
+        android:label="@string/title_order_list" />
+
     <navigation
         android:id="@+id/navigation_team"
         app:startDestination="@id/teamFragment">

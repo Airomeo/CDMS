@@ -101,6 +101,8 @@ data class ChannelsOf<out T>(
     val sf: List<T>?,
     @Json(name = "ZTO")
     val zto: List<T>?,
+    @Json(name = "YUND")
+    val yd: List<T>?,
 ) {
     fun mapNotNull(): List<T> {
         val list = mutableListOf<T>()
@@ -111,6 +113,7 @@ data class ChannelsOf<out T>(
         jt?.let { list.addAll(it) }
         sf?.let { list.addAll(it) }
         zto?.let { list.addAll(it) }
+        yd?.let { list.addAll(it) }
         return list
     }
 }

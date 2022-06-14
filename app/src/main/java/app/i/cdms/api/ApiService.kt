@@ -212,4 +212,34 @@ interface ApiService {
         @Url url: String = Constant.API_CHARGE,
         @Query("totalFee") amount: Int
     ): Response<YiDaBaseResponse<ChargeQrCode>>
+
+    @GET
+    suspend fun fetchOrderList(
+        @Url url: String,
+        @Query("deliveryType") deliveryType: String, // YTO
+        @Query("customerType") customerType: String, // kd
+        @Query("pageNum") pageNum: Int?,
+        @Query("pageSize") pageSize: Int?,
+        @Query("params[beginTime]") beginTime: String,
+        @Query("params[endTime]") endTime: String, // 2022-05-12 00:00:00 2022-05-19%2000%3A00%3A00
+        @Query("weightState") weightState: Int?, // 1
+        @Query("goods") goods: String?, // 日用百货
+        @Query("orderStatus") orderStatus: Int?, // 补差状态 1
+        @Query("senderSearch") senderSearch: Int?, // 寄件人姓名/电话/手机
+        @Query("receiveSearch") receiveSearch: Int?, // 收件人姓名/电话/手机
+        @Query("userId") userId: Int?, // 下单用户id 2363
+        @Query("thirdNo") thirdNo: String?, // 第三方订单号
+        @Query("orderNo") orderNo: String?, // 订单号
+        @Query("deliveryIds") deliveryIds: String?, // 运单编号中/英文逗号隔开
+    ): Response<PageOf<RawOrder>>
+
+    @POST
+    suspend fun updateOrderWeightState(
+        @Url url: String = Constant.API_UPDATE_ORDER_WEIGHT_STATE,
+        @Body payload: RequestBody
+    ): Response<YiDaBaseResponse<Boolean>>
+
+    @GET
+    suspend fun batchCancelOrder(@Url url: String): Response<YiDaBaseResponse<List<CancelOrderResult>>>
+
 }

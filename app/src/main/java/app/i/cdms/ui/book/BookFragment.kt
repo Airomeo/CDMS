@@ -741,7 +741,7 @@ class BookFragment : Fragment(R.layout.fragment_book) {
             bookResult.orderNo.startsWith("SF") -> "顺丰"
             bookResult.orderNo.startsWith("JD") -> "京东"
             bookResult.orderNo.startsWith("ZTO") -> "中通"
-            bookResult.orderNo.startsWith("YD") -> "韵达"
+            bookResult.orderNo.startsWith("YUND") -> "韵达"
             else -> ""
         }
         var msg = "${brand}单号：${deliveryIdStr}\n" +
@@ -751,7 +751,7 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                 "收件地址：${binding.tvAddress2.text}\n" +
                 "下单物品：${binding.tvGoodsName.text}\n" +
                 "下单重量：${binding.tvGoodsWeight.text}kg\n" +
-                "重要提示：超重需补差价；未保价最高赔付运费6倍；售后问题联系\"下单员\"或致电：4000-563-365。"
+                "重要提示：超重需补差价；未保价最高赔付运费3倍；售后问题联系\"下单员\"或致电：4000-563-365。"
         val dialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.book_result_dialog_title)
             .setMessage(msg)
@@ -780,7 +780,7 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                             bookResult.orderNo.startsWith("DB") -> "DOP"
                             bookResult.orderNo.startsWith("SF") -> "SF"
                             bookResult.orderNo.startsWith("JD") -> "JD"
-                            bookResult.orderNo.startsWith("YD") -> "YD"
+                            bookResult.orderNo.startsWith("YUND") -> "YUND"
                             else -> ""
                         }
                     viewModel.getDeliveryId(

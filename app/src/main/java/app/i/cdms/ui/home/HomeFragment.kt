@@ -101,6 +101,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 mainViewModel.updateToken(null)
                 homeViewModel.updateMyInfo(null)
             },
+            HomeMenuItem(
+                R.drawable.ic_baseline_logout_24,
+                R.string.title_order_list
+            ) {
+                findNavController().navigate(R.id.orderFragment)
+            },
         )
         mAdapter.submitList(menus)
 

@@ -41,7 +41,7 @@ object Constant {
     /**
      * HOST and API
      */
-    private const val API = "https://www.yida178.cn/prod-api"
+    const val API = "https://www.yida178.cn/prod-api"
     const val API_LOGIN_CAPTCHA = "$API/captchaImage"
     const val API_REGISTER_CAPTCHA = "$API/sendRegisterCode"
     const val API_LOGIN = "$API/login"
@@ -71,6 +71,8 @@ object Constant {
     const val API_FETCH_INVITE_CODE = "$API/getInviteCode"
     const val API_FETCH_ROUTERS = "$API/getRouters"
     const val API_CHARGE = "$API/wxPay/getPrePayNative"
+    const val API_UPDATE_ORDER_WEIGHT_STATE = "$API/commonOrder/handleWeight"
+    const val API_UPDATE_ORDER_BATCH_CANCEL = "$API/commonOrder/batchCancel"
 
     const val API_PARSE_ADDRESS_BY_SF =
         "https://www.sf-express.com/sf-service-owf-web/service/order/batch/orderAddressSplit"

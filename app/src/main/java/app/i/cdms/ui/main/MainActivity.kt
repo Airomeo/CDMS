@@ -42,7 +42,8 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         val navController = navHostFragment.navController
         val hideActionBarDestinations = setOf(
-            R.id.notificationsFragment
+            R.id.notificationsFragment,
+            R.id.orderFragment
         )
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id in hideActionBarDestinations) {
