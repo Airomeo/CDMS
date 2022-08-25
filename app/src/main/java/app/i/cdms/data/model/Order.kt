@@ -25,7 +25,7 @@ data class RawOrder(
     @Json(name = "addFee")
     val addFee: String?, // null
     @Json(name = "backDeduct")
-    val backDeduct: String, // N
+    val backDeduct: String?, // N
     @Json(name = "backFee")
     val backFee: String?, // null
     @Json(name = "bigWord")
@@ -50,6 +50,8 @@ data class RawOrder(
     val deliveryId: String, // YT2218796787166
     @Json(name = "feeBlock")
     val feeBlock: String?, // [{"fee":0,"type":0,"name":"实收快递费"}]
+    @Json(name = "finalCalcWeight")
+    val finalCalcWeight: String?, // null
     @Json(name = "flag")
     val flag: Int?, // 0
     @Json(name = "goods")
@@ -57,11 +59,11 @@ data class RawOrder(
     @Json(name = "guaranteeValueAmount")
     val guaranteeValueAmount: String?, // null
     @Json(name = "hasDeduct")
-    val hasDeduct: String, // N
+    val hasDeduct: String?, // N
     @Json(name = "hasEarn")
     val hasEarn: String?, // N 中通的
     @Json(name = "hasReturn")
-    val hasReturn: String, // N
+    val hasReturn: String?, // N
     @Json(name = "id")
     val id: Int, // 663431
     @Json(name = "lgWeight")

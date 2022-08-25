@@ -30,17 +30,7 @@ class OrderDataSource @Inject constructor(private val service: ApiService) {
         orderNo: String?, // 订单号
         deliveryIds: String?, // 运单编号中/英文逗号隔开
     ) = service.fetchOrderList(
-        Constant.API + "/" + when (deliveryType) {
-            "DOP" -> "dop"
-            "JD" -> "jd"
-            "STO-INT" -> "stoInt"
-            "YTO" -> "yto"
-            "JT" -> "jt"
-            "SF" -> "sf"
-            "ZTO" -> "zto"
-            "YUND" -> "yund"
-            else -> ""
-        } + "/list",    //    https://www.yida178.cn/prod-api/yto/list?
+        Constant.API_FETCH_ORDER,
         deliveryType,
         customerType,
         pageNum,

@@ -71,6 +71,7 @@ object Constant {
     const val API_FETCH_INVITE_CODE = "$API/getInviteCode"
     const val API_FETCH_ROUTERS = "$API/getRouters"
     const val API_CHARGE = "$API/wxPay/getPrePayNative"
+    const val API_FETCH_ORDER = "$API/commonOrder/list"
     const val API_UPDATE_ORDER_WEIGHT_STATE = "$API/commonOrder/handleWeight"
     const val API_UPDATE_ORDER_BATCH_CANCEL = "$API/commonOrder/batchCancel"
 
