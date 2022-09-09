@@ -37,8 +37,8 @@ class MainDataSource @Inject constructor(private val service: ApiService) {
         service.fetchInviteCode(Constant.API_FETCH_INVITE_CODE + "/" + level)
 
     suspend fun fetchLordInviteCode() =
-        service.fetchLordInviteCode(Constant.API_FETCH_INVITE_CODE_CLOUDFLARE)
+        service.fetchLordInviteCode(Constant.API_FETCH_INVITE_CODE_CLOUDFLARE_CDN)
 
     suspend fun fetchLordInviteCode2() =
-        service.fetchLordInviteCode(Constant.API_FETCH_INVITE_CODE_HEROKU)
+        service.fetchLordInviteCode(Constant.API_FETCH_INVITE_CODE_CLOUDFLARE)
 }
