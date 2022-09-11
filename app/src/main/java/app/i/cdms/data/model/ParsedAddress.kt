@@ -6,52 +6,46 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class ParsedAddressBySf(
-    @Json(name = "hmtareaType")
-    val hmtareaType: Int,
-    @Json(name = "latitude")
-    val latitude: Any?,
-    @Json(name = "lontitude")
-    val lontitude: Any?,
+    @Json(name = "hMTAreaType")
+    val hMTAreaType: Int, // 2
     @Json(name = "mobile")
-    val mobile: String?,
+    val mobile: String, // 18179238332
     @Json(name = "originDestRegions")
     val originDestRegions: List<OriginDestRegion>,
     @Json(name = "personalName")
-    val personalName: String?,
+    val personalName: String, // 付玲
     @Json(name = "site")
-    val site: String,
-    @Json(name = "splitType")
-    val splitType: Any?,
+    val site: String, // 向阳街道办事处(九江经济技术开发区) 柴桑春天三区 5-2栋 204室
     @Json(name = "telephone")
-    val telephone: String?
+    val telephone: String
 )
 
 @JsonClass(generateAdapter = true)
 data class OriginDestRegion(
     @Json(name = "availableAsDestination")
-    val availableAsDestination: Boolean,
+    val availableAsDestination: Boolean, // true
     @Json(name = "availableAsOrigin")
-    val availableAsOrigin: Boolean,
+    val availableAsOrigin: Boolean, // true
     @Json(name = "code")
-    val code: String,
+    val code: String, // A360000000
     @Json(name = "countryCode")
-    val countryCode: String,
+    val countryCode: String, // A000086000
     @Json(name = "distId")
-    val distId: String,
+    val distId: String, // 43
     @Json(name = "id")
-    val id: String,
+    val id: String, // 43-SC
     @Json(name = "lang")
-    val lang: String,
+    val lang: String, // SC
     @Json(name = "level")
-    val level: Int,
+    val level: Int, // 2
     @Json(name = "name")
-    val name: String,
+    val name: String, // 江西省
     @Json(name = "parentCode")
-    val parentCode: String,
+    val parentCode: String, // A000086000
     @Json(name = "parentId")
-    val parentId: String,
+    val parentId: String, // 11
     @Json(name = "rateCode")
-    val rateCode: String
+    val rateCode: String // 360
 )
 
 @JsonClass(generateAdapter = true)

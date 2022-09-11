@@ -79,8 +79,6 @@ object Constant {
         "https://www.sf-express.com/sf-service-owf-web/service/order/batch/orderAddressSplit"
     const val API_PARSE_ADDRESS_BY_JD = "https://www.yunyangwl.com/jdserver2/ParseAddressByJd"
 
-    private const val API_TCB_BASE =
-        "https://i-7g9v864y639e8b0a-1256871713.ap-shanghai.app.tcloudbase.com/express"
     const val URL_DOC = "https://docs.qq.com/doc/DWmVtWWFJQ2R1cGVU?tdsourcetag=scan-qr"
     const val API_FETCH_INVITE_CODE_CLOUDFLARE_CDN = "https://ilj.71111111.xyz/fetchInviteCode"
     const val API_FETCH_INVITE_CODE_CLOUDFLARE = "https://ilj.ifi.workers.dev/fetchInviteCode"
